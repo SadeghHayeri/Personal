@@ -1,0 +1,23 @@
+4	Connect
+4	AddUser|sadegh|123
+4	Login|sadegh|123
+4	GetBookList
+4	GetRole
+4	AddBookRequest
+5	Connect
+5	Login|admin|password
+5	GetBookList
+5	GetRole
+5	GetRequests
+5	GiveAddBookAccess|sadegh
+6	Connect
+6	AddUser|amin|123
+6	Login|amin|123
+6	GetBookList
+6	GetRole
+4	GetLastVersionNum|ziba|chapter one
+4	GetLastVersionNum|ziba|chapter one
+4	GetLastVersionNum|ziba|chapter one
+4	GetLastVersionNum|ziba|chapter one
+4	AddBook|ziba|sadegh|amin|
+4	AddChapter|ziba|chapter one|-1
