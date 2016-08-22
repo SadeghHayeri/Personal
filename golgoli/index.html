@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title></title>
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8 ">
+		<meta name="GENERATOR" content="Microsoft Visual Studio.NET 7.0">
+		<meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5">
+		<style>
+		.f{
+		background-color:blue;
+		}
+		.e{
+		background-color:#ebebf1;
+		}
+		</style>
+	</head>
+	<body onload="a()" topmargin="0">
+		<div style="position:absolute ;bottom:0;width:100%" align="center">
+			<table width="700px" cellpadding="0" cellspacing="0" align="center">
+				<tr id="Pr" class="Pr" height="10px">
+				</tr>
+			</table>
+			<div align="center" style="FONT-SIZE: 10px; FONT-FAMILY: Tahoma">لطفا صبر كنيد</div>
+		</div>
+	</body>
+		<script>
+		var c=0;
+		Ip="/_Images/";ip="/_images/";tp="/_Templates/";scp="/_Scripts/";stp="/_styles/";Stp="/_Styles/";ap="/Forms/AuthenticateUser/";
+
+
+		all   =new Array(
+						 '/blank.htm',0,
+						 scp+'printTemplate.htm?tck=r',0,
+                         stp+'comm_butt2.htc',0,
+                         stp+'select.htc',0,
+                         stp+'simplegrid.htc',0,
+                         stp+'validation.htc',0,
+                         stp+'webservice.htc',0,
+                         Stp+'helpStyle.css',0,
+                         Stp+'winlessmovable.htc',0,
+                         stp+'main.css',0,
+                         stp+'MenuStyle.css',0,
+					     stp+'Toolb.htc',0,
+					     stp+'npui.css',0,
+
+					     ap+'Message.XSLT',0,
+					     ap+'Golestan.htm',0,
+					     ap+'NewsPage.htm',0,
+					     ap+'LoginPage.htm',0,
+					     ap+'TopPage.htm',0,
+					     ap+'main.htm',0,
+
+					     tp+'Commander.htm',0,
+					     tp+'Message_Page.htm',0,
+					     tp+'help.htm',0,
+
+					     scp+'Commander.js',0,
+					     scp + 'npobj.js', 0,
+					     scp + 'faci.js', 0,
+					     scp+'Forms1_5.js',0,
+					     scp+'help.js',0,
+					     scp + 'Message.js', 0,
+					     scp + 'npnfwin.js', 0,
+
+					     '/_scripts/jqnpsrv.js', 0,
+					     '/_scripts/npgrd.js', 0,
+					     scp + 'Forms1_5_npgrid.js', 0,
+
+					     Ip+'Status_OK.gif',0,
+					     ip+'tabs.png',0,
+					     ip+'ftabs.png',0,
+					     ip+'corner.png',0,
+					     ip+'c1.png',0,
+					     ip+'jqnpgridicons.png',0,
+
+						 '/Forms/F0202_PROCESS_REP_FILTER/command.htm',0);
+		nall=0;
+		for(k=0;k<all.length;k=k+2){
+			if(all[k+1]==1)nall=nall+4;
+			else nall++;
+		}
+		imstat=new Array('','_clicked','_focus','_disable');
+		function check(){
+			return true;
+			// var x=new ActiveXObject("MSXML2.XMLHTTP");
+			// x.open("HEAD", "https://ems1.ut.ac.ir/", document.location,false);
+			// x.send();
+ 		// 	var sd=new Date(x.getResponseHeader('Last-Modified'));
+			// var cd=new Date(document.lastModified);
+			// if(sd-cd>3660000){
+			// 	//alert('با توجه به تغييرات جديد سيستم ، جهت مشاهده کامل صفحات لطفا فايل هاي ذخيره شده در مرورگر خودرا حذف کنيد');
+			// 	document.cookie = "reloading=1";
+			// 	window.location.reload(true);
+			// 	return false;
+			// }
+			return true;
+		}
+		function a(){
+		    for (k = 0; k < nall; k++) {
+		        td = document.createElement('TD');
+		        td.className = 'e';
+		        Pr.appendChild(td);
+		    }
+		    if (!check()) {
+			    //window.open("/_Templates/howtoclearcache.htm","_blank");
+			    //top.close();
+			    return;
+			}
+			var aCookie = document.cookie.split("; ");
+			var cook=0;
+			for (var i=0; i < aCookie.length; i++)
+			{
+				var aCrumb = aCookie[i].split("=");
+				if ("reloading" == aCrumb[0]) {
+					cook=unescape(aCrumb[1]);
+					break;
+				}
+			}
+			var ind=0;
+			for( i=0;i<all.length;i=i+2){
+				if(all[i+1]==1)
+					for(j=0;j<4;j++){
+						var r=new ActiveXObject("MSXML2.XMLHTTP");
+						r.open("GET", "https://ems1.ut.ac.ir/" + all[i]+imstat[j]+".gif", true);
+						if(cook==1)	r.setRequestHeader('If-Modified-Since','Sat,01 Jan 2000 00:00:00 GMT');
+						getobj(r,ind++);
+					}
+				else{
+					var xhttp = new XMLHttpRequest();
+					xhttp.onreadystatechange = function() {
+						if (xhttp.readyState == 4 && xhttp.status == 200) {
+							document.getElementById("demo").innerHTML = xhttp.responseText;
+						}
+					};
+					if(cook==1)	xhttp.setRequestHeader('If-Modified-Since','Sat,01 Jan 2000 00:00:00 GMT');
+					xhttp.open("GET", "https://ems1.ut.ac.ir" + all[i], true);
+
+					// xhttp.send();
+					getobj(xhttp,ind++);
+				}
+			}
+			document.cookie = "reloading=0; expires=Fri, 31 Dec 1999 23:59:59 GMT;";
+		}
+
+
+		function getobj(o,ind){
+			o.onreadystatechange=function(){
+				console.log('checking!');
+
+				document.getElementsByTagName("td")[c].setAttribute("class", "f");
+
+				c++;
+				if(c==nall){
+				          if (location.search){
+				              top.location = "main.html" + location.search ;
+				           }
+				          else
+										top.location="main.html";
+				}
+			}
+			o.send();
+		}
+        </script>
+</html>
