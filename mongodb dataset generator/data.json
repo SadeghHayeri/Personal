@@ -1,0 +1,25 @@
+{
+
+    "server": {
+        "db": "mafia",
+        "collection": "users"
+    },
+
+    "dataset": {
+        "username": "Username",
+        "emailAddress": "Email",
+        "nickname": "Name",
+        "password": "Password",
+        "imagePath": "Image",
+        "gender": "Gender",
+        "gameProfile": {
+            "gem": "Number",
+            "coin": "Number",
+            "gamesCount": "Number",
+            "winCount": "Number",
+            "score": "Number"
+        },
+        "achivements": "[Id]"
+    }
+
+}
