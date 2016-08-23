@@ -1,0 +1,11 @@
+# npm modules sources
+*/node_modules
+
+# all editor made tmp files
+*~
+
+# log files
+*.log
+
+# coverage file (Unit Test)
+src/coverage
