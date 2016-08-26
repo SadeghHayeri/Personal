@@ -12,5 +12,9 @@
     "spamer"
   ],
   "author": "Sadegh Hayeri",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "asking": "^0.1.2",
+    "telegram.link": "^0.6.4"
+  }
 }
