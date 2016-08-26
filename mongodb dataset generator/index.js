@@ -58,7 +58,7 @@ function newItem( itemInfo, done ) {
 if (cluster.isMaster) {
 
     var len = parseInt(count*2, 10);
-    var bar = new ProgressBar('[:bar] :percent', {
+    var bar = new ProgressBar('[:bar] :percent :elapsed' , {
         complete: '=',
         incomplete: ' ',
         width: 50,
