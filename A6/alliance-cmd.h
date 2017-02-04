@@ -15,4 +15,8 @@ private:
     speedElements bSpeed;
 };
 
-#endif /* _ALLIANCE_CMD_H_ */
+#endif /* _ALLIANCE_CMD_H_ *
+
+
+
+/
