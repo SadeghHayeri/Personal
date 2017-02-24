@@ -22,7 +22,7 @@ public class CarC extends Car {
    }
 
    public float getRentPrice() {
-     return baseRentPrice + (this.basePrice*rentPercent/100);
+     return baseRentPrice + (getSellPrice()*rentPercent/100);
    }
 
    public String getClassModel() {

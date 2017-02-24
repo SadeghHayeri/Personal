@@ -1,6 +1,7 @@
 package garage;
 import java.util.ArrayList;
 import garage.cars.*;
+import java.io.*;
 
 public class Garage {
 
@@ -75,8 +76,21 @@ public class Garage {
   }
 
   public void export() {
-    for(Car car : cars)
-      System.out.println(car.getModel() + " " + car.getManufacturer());
+    try{
+      PrintWriter writer = new PrintWriter("output.txt", "UTF-8");
+      for(Car car : cars)
+        writer.println( car.getModel()
+          + "," + car.getManufacturer()
+          + "," + String.valueOf( car.getProductionYear() )
+          + "," + String.valueOf( car.getTraveledDistance() )
+          + "," + car.getClassModel()
+          + "," + String.valueOf( car.getBasePrice() )
+          + "," + (car.isCrashed()? "crashed" : "notcrashed")
+          + "," + car.getColor() );
+      writer.close();
+    } catch (IOException e) {
+      System.out.println("Error!");
+    }
   }
 
 

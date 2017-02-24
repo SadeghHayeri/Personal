@@ -2,9 +2,4 @@ add SL500 Benz 2010 1000 A 500 crashed black
 add Thunderbird Ford 1956 200000 B 200 crashed black
 add Renault L90 2014 0 C 50 notcrashed red
 add Renault L90 2010 10000 C 50 notcrashed silver
-sellprice SL500 Benz
-sellprice Thunderbird Ford
-sellprice Renault L90
-rentprice SL500 Benz
 rentprice Renault L90
-rentprice Cadenza Kia
