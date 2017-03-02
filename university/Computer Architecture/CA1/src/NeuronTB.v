@@ -1,14 +1,14 @@
 module NeuronTB;
   reg signed [6:0] x1Input, x2Input;
   reg signed [1:0] tInput;
-  reg clk = 1'b1, start;
+  reg clk = 1'b1, start = 1'b0;
   integer n = 0, i;
   reg [31:0] nInput;
   wire signed [13:0] w1, w2, b;
   wire done, requestFlag;
-  reg dataReady, rst;
+  reg dataReady = 0, rst;
 
-  Neuron N(clk, rst, nInput, x1Input, x2Input, tInput, dataReady, requestFlag, done, w1, w2, b);
+  Neuron N(clk, rst, start, nInput, x1Input, x2Input, tInput, dataReady, requestFlag, done, w1, w2, b);
 
   reg signed [6:0] X1Inputs[500:0];
   reg signed [6:0] X2Inputs[500:0];
@@ -31,8 +31,6 @@ module NeuronTB;
       tInputs[n] <= capturedt;
       n = n + 1;
     end
-    $display("jalal %d", n);
-    $stop;
     nInput <= n[31:0];
   end
 
@@ -42,25 +40,25 @@ module NeuronTB;
     #100
     rst <= 1'b0;
     start <= 1'b1;
+    $display("start!");
     #100
     while(!done) begin
         i = 0;
-        $stop;
         while(i<n) begin
           if(requestFlag) begin
-            $stop;
             x1Input <= X1Inputs[i];
             x2Input <= X2Inputs[i];
             tInput <= tInputs[i];
             i = i + 1;
             dataReady <= 1'b1;
-            // $display("jallaaaaaal %d %d", n, i);
+            $display("jallaaaaaal %d %d", n, i);
             #100;
           end
           if(i == n)
             i = 0;
           dataReady <= 1'b0;
         end
+        $stop;
     end
     $stop;
   end

@@ -1,7 +1,7 @@
-module Controller(clk, rst, start, dataReady, endFlag, yEqualt, flagEOF, done, requestFlag,ldRegx1, ldRegx2, ldRegT, ldRegW1, ldRegW2, ldRegB, ldRegFlag, counterReset, flagReset, counterEn, reset);
+module Controller(clk, rst, start, dataReady, endFlag, yEqualt, flagEOF, done, requestFlag, ldRegN, ldRegx1, ldRegx2, ldRegT, ldRegW1, ldRegW2, ldRegB, ldRegFlag, counterReset, flagReset, counterEn, reset, nReset);
 
 	input clk, rst, start, dataReady, endFlag, yEqualt, flagEOF;
-	output reg reset, done, requestFlag,ldRegx1, ldRegx2, ldRegT, ldRegW1, ldRegW2, ldRegB, ldRegFlag, counterReset, flagReset, counterEn;
+	output reg reset, nReset, done, requestFlag, ldRegN, ldRegx1, ldRegx2, ldRegT, ldRegW1, ldRegW2, ldRegB, ldRegFlag, counterReset, flagReset, counterEn;
 
 	parameter [2:0] startState = 0, init = 1, requestData = 2, getData = 3, calculate = 4, changeWeight = 5, checkEndFlag = 6, resetingCounter = 7;
   reg [2:0] ns = 0, ps = 0;
@@ -17,6 +17,7 @@ module Controller(clk, rst, start, dataReady, endFlag, yEqualt, flagEOF, done, r
 
 		done <= 1'b0;
 		reset <= 1'b0;
+		nReset <= 1'b0;
 		ldRegx1 <= 1'b0;
 		ldRegx2 <= 1'b0;
 		ldRegT <= 1'b0;
@@ -27,13 +28,18 @@ module Controller(clk, rst, start, dataReady, endFlag, yEqualt, flagEOF, done, r
 		counterReset <= 1'b0;
 		flagReset <= 1'b0;
 		requestFlag <= 1'b0;
+		counterEn <= 1'b0;
 
     case (ps)
-      startState: done <= 1;
+      startState: begin
+				done <= 1;
+				nReset <= 1;
+			end
       init: begin
 				reset <= 1;
 				counterReset <= 1;
 				flagReset <= 1;
+				ldRegN <= 1;
 			end
 			requestData: requestFlag <= 1;
       getData: begin
