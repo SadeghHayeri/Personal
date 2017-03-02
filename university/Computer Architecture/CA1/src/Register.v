@@ -1,4 +1,4 @@
-module Register(clk, en, reset, ld, dataIn, data);
+module Register(clk, rst, reset, ld, dataIn, data);
   parameter width = 16;
 
   input en, clk, reset, ld;
@@ -6,10 +6,12 @@ module Register(clk, en, reset, ld, dataIn, data);
   output reg signed [width-1:0] data;
 
   always @ (posedge clk or negedge reset)
-    if(en)
-      if (reset)
-        data <= 0;
-      else if (ld)
-        data <= dataIn;
+    if (reset)
+      data <= 0;
+    else if (ld)
+      data <= dataIn;
+
+  always @ (rst)
+    data <= 0;
 
 endmodule
