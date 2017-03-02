@@ -1,4 +1,4 @@
-module NeuronDP(clk, rst, reset, nInput, x1Input, x2Input, tInput, ldRegN, ldRegx1, ldRegx2, ldRegT, ldRegW1, ldRegW2, ldRegB, ldRegFlag, counterEn, flagReset, counterReset, endFlag, yEqualt, flagEOF);
+module NeuronDP(clk, rst, reset, nInput, x1Input, x2Input, tInput, ldRegN, ldRegx1, ldRegx2, ldRegT, ldRegW1, ldRegW2, ldRegB, ldRegFlag, counterEn, flagReset, counterReset, endFlag, yEqualt, flagEOF, w1, w2, b);
 
   input clk, rst, reset, flagReset, counterEn, counterReset;
   input ldRegN, ldRegx1, ldRegx2, ldRegT, ldRegW1, ldRegW2, ldRegB, ldRegFlag;
@@ -6,6 +6,7 @@ module NeuronDP(clk, rst, reset, nInput, x1Input, x2Input, tInput, ldRegN, ldReg
   input [6:0] x1Input, x2Input;
   input [1:0] tInput;
   output endFlag, yEqualt, flagEOF;
+  output [13:0] w1, w2, b;
 
   wire [13:0] w1Input;
   wire [13:0] w2Input;
@@ -15,9 +16,6 @@ module NeuronDP(clk, rst, reset, nInput, x1Input, x2Input, tInput, ldRegN, ldReg
   wire [1:0] t;
   wire [6:0] x1;
   wire [6:0] x2;
-  wire [13:0] w1;
-  wire [13:0] w2;
-  wire [13:0] b;
   wire [13:0]y;
 
   Register #7 x1Reg(clk, rst, reset, ldRegx1, x1Input, x1);
@@ -37,10 +35,10 @@ module NeuronDP(clk, rst, reset, nInput, x1Input, x2Input, tInput, ldRegN, ldReg
   assign yEqualt = (y[13] == t[1])? 1 : 0;
   assign endFlagInput = endFlag | yEqualt;
 
-  wire [19:0] n;
-  wire [19:0] counterOut;
+  wire [31:0] n;
+  wire [31:0] counterOut;
   Counter c(clk, counterEn, rst, counterReset, counterOut);
-  Register #20 nReg(clk, rst, reset, ldN, nInput, n);
+  Register #32 nReg(clk, rst, reset, ldN, nInput, n);
   assign flagEOF = (counterOut == n) ? 1 : 0;
 
 endmodule // NeuronDP
