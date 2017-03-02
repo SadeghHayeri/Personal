@@ -1,12 +1,12 @@
 
-module Controller( input clk, rst, start, counterCarryOut, output reg Rshift, Rload, Rreset, Qshift, Qload, Mload, Cup, Creset, done );
+module Controller( input , output reg  );
 
-	parameter [2:0] start = 0, init = 1, getData = 2, changeWeight = 3, doneCheck = 4, reset = 5;
+	parameter [2:0] start = 0, init = 1, getData = 2, changeWeight = 3, doneCheck = 4, flagReset = 5;
   reg [2:0] ns = 0, ps = 0;
 
   always @ ( posedge clk, posedge rst ) begin
     if( rst == 1'b1 )
-      ps <= waitOnStart1;
+      ps <= start;
     else
       ps <= ns;
   end
@@ -23,12 +23,12 @@ module Controller( input clk, rst, start, counterCarryOut, output reg Rshift, Rl
 		ldRegFlag = 1'b0;
 
     case (ps)
-      start:;
-      init:;
-      getData:;
-      changeWeight:;
-      doneCheck:;
-      reset:;
+      start: done = 1;
+      init: reset = 1 ;
+      getData: ldRegx1 = 1 , ldRegx2 = 1 , ldRegT = 1;
+      changeWeight: ldRegW1 = 1 , ldRegW2 = 1 , ldRegB = 1;
+      doneCheck: counterReset = 1;
+      flagReset: ;
     endcase
 
   end
