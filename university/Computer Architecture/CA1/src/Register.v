@@ -1,7 +1,7 @@
 module Register(clk, rst, reset, ld, dataIn, data);
   parameter width = 16;
 
-  input en, clk, reset, ld;
+  input clk, rst, reset, ld;
   input [width-1:0] dataIn;
   output reg signed [width-1:0] data;
 

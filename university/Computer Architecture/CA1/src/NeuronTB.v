@@ -1,12 +1,12 @@
-module TestBench;
+module NeuronTB;
   reg signed [6:0] x1Input, x2Input;
   reg signed [1:0] tInput;
   reg clk = 1'b1, start;
   integer n = 0, i;
   reg [31:0] nInput;
-  //clk, rst, nInput, x1Input, x2Input, tInput,      dataReady, requestFlag, done, w1, w2, b
   wire signed [13:0] w1, w2, b;
-  wire done, dataReady, requestFlag;
+  wire done, requestFlag;
+  reg dataReady, rst;
 
   Neuron N(clk, rst, nInput, x1Input, x2Input, tInput, dataReady, requestFlag, done, w1, w2, b);
 
@@ -23,8 +23,7 @@ module TestBench;
   end
 
   initial begin
-    file = $fopen("data_set_s.txt", "r");
-    $stop;
+    file = $fopen("data_set.txt", "r");
     while(!$feof(file)) begin
       $fscanf(file, "%b %b %b", capturedX1, capturedX2, capturedt);
       X1Inputs[n] <= capturedX1;
@@ -37,9 +36,9 @@ module TestBench;
 
 
   initial begin
-    reset <= 1'b1;
+    rst <= 1'b1;
     #100
-    reset <= 1'b0;
+    rst <= 1'b0;
     start <= 1'b1;
     #100
     while(!done) begin
@@ -52,7 +51,7 @@ module TestBench;
             i = i + 1;
             dataReady <= 1'b1;
             // $display("jallaaaaaal %d %d", n, i);
-            #100
+            #100;
           end
           if(i == n)
             i = 0;

@@ -2,7 +2,7 @@ module NeuronDP(clk, rst, reset, nInput, x1Input, x2Input, tInput, ldRegN, ldReg
 
   input clk, rst, reset, flagReset, counterEn, counterReset;
   input ldRegN, ldRegx1, ldRegx2, ldRegT, ldRegW1, ldRegW2, ldRegB, ldRegFlag;
-  input [19:0] nInput;
+  input [31:0] nInput;
   input [6:0] x1Input, x2Input;
   input [1:0] tInput;
   output endFlag, yEqualt, flagEOF;

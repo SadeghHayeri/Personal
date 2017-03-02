@@ -1,7 +1,7 @@
 module Counter(clk, en, rst, reset, out);
   parameter width = 16;
 
-  input clk, en, rst;
+  input clk, en, rst, reset;
   output reg[width-1:0] out;
 
   always @ (posedge clk, negedge reset)
