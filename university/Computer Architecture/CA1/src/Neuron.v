@@ -10,7 +10,7 @@ module Neuron(clk, rst, nInput, x1Input, x2Input, tInput, dataReady, requestFlag
 
   wire reset, ldRegN, ldRegx1, ldRegx2, ldRegT, ldRegW1, ldRegW2, ldRegB, ldRegFlag, counterEn, flagReset, counterReset, endFlag, yEqualt, flagEOF;
 
-  NeuronDP dp(clk, rst, reset, nInput, x1Input, x2Input, tInput, ldRegN, ldRegx1, ldRegx2, ldRegT, ldRegW1, ldRegW2, ldRegB, ldRegFlag, counterEn, flagReset, counterReset, endFlag, yEqualt, flagEOF);
-  Controller cu(clk, rst, start, dataReady, endFlag, yEqualt, flagEOF, done, requestFlag,ldRegx1, ldRegx2, ldRegT, ldRegW1, ldRegW2, ldRegB, ldRegFlag, counterReset, flagReset);
+  NeuronDP dp(clk, rst, reset, nInput, x1Input, x2Input, tInput, ldRegN, ldRegx1, ldRegx2, ldRegT, ldRegW1, ldRegW2, ldRegB, ldRegFlag, counterEn, flagReset, counterReset, endFlag, yEqualt, flagEOF, w1, w2, b);
+  Controller cu(clk, rst, start, dataReady, endFlag, yEqualt, flagEOF, done, requestFlag,ldRegx1, ldRegx2, ldRegT, ldRegW1, ldRegW2, ldRegB, ldRegFlag, counterReset, flagReset, counterEn, reset);
 
 endmodule // Neuron

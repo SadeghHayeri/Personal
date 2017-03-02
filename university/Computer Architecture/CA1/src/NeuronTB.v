@@ -31,6 +31,8 @@ module NeuronTB;
       tInputs[n] <= capturedt;
       n = n + 1;
     end
+    $display("jalal %d", n);
+    $stop;
     nInput <= n[31:0];
   end
 
@@ -43,8 +45,10 @@ module NeuronTB;
     #100
     while(!done) begin
         i = 0;
+        $stop;
         while(i<n) begin
           if(requestFlag) begin
+            $stop;
             x1Input <= X1Inputs[i];
             x2Input <= X2Inputs[i];
             tInput <= tInputs[i];

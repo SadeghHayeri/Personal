@@ -1,5 +1,5 @@
 module Counter(clk, en, rst, reset, out);
-  parameter width = 16;
+  parameter width = 32;
 
   input clk, en, rst, reset;
   output reg[width-1:0] out;

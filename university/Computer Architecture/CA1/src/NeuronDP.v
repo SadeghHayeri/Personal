@@ -37,7 +37,7 @@ module NeuronDP(clk, rst, reset, nInput, x1Input, x2Input, tInput, ldRegN, ldReg
 
   wire [31:0] n;
   wire [31:0] counterOut;
-  Counter c(clk, counterEn, rst, counterReset, counterOut);
+  Counter #32 c(clk, counterEn, rst, counterReset, counterOut);
   Register #32 nReg(clk, rst, reset, ldN, nInput, n);
   assign flagEOF = (counterOut == n) ? 1 : 0;
 
