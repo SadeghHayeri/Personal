@@ -37,22 +37,23 @@ module NeuronTB;
 
   initial begin
     rst <= 1'b1;
-    #100
+    #200
     rst <= 1'b0;
     start <= 1'b1;
     $display("start!");
-    #100
+    #200
     while(!done) begin
         i = 0;
         while(i<n) begin
           if(requestFlag) begin
+            $display("req daaaad!");
             x1Input <= X1Inputs[i];
             x2Input <= X2Inputs[i];
             tInput <= tInputs[i];
             i = i + 1;
             dataReady <= 1'b1;
             $display("jallaaaaaal %d %d", n, i);
-            #100;
+            #200;
           end
           if(i == n)
             i = 0;

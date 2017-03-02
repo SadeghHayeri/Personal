@@ -15,20 +15,21 @@ module Controller(clk, rst, start, dataReady, endFlag, yEqualt, flagEOF, done, r
 
   always @ ( ps ) begin
 
-		done <= 1'b0;
-		reset <= 1'b0;
-		nReset <= 1'b0;
-		ldRegx1 <= 1'b0;
-		ldRegx2 <= 1'b0;
-		ldRegT <= 1'b0;
-		ldRegW1 <= 1'b0;
-		ldRegW2 <= 1'b0;
-		ldRegB <= 1'b0;
-		ldRegFlag <= 1'b0;
-		counterReset <= 1'b0;
-		flagReset <= 1'b0;
-		requestFlag <= 1'b0;
-		counterEn <= 1'b0;
+		done <= 0;
+		reset <= 0;
+		nReset <= 0;
+		ldRegx1 <= 0;
+		ldRegx2 <= 0;
+		ldRegT <= 0;
+		ldRegW1 <= 0;
+		ldRegW2 <= 0;
+		ldRegB <= 0;
+		ldRegFlag <= 0;
+		counterReset <= 0;
+		flagReset <= 0;
+		requestFlag <= 0;
+		counterEn <= 0;
+		ldRegN <= 0;
 
     case (ps)
       startState: begin
