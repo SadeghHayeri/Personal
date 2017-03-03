@@ -17,7 +17,7 @@ module NeuronTB;
   reg signed [1:0] capturedt;
   integer file;
   // setting clock to pulse every 100ns
-  initial repeat(500) begin
+  initial repeat(50000000) begin
     #50
     clk = ~clk ;
   end
@@ -40,14 +40,11 @@ module NeuronTB;
     #200
     rst <= 1'b0;
     start <= 1'b1;
-    $display("start!");
     #200
     start <= 1'b0;
     while(!done) begin
         i = 0;
         while(i<n && !done) begin
-
-          $display("W1: %b, W2: %b, B: %b", w1, w2, b);
 
           if(requestFlag) begin
             x1Input <= X1Inputs[i];
