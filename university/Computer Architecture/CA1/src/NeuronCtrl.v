@@ -27,7 +27,7 @@ module Controller(clk, rst, start, dataReady, endFlag, yEqualt, flagEOF, done, r
 		ldRegFlag <= 0;
 		counterReset <= 0;
 		flagReset <= 0;
-		requestFlag <= 1;
+		requestFlag <= 0;
 		counterEn <= 0;
 		ldRegN <= 0;
 
@@ -64,7 +64,7 @@ module Controller(clk, rst, start, dataReady, endFlag, yEqualt, flagEOF, done, r
 
   end
 
-  always @ ( ps, start ) begin
+  always @ ( ps, start, dataReady, flagEOF, yEqualt, endFlag ) begin
     ns = startState;
     case (ps)
       startState: ns = (start == 1) ? init : startState;
@@ -76,6 +76,7 @@ module Controller(clk, rst, start, dataReady, endFlag, yEqualt, flagEOF, done, r
       checkEndFlag: ns = (endFlag == 1) ? resetingCounter : startState;
       resetingCounter: ns = requestData;
     endcase
+		$display("%d -> %d", ps, ns);
   end
 
 endmodule
