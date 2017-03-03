@@ -59,6 +59,7 @@ module Controller(clk, rst, start, dataReady, endFlag, yEqualt, flagEOF, done, r
       checkEndFlag:;
       resetingCounter: begin
 				counterReset <= 1;
+				counterEn <= 1;
 				flagReset <= 1;
 			end
     endcase
@@ -77,7 +78,6 @@ module Controller(clk, rst, start, dataReady, endFlag, yEqualt, flagEOF, done, r
       checkEndFlag: ns = (endFlag == 1) ? resetingCounter : startState;
       resetingCounter: ns = requestData;
     endcase
-		$display("%d -> %d", ps, ns);
   end
 
 endmodule
