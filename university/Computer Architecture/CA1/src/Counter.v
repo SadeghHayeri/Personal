@@ -4,7 +4,7 @@ module Counter(clk, en, rst, reset, out);
   input clk, en, rst, reset;
   output reg[width-1:0] out;
 
-  always @ (posedge clk, negedge reset)
+  always @ (posedge clk or posedge reset)
     if(en)
       if(reset)
         out <= 0;

@@ -38,12 +38,12 @@ module NeuronDP(clk, rst, reset, nInput, x1Input, x2Input, tInput, nReset, ldReg
   assign y = (w1*x1 + w2*x2)/16 + b;
 
   assign yEqualt = (y[13] == t[1])? 1 : 0;
-  assign endFlagInput = endFlag | yEqualt;
+  assign endFlagInput = endFlag | ~yEqualt;
 
   wire [31:0] n;
   wire [31:0] counterOut;
   Counter #32 c(clk, counterEn, rst, counterReset, counterOut);
-  Register #32 nReg(clk, rst, nReset, ldN, nInput, n);
+  Register #32 nReg(clk, rst, nReset, ldRegN, nInput, n);
   assign flagEOF = (counterOut == n) ? 1 : 0;
 
 endmodule // NeuronDP
