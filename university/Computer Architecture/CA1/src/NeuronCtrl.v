@@ -1,5 +1,5 @@
 module Controller(clk, rst, start, dataReady, endFlag, yEqualt, flagEOF, done, requestFlag, ldRegN, ldRegx1, ldRegx2, ldRegT, ldRegW1, ldRegW2, ldRegB, ldRegFlag, counterReset, flagReset, counterEn, reset, nReset);
-
+				 //(clk, rst, start, dataReady, endFlag, yEqualt, flagEOF, done, requestFlag, ldRegN, ldRegx1, ldRegx2, ldRegT, ldRegW1, ldRegW2, ldRegB, ldRegFlag, counterReset, flagReset, counterEn, reset, nReset);
 	input clk, rst, start, dataReady, endFlag, yEqualt, flagEOF;
 	output reg reset, nReset, done, requestFlag, ldRegN, ldRegx1, ldRegx2, ldRegT, ldRegW1, ldRegW2, ldRegB, ldRegFlag, counterReset, flagReset, counterEn;
 
@@ -42,7 +42,7 @@ module Controller(clk, rst, start, dataReady, endFlag, yEqualt, flagEOF, done, r
 				flagReset <= 1;
 				ldRegN <= 1;
 			end
-			requestData: requestFlag <= 1;
+	  	requestData: requestFlag <= 1;
       getData: begin
 				ldRegx1 <= 1;
 				ldRegx2 <= 1;

@@ -1,4 +1,5 @@
 module Neuron(clk, rst, start, nInput, x1Input, x2Input, tInput, dataReady, requestFlag, done, w1, w2, b);
+             //(clk, rst, start, nInput, x1Input, x2Input, tInput, dataReady, requestFlag, done, w1, w2, b);
 
   input clk, rst, start, dataReady;
   input [31:0] nInput;

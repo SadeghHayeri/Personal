@@ -1,5 +1,5 @@
 module NeuronDP(clk, rst, reset, nInput, x1Input, x2Input, tInput, nReset, ldRegN, ldRegx1, ldRegx2, ldRegT, ldRegW1, ldRegW2, ldRegB, ldRegFlag, counterEn, flagReset, counterReset, endFlag, yEqualt, flagEOF, w1, w2, b);
-
+               //(clk, rst, reset, nInput, x1Input, x2Input, tInput, nReset, ldRegN, ldRegx1, ldRegx2, ldRegT, ldRegW1, ldRegW2, ldRegB, ldRegFlag, counterEn, flagReset, counterReset, endFlag, yEqualt, flagEOF, w1, w2, b);
   input clk, rst, reset, nReset, flagReset, counterEn, counterReset;
   input ldRegN, ldRegx1, ldRegx2, ldRegT, ldRegW1, ldRegW2, ldRegB, ldRegFlag;
   input [31:0] nInput;
