@@ -1,3 +1,4 @@
+
 module Controller(clk, rst, start, dataReady, endFlag, yEqualt, flagEOF, done, requestFlag, ldRegN, ldRegx1, ldRegx2, ldRegT, ldRegW1, ldRegW2, ldRegB, ldRegFlag, counterReset, flagReset, counterEn, reset, nReset);
 				 //(clk, rst, start, dataReady, endFlag, yEqualt, flagEOF, done, requestFlag, ldRegN, ldRegx1, ldRegx2, ldRegT, ldRegW1, ldRegW2, ldRegB, ldRegFlag, counterReset, flagReset, counterEn, reset, nReset);
 	input clk, rst, start, dataReady, endFlag, yEqualt, flagEOF;
@@ -13,7 +14,7 @@ module Controller(clk, rst, start, dataReady, endFlag, yEqualt, flagEOF, done, r
       ps <= ns;
   end
 
-  always @ ( ps ) begin
+  always @ ( * ) begin
 
 		done <= 0;
 		reset <= 0;
@@ -64,7 +65,7 @@ module Controller(clk, rst, start, dataReady, endFlag, yEqualt, flagEOF, done, r
 
   end
 
-  always @ ( ps, start, dataReady, flagEOF, yEqualt, endFlag ) begin
+  always @ ( * ) begin
     ns = startState;
     case (ps)
       startState: ns = (start == 1) ? init : startState;
