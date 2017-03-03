@@ -52,14 +52,15 @@ module NeuronTB;
             tInput <= tInputs[i];
             i = i + 1;
             dataReady <= 1'b1;
-            $display("jallaaaaaal %d %d", n, i);
-            #200;
+            while(requestFlag) begin
+              #200;
+            end
           end
           if(i == n)
             i = 0;
           dataReady <= 1'b0;
+          #200;
         end
-        $stop;
     end
     $stop;
   end

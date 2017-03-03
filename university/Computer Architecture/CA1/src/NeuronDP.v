@@ -16,7 +16,7 @@ module NeuronDP(clk, rst, reset, nInput, x1Input, x2Input, tInput, nReset, ldReg
   wire [1:0] t;
   wire [6:0] x1;
   wire [6:0] x2;
-  wire [13:0]y;
+  wire [13:0] y;
 
   Register #7 x1Reg(clk, rst, reset, ldRegx1, x1Input, x1);
   Register #7 x2Reg(clk, rst, reset, ldRegx2, x2Input, x2);

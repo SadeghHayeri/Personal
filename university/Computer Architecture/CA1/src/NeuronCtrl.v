@@ -27,7 +27,7 @@ module Controller(clk, rst, start, dataReady, endFlag, yEqualt, flagEOF, done, r
 		ldRegFlag <= 0;
 		counterReset <= 0;
 		flagReset <= 0;
-		requestFlag <= 0;
+		requestFlag <= 1;
 		counterEn <= 0;
 		ldRegN <= 0;
 
@@ -67,13 +67,13 @@ module Controller(clk, rst, start, dataReady, endFlag, yEqualt, flagEOF, done, r
   always @ ( ps, start ) begin
     ns = startState;
     case (ps)
-      startState: ns = (start == 1'b1)? init : startState;
+      startState: ns = (start == 1) ? init : startState;
       init: ns = requestData;
-			requestData: ns = (dataReady == 1'b1)? getData : requestData;
+			requestData: ns = (dataReady == 1) ? getData : requestData;
       getData: ns = calculate;
-			calculate: ns = (!flagEOF == 1'b1) ? ((!yEqualt == 1'b1) ? changeWeight : requestData ) : checkEndFlag;
+			calculate: ns = (!flagEOF == 1) ? ((!yEqualt == 1) ? changeWeight : requestData ) : checkEndFlag;
       changeWeight: ns = requestData;
-      checkEndFlag: ns = (endFlag == 1'b1)? resetingCounter : startState;
+      checkEndFlag: ns = (endFlag == 1) ? resetingCounter : startState;
       resetingCounter: ns = requestData;
     endcase
   end
