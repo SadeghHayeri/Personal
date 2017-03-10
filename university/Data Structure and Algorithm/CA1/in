@@ -1,0 +1,19 @@
+add SL500 Benz 2010 1000 A 500 crashed black
+add Thunderbird Ford 1956 200000 B 200 crashed black
+rmv Beetle Volkswagen 2016 300 B 300 notcrashed black
+add L90 Renault 2014 0 A 50 notcrashed red
+add L90 Renault 2010 10000 C 50 notcrashed silver
+add Samand IKCO 2015 20000 A 30 crashed silver
+rmv SL500 Benz 2010 1000 B 1000 notcrashed white
+rmv LandcruserGXR TOYOTA 2014 800 C 800 crashed white
+sellprice Thunderbird Ford
+sellprice L90 Renault
+sellprice Samand IKCO
+sellprice Peykan IranKhodro
+rentprice SL500 Benz
+rentprice Renault L90
+rentprice Cadenza Kia
+rentprice 3 Mazda
+rentprice 206 Peugeot
+export
+quit

@@ -27,14 +27,10 @@ module NeuronDP(clk, rst, reset, nInput, x1Input, x2Input, tInput, nReset, ldReg
   Register #14 bReg(clk, rst, reset, ldRegB, bInput, b);
   Register #1 flagReg(clk, rst, flagReset, ldRegFlag, endFlagInput, endFlag);
 
-  // assign w1Input = (t * x1 * 5'b0_1100) + w1;
-  // assign w2Input = (t * x2 * 5'b0_1100) + w2;
-  // assign bInput = (t * 14'b0000_11000000) + b;
   assign w1Input = t * 3 * x1 * 4 + w1;
   assign w2Input = t * 3 * x2 * 4 + w2;
   assign bInput = t * 3 * 64 + b;
 
-  // assign y = ( ( x1 * (w1 << 4) ) + ( x2 * (w2 << 4) ) + b ); // ?
   assign y = (w1*x1 + w2*x2)/16 + b;
 
   assign yEqualt = (y[13] == t[1])? 1 : 0;

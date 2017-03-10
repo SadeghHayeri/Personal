@@ -34,12 +34,14 @@ public class Main {
   public static void printPrices(ArrayList<Float> prices) {
     if(prices.size() != 0) {
 
-      ArrayList<Float> sortedPrices = prices;
+      ArrayList<Float> sortedPrices = Collections.mergeSort(prices);
       for(float f : sortedPrices)
-        if( f != -1 )
+        if( f != -1000 )
           System.out.printf("%.2f\n", f);
-        else
+        else {
           System.out.println("NoRent");
+          break;
+        }
 
     } else {
       System.out.println("NotFound");

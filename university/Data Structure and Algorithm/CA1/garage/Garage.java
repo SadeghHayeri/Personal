@@ -71,7 +71,7 @@ public class Garage {
     ArrayList<Float> priceList = new ArrayList<>();
     ArrayList<Car> carList = findCars(modelName, manufacturerName);
     for(Car car : carList)
-      priceList.add( car.getRentPrice() );
+      priceList.add( car.getRentPrice() * 1000 ); // miyoon -> toman
     return priceList;
   }
 
