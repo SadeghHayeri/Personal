@@ -2,9 +2,9 @@ import random
 import re
 
 # config
-POPULATIONSIZE = 54
+POPULATIONSIZE = 50
 CROSSOVERPROBABILITY = 100 / 100
-MUTATIONPROBABILITY = 100 / 100
+MUTATIONPROBABILITY = 80 / 100
 SWAPMUTATUINTIMES = 3
 BASICLETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 LENGTH = len(BASICLETTERS)
@@ -47,6 +47,7 @@ def findRouletteTable(population, stringInput):
     return rouletteTable, sum(rouletteTable)
 
 def wheelOut(rouletteTable, sumWeights):
+    return random.randint(0, len(rouletteTable)-1)
     rand = random.randint(0, sumWeights-1)
     for i in range(0, len(rouletteTable)):
         rand -= rouletteTable[i]
@@ -73,7 +74,7 @@ def crossover(p1, p2):
 def mutation(gene):
     gene = list(gene)
     if random.random() < MUTATIONPROBABILITY:
-        for _ in range(0, SWAPMUTATUINTIMES):
+        for _ in range(0, random.randint(0,SWAPMUTATUINTIMES)):
             x1 = random.randint(0, len(gene)-1)
             x2 = random.randint(0, len(gene)-1)
             gene[x1], gene[x2] = gene[x2], gene[x1]
@@ -95,22 +96,24 @@ def selectionAndCrossover(population, stringInput):
     return population[:POPULATIONSIZE]
 
 def main():
-    stringInput = open("input.txt", "r").read().upper()
+    stringInput = open("EncryptedText", "r").read().upper()
     population = initFirstGeneration()
 
     result = population[0]
     maxFitness = 0
     generation = 0
     while True:
+        if generation == 300:
+            CROSSOVERPROBABILITY = 0
         generation += 1
         population = selectionAndCrossover(population, stringInput)
         best = getFitness(stringInput, population[0])
         if best > maxFitness:
             maxFitness = best
             result = population[0]
-            print("Generation: ", generation)
-            print("Max Score: ", maxFitness)
-            print( stringInput.translate(str.maketrans(population[0], BASICLETTERS)) )
-            print( population )
+        print( stringInput.translate(str.maketrans(population[0], BASICLETTERS)) )
+        print("Generation: ", generation)
+        print("Max Score: ", maxFitness)
+        print( population )
 
 main()
