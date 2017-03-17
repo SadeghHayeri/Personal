@@ -1,4 +1,4 @@
-[y,Fs] = audioread('noisy.wav');
+[y,Fs] = audioread('voice_noisy.wav');
 
 % a)
 % sound(y,Fs);
@@ -6,7 +6,7 @@
 % b)
 l = length(y);
 n = (0:l-1);
-plot(n, y)
+% plot(n, y)
 
 % c)
 slow = 0;
@@ -14,7 +14,7 @@ for R = 1:l
     slow(end+1) = y(R);
     slow(end+1) = y(R);
 end
-plot( (0:length(slow)-1) , slow)
+% plot( (0:length(slow)-1) , slow)
 % sound(slow, Fs);
 
 % d)
@@ -24,25 +24,26 @@ for R = 1:l
         fast(end+1) = y(R);
     end
 end
-plot( (0:length(fast)-1) , fast);
+% plot( (0:length(fast)-1) , fast);
 % sound(fast, Fs)
 
 % e)
 f = fftshift( fft(y) );
+absF = abs(f);
 
-ff = fft(y);
-test = 0;
+noisyLess = 0;
 for R = 1:l
-    if ff(R) < 10 && ff(R) > -10
-        test(end+1) = ff(R);
+    if absF(R) < 10000
+        noisyLess(end+1) = absF(R);
+    else
+        noisyLess(end+1) = 0.000;
     end
 end
-plot( (0:length(test)-1) , test);
-test2 = ifft( test );
-plot( (0:length(test2)-1) , test2);
-% sound( test2, Fs );
+% plot( (0:length(noisyLess)-1), noisyLess);
 
-plot( n, ff );
+% noisyLess = fftshift(noisyLess);
+% noisyLess = ifft( noisyLess );
+% sound( noisyLess, Fs );
+plot( (0:length(noisyLess)-1), noisyLess);
 
-
-http://stackoverflow.com/questions/24195089/remove-noise-from-wav-file-matlabs
+% http://stackoverflow.com/questions/24195089/remove-noise-from-wav-file-matlabs
