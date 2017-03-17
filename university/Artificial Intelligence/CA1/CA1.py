@@ -113,10 +113,4 @@ def main():
             print( stringInput.translate(str.maketrans(population[0], BASICLETTERS)) )
             print( population )
 
-            print("-"*100)
-            print( getFitness(stringInput, "ELUQMYZOHCWPDKSXTJRVBIFGNA") )
-            print("ELUQMYZOHCWPDKSXTJRVBIFGNA")
-            print( stringInput.translate(str.maketrans("ELUQMYZOHCWPDKSXTJRVBIFGNA", BASICLETTERS)) )
-
-
 main()
