@@ -1,4 +1,4 @@
-// Floyds cycle-finding algorithm
+// Floyd's cycle-finding algorithm
 
 hasLoop( head ) {
 
@@ -13,7 +13,7 @@ hasLoop( head ) {
 
         if( fast == slow )
             return True;
-
+            
         slow = slow->next           // 1 hop
         fast = fast->next->next     // 2 hops
     }
