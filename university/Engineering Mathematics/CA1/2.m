@@ -61,11 +61,12 @@ sound( noisyLess, Fs );
 audiowrite('noisyLess.wav', noisyLess, Fs);
 
 % Q3)
-whiteNoise = f;
+whiteNoise = noisyLess;
 for R = 1:l
     whiteNoise(R) = rand - .5;  % generate whiteNoise sound
 end
 whiteNoise = whiteNoise + noisyLess;    % combine together
-sound( noisyLess, Fs );
-audiowrite('whiteNoise.wav', noisyLess, Fs);
+
+sound( whiteNoise, Fs );
+audiowrite('whiteNoise.wav', whiteNoise, Fs);
 
