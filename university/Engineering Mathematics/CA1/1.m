@@ -7,17 +7,15 @@ plot(n, X)
 
 % b)
 fX = fftshift( fft(X) )
-% plot(n, fX)
+plot(n, fX)
 
 % d)
 fX(451) = 0;
 fX(551) = 0;
 fX(401) = 0;
 fX(601) = 0;
-% plot(n, abs(fX))
+plot(n, abs(fX))
 
 % e)
 iX = ifft( fftshift(fX) );
 plot(n, iX);
-
-% f)
