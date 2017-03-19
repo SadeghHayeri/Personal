@@ -29,6 +29,7 @@ plot( (0:length(fast)-1) , fast);
 
 % e & f)
 f = fftshift( fft(y) );
+absF = abs(f);
 plot( n, f );
 
 % g)
@@ -54,5 +55,13 @@ end
 sound( noisyLess, Fs );
 audiowrite('whiteNoise.wav', noisyLess, Fs);
 
+
+whiteNoise = y;
+for R = 1:l
+    whiteNoise(R) = rand - .5;
+end
+
+whiteNoise = whiteNoise + noisyLess;
+plot( n, whiteNoise )
 
 
