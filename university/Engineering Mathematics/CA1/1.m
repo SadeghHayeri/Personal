@@ -1,7 +1,6 @@
-l = 1000;
-n = (0:l-1);
-T = 1000;
-X = heaviside(n-200) - heaviside(n-400) + 0.05 * sin( (2*pi)/T * 100 * n ) + 0.1 * cos( (2*pi)/T * 50 * n );
+n = (0:1000-1);
+N = 1000;
+X = heaviside(n-200) - heaviside(n-400) + 0.05 * sin( (2*pi)/N * 100 * n ) + 0.1 * cos( (2*pi)/N * 50 * n );
 
 % a)
 plot(n, X)
