@@ -23,13 +23,15 @@ def findDistance(heap, num1, num2):
 
     diff = findLevel(num1) - findLevel(num2)
 
-    for _ in range(0, diff):
-        num1 = par(num1)
+    num1 = (num1+1) / (2**diff) - 1
+
+    d = abs(num1 - num2)
+    return diff + 2 * (int(d/2) + 1)
 
     while True:
         if num1 == num2:
             return diff
-    
+
         num1 = par(num1)
         num2 = par(num2)
         diff += 2

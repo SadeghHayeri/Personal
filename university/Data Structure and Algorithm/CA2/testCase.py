@@ -1,7 +1,7 @@
 import random
 
 n = 100000
-q = 100000
+q = 1000000
 
 print(n, q)
 l = list( range(1, n+1) )
