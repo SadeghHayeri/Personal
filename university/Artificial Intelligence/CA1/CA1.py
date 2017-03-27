@@ -2,12 +2,12 @@ import random
 import re
 
 # config
-POPULATIONSIZE = 50
-CROSSOVERPROBABILITY = 100 / 100
-MUTATIONPROBABILITY = 80 / 100
-SWAPMUTATUINTIMES = 3
 BASICLETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 LENGTH = len(BASICLETTERS)
+POPULATIONSIZE = 50
+CROSSOVERPROBABILITY = 80 / 100
+MUTATIONPROBABILITY = 10 / 100
+SWAPMUTATUINTIMES = 3
 
 # define fitness weights table
 fitnessWeights = dict()
@@ -47,7 +47,7 @@ def findRouletteTable(population, stringInput):
     return rouletteTable, sum(rouletteTable)
 
 def wheelOut(rouletteTable, sumWeights):
-    return random.randint(0, len(rouletteTable)-1)
+    # return random.randint(0, len(rouletteTable)-1)
     rand = random.randint(0, sumWeights-1)
     for i in range(0, len(rouletteTable)):
         rand -= rouletteTable[i]
@@ -84,12 +84,14 @@ def selectionAndCrossover(population, stringInput):
     (rouletteTable, sumWeights) = findRouletteTable(population, stringInput)
 
     crossoverList = []
-    for _ in range(0, POPULATIONSIZE):
+    for i in range(0, POPULATIONSIZE):
         if random.random() < CROSSOVERPROBABILITY:
+            population[i] = population[ wheelOut(rouletteTable, sumWeights) ]
             crossoverList.append( population[ wheelOut(rouletteTable, sumWeights) ] )
 
     for i in range(0, len(crossoverList)-1):
         newChild = crossover(crossoverList[i], crossoverList[i+1])
+        # population[ len(population)-1 - i ] = mutation(newChild)
         population.append( mutation(newChild) )
 
     population.sort( key=lambda x: getFitness(stringInput, x), reverse=True )
@@ -103,15 +105,15 @@ def main():
     maxFitness = 0
     generation = 0
     while True:
-        if generation == 300:
-            CROSSOVERPROBABILITY = 0
+        if generation == 120:
+            MUTATIONPROBABILITY = 100 / 100
         generation += 1
         population = selectionAndCrossover(population, stringInput)
         best = getFitness(stringInput, population[0])
         if best > maxFitness:
             maxFitness = best
             result = population[0]
-        print( stringInput.translate(str.maketrans(population[0], BASICLETTERS)) )
+        print( stringInput.translate(str.maketrans(population[0], BASICLETTERS)).lower() )
         print("Generation: ", generation)
         print("Max Score: ", maxFitness)
         print( population )
