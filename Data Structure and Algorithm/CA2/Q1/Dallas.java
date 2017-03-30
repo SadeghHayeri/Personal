@@ -64,9 +64,9 @@ class Dallas{
       return (int) (Math.log(x) / Math.log(base));
   }
 
-  public static int findDistance(ArrayList<Integer> list, int num1, int num2) {
-    num1 = list.indexOf( num1 );
-    num2 = list.indexOf( num2 );
+  public static int findDistance(ArrayList<Integer> list, ArrayList<Integer> pos, int num1, int num2) {
+    num1 = pos.get( num1 - 1 );
+    num2 = pos.get( num2 - 1 );
 
     if( num1 < num2 ) {
       int tmp = num1;
@@ -104,11 +104,16 @@ class Dallas{
     }
 
     ArrayList<Integer> list = new ArrayList<Integer>( heap );
+    ArrayList<Integer> pos = new ArrayList<Integer>(Collections.nCopies(n, 0));
+
+    for (int i = 0; i<list.size() ;i++ ) {
+      pos.set( list.get(i) - 1, i );
+    }
 
     for (int i = 0; i<q; i++) {
       int a = scan.nextInt();
       int b = scan.nextInt();
-      System.out.println( findDistance( list, a, b) );
+      System.out.println( findDistance( list, pos, a, b) );
     }
 
   }
