@@ -13,10 +13,10 @@ colorama.init()
 # config
 BASICLETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 LENGTH = len(BASICLETTERS)
-POPULATIONSIZE = 50
+POPULATIONSIZE = 10
 CROSSOVERPROBABILITY = 80 / 100
 MUTATIONPROBABILITY = 1 / 100
-SWAPMUTATUINTIMES = LENGTH
+SWAPMUTATUINTIMES = 1
 
 # define fitness weights table
 fitnessWeights = dict()
@@ -52,12 +52,12 @@ def getFitness(stringInput, gene):
     return score
 
 def initFirstGeneration():
-    population = []
+    population = ['WMBFGHKADTNSUEXVQZJYIRCPLO']
     for _ in range(0, POPULATIONSIZE):
         tmpList = list(BASICLETTERS)
         random.shuffle(tmpList)
         population.append( ''.join(tmpList) )
-    return population
+    return population[:POPULATIONSIZE]
 
 def findRouletteTable(population, stringInput):
     rouletteTable = []
@@ -188,6 +188,11 @@ def main():
                     a, b = input().split()
                     changeGene(population, a, b)
                     result = (population[0], 0)
+
+                    printText( stringInput.translate(str.maketrans(result[0], BASICLETTERS)), words )
+                    print( population )
+                    print("Max Score: ", result[1])
+                    print("Generation: ", generation, end="\r")
 
     finally:
         termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
