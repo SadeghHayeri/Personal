@@ -1,0 +1,1 @@
+$(document).ready(function(){$('.sec').addClass('hidden'),$('#0').addClass('list-selected'),$('#t0').removeClass('hidden'),a=0,$('.list').click(function(){$('#t1').addClass('hidden'),$('#t'+a).addClass('hidden'),$('.list').removeClass('list-selected'),$(this).addClass('list-selected'),a=$(this).attr('id'),$('#t'+a).removeClass('hidden')})});
