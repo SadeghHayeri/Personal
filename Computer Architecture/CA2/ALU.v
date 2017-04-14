@@ -15,12 +15,12 @@ module ALU( ALUOperation, A, B, ALUResult, zero );
   always @ ( * ) begin
     ld = 0;
 
-    if( ALUOperation == 5'd6 ) begin
+    if( ALUOperation == 5'd14 ) begin
       {hiInput,loInput} = (A * B);
       ld = 1;
     end
 
-    if( ALUOperation == 5'd7 ) begin
+    if( ALUOperation == 5'd13 ) begin
       hiInput = (A % B);
       loInput = (A / B);
       ld = 1;
@@ -35,8 +35,9 @@ module ALU( ALUOperation, A, B, ALUResult, zero );
     (ALUOperation == 5'd3) ? (A | B) :
     (ALUOperation == 5'd4) ? (A ^ B) :
     (ALUOperation == 5'd5) ? (A > B) :
-    (ALUOperation == 4'd8) ? (lo) :
-    (ALUOperation == 4'd9) ? (hi) : 32'bz;
+    (ALUOperation == 5'd6) ? (B << 16) :
+    (ALUOperation == 4'd11) ? (lo) :
+    (ALUOperation == 4'd12) ? (hi) : 32'bz;
 
   assign zero = (ALUResult == 0) ? 1 : 0;
 
