@@ -9,8 +9,8 @@ module ALU( ALUOperation, A, B, ALUResult, zero );
   reg [31:0] hiInput, loInput;
   wire [31:0] hi, lo;
 
-  Register #32 Hi(ld, hiInput, hi);
-  Register #32 Lo(ld, loInput, lo);
+  SampleRegister #32 Hi(ld, hiInput, hi);
+  SampleRegister #32 Lo(ld, loInput, lo);
 
   always @ ( * ) begin
     ld = 0;
