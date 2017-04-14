@@ -1,2 +1,0 @@
-# AttGram
-Telegram Spammer :D
