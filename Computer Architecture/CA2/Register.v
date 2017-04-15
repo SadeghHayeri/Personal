@@ -11,6 +11,6 @@ module Register(clk, ld, dataIn, data);
   end
 
   initial
-    data = 0;
+    data = 0
 
 endmodule
