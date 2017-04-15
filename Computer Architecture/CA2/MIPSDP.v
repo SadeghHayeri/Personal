@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 module MIPSDP(rst, clk, regWrite, memRead, memWrite, ALUOperation, sm1, sm2, sm3, sm4, sm5, zero, inst);
 
   input rst, clk, regWrite, memRead, memWrite;
@@ -33,13 +32,3 @@ module MIPSDP(rst, clk, regWrite, memRead, memWrite, ALUOperation, sm1, sm2, sm3
   assign pcPlus = i16ExtShift + pc4;
 
 endmodule
-=======
-module MIPSDP(input clk , rst);
-
-  wire [31:0] pc, pc4, pcPlus, pcIn, inst, wData, r1, r2, b, aluOut, memData, memAlu, i16Ext, i16ExtShift;
-  wire [4:0]  wAddress;
-  reg [31:0] R31 = 32'd31;
-
-  Register #32 PC (clk, clk, pcIn, pc);
-endmodule
->>>>>>> 2d3cf3cc6908a26a8f298864c55aedea620bf858
