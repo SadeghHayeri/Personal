@@ -1,13 +1,13 @@
-module Register(ld, dataIn, data);
-  parameter width = 32;
+module Register(clk, ld, dataIn, data);
+  parameter width = 16;
 
-  input ld;
+  input clk, ld;
   input [width-1:0] dataIn;
   output reg [width-1:0] data;
 
-  always @ ( * ) begin
-    if( ld == 1 )
-      data = dataIn;
+  always @ (posedge clk) begin
+    if (ld)
+      data <= dataIn;
   end
 
   initial

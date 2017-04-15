@@ -9,8 +9,8 @@ module ALU( ALUOperation, A, B, ALUResult, zero );
   reg [31:0] hiInput, loInput;
   wire [31:0] hi, lo;
 
-  Register #32 Hi(ld, hiInput, hi);
-  Register #32 Lo(ld, loInput, lo);
+  SampleRegister #32 Hi(ld, hiInput, hi);
+  SampleRegister #32 Lo(ld, loInput, lo);
 
   always @ ( * ) begin
     ld = 0;
@@ -34,7 +34,7 @@ module ALU( ALUOperation, A, B, ALUResult, zero );
     (ALUOperation == 5'd2) ? (A & B) :
     (ALUOperation == 5'd3) ? (A | B) :
     (ALUOperation == 5'd4) ? (A ^ B) :
-    (ALUOperation == 5'd5) ? (A > B) :
+    (ALUOperation == 5'd5) ? (A < B) :
     (ALUOperation == 5'd6) ? (B << 16) :
     (ALUOperation == 4'd11) ? (lo) :
     (ALUOperation == 4'd12) ? (hi) : 32'bz;
