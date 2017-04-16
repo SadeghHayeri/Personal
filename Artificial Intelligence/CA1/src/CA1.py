@@ -87,7 +87,7 @@ def findRouletteTable(population, stringInput):
     return rouletteTable, sum(rouletteTable)
 
 def wheelOut(rouletteTable, sumWeights):
-    return random.randint(0, len(rouletteTable)-1)
+    # return random.randint(0, len(rouletteTable)-1)
     rand = random.randint(0, sumWeights-1)
     for i in range(0, len(rouletteTable)):
         rand -= rouletteTable[i]
