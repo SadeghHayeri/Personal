@@ -5,7 +5,7 @@ module MIPSCU(rst, zero, opcode, func, regWrite, memRead, memWrite, sm1, sm2, sm
   output reg regWrite, memRead, memWrite;
   output reg [1:0] sm1, sm2, sm3, sm4, sm5, ALUOp;
 
-  always @ ( opcode, zero ) begin
+  always @ ( opcode, func, zero ) begin
 
     {regWrite, memRead, memWrite, sm1, sm2, sm3, sm4, sm5} = 13'b0;
 
@@ -15,14 +15,14 @@ module MIPSCU(rst, zero, opcode, func, regWrite, memRead, memWrite, sm1, sm2, sm
       6'b000000: begin
         ALUOp = 2'b00;
 
-        regWrite = (func == 5'b011000 || func == 5'b011010) ? 0 : 1;
+        regWrite = (func == 6'b011000 || func == 6'b011010 || func == 6'b001000) ? 0 : 1; // (* / jr) - R-type
         memRead = 0;
         memWrite = 0;
         sm1 = 2'b01;
         sm2 = 2'b01;
         sm3 = 2'b00;
         sm4 = 2'b01;
-        sm5 = 2'b00;
+        sm5 = (func == 6'b001000) ? 2'b11 : 2'b00; // jr - R-type
       end
 
       // addi
@@ -153,26 +153,11 @@ module MIPSCU(rst, zero, opcode, func, regWrite, memRead, memWrite, sm1, sm2, sm
 
         memRead = 0;
         memWrite = 0;
-        sm1 = 2'b11;
+        sm1 = 2'b10;
         sm2 = 2'b00;
         sm3 = 2'b00;
         sm4 = 2'b00;
         sm5 = 2'b10;
-      end
-
-      // jr
-      6'b000011: begin
-        ALUOp = 2'b01; //
-
-        regWrite = 0;
-
-        memRead = 0;
-        memWrite = 0;
-        sm1 = 2'b00;
-        sm2 = 2'b00;
-        sm3 = 2'b00;
-        sm4 = 2'b00;
-        sm5 = 2'b11;
       end
 
       default: ;
