@@ -10,6 +10,7 @@
 # coverage file (Unit Test)
 src/coverage
 
+.DS_Store
 
 ##################### JAVA
 # java Compiled class file
