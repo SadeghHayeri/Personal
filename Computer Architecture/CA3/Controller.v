@@ -1,11 +1,6 @@
-`timescale 1ns/1ns
-//memsource= iord
-//jz = jz
-module Controller(input[2:0] opcode/*, input zero*/, input rst, clk,
+module Controller(input[2:0] opcode, input rst, clk,
   output reg AccSrc, output reg MemRead, MemWrite, ldIR, ldMDR, ldAcc, IorD, Asrc, PCsrc, PCwrite, jz,
   output reg[1:0] ALUop, Bsrc);
-
-
 
     parameter IF = 0, ID = 1, JZ = 2, JMP = 3, ADD = 4, SUB = 5, AND = 6, NOT = 7,  LDA = 8, STA = 9;
 		reg [3:0]ps, ns;
@@ -33,8 +28,8 @@ module Controller(input[2:0] opcode/*, input zero*/, input rst, clk,
 			endcase
 		end
 
-		always @(ps) begin
-			{AccSrc, MemRead, MemWrite, ldIR, ldMDR, ldAcc, IorD, Asrc, Bsrc, PCsrc, PCwrite, jz, ALUop} <= 14'b0;
+		always @( * ) begin
+			{AccSrc, MemRead, MemWrite, ldIR, ldMDR, ldAcc, IorD, Asrc, Bsrc, PCsrc, PCwrite, jz, ALUop} <= 0;
 			case(ps)
 				IF : {PCsrc, PCwrite, ALUop, Asrc, Bsrc, ldIR, IorD, MemRead} <= 10'b0100001101;
 				ID : {MemRead, IorD} <= 2'b11;
