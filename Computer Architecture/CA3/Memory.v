@@ -1,7 +1,9 @@
 module Memory(input clk, input [12:0] address , input [15:0] WriteData , input MemRead , MemWrite, output [15:0] ReadData);
 	reg [15:0] Memory [0:200];
 	// initial $readmemh("Memory.txt", Memory);
-	initial begin
+
+/*	
+  initial begin
     Memory[0] = 16'b0000000001100100;
     Memory[1] = 16'b0000000001100101;
     Memory[2] = 16'b0000000001100110;
@@ -25,6 +27,19 @@ module Memory(input clk, input [12:0] address , input [15:0] WriteData , input M
     Memory[107] = 16'd8;
     Memory[108] = 16'd9;
     Memory[109] = 16'd10;
+  end
+*/
+  
+  initial begin
+    Memory[0] = 16'b1100000000001111;
+    Memory[1] = 16'b0000000001100100;
+    Memory[2] = 16'b1100000000000111;
+    Memory[3] = 16'b0000000001100100;
+    Memory[4] = 16'b0000000001100100;
+    Memory[5] = 16'b0000000001100100;
+    Memory[6] = 16'b0000000001100100;
+    Memory[7] = 16'b1110000000000000;
+    Memory[15] = 16'b1110000000000111;
   end
 
 	always @(posedge clk) begin

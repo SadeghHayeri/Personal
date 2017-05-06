@@ -13,6 +13,6 @@ module ALU(A, B, AluOp, AluOut, zero);
     endcase
     // $display("A%b) B(%b) OUT(%b)", A, B, AluOut);
   end
-  assign zero = (AluOut == 0) ? 0 : 1;
+  assign zero = (AluOut == 0) ? 1 : 0;
 
 endmodule
