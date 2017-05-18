@@ -1,0 +1,84 @@
+T1
+Insert 3
+Insert 2
+Insert 4
+T2
+Insert 8
+Insert 1
+Insert 9
+Move T1 T2 2
+T1
+Insert 15
+Insert 7
+Insert 18
+Insert 20
+T2
+Insert 6
+Insert 3
+Insert 25
+Insert 2
+Insert 4
+Move T2 T1 25
+T1
+Insert 34
+Insert 52
+Insert 90
+Insert 70
+Insert 64
+T2
+Insert 73
+Insert 1
+Insert 95
+Insert 96
+Insert 20
+Move T1 T2 64
+T1
+Insert 40
+Insert 53
+Insert 43
+Insert 52
+Insert 25
+T2
+Insert 23
+Insert 2
+Insert 50
+Insert 24
+Insert 18
+Move T1 T2 53
+T1
+Insert 63
+Insert 41
+Insert 58
+Insert 85
+Insert 67
+T2
+Insert 8
+Insert 75
+Insert 51
+Insert 38
+Insert 10
+Move T2 T1 10
+T1
+Insert 5087
+Insert 5250
+Insert 1717
+Insert 3884
+Insert 9351
+Insert 5316
+Insert 2322
+Insert 824
+Insert 947
+Insert 9914
+T2
+Insert 2811
+Insert 3337
+Insert 8017
+Insert 9063
+Insert 4245
+Insert 509
+Insert 3473
+Insert 7346
+Insert 2418
+Insert 2518
+Move T2 T1 2811
+##

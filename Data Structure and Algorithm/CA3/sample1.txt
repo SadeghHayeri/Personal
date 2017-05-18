@@ -1,0 +1,129 @@
+insert 1 1
+insert 2 1
+insert 3 1
+insert 4 1
+delete 1
+getnum 2
+getnum 3
+getnum 4
+delete 2
+delete 3
+delete 4
+insert 1 1 
+insert 2 2
+insert 3 3
+insert 4 4
+insert 5 5
+insert 6 5
+insert 7 7
+insert 8 8
+getnum 8
+getnum 7
+getnum 6
+delete 5
+getnum 8
+getnum 7
+getnum 6
+delete 1
+delete 2
+delete 3
+delete 4
+getnum 8
+getnum 7
+getnum 6
+insert 100 100
+insert 200 200
+insert 300 300
+insert 400 400
+insert 150 150
+insert 175 175
+insert 185 185
+insert 176 176
+insert 177 177
+insert 178 178
+insert 179 179
+insert 180 180
+getnum 180
+getnum 179
+getnum 400
+getnum 300
+insert 1000 6
+insert 1001 3
+insert 1002 4
+insert 1003 5
+getnum 1000
+getnum 1001
+getnum 1002
+getnum 1003
+delete 1000
+getnum 1001
+getnum 1002
+getnum 1003
+delete 1003
+getnum 1002
+getnum 400
+getnum 300
+getnum 180
+getnum 175
+delete 175
+getnum 176
+getnum 180
+delete 177
+delete 178
+delete 179
+delete 180
+delete 176
+getnum 400
+getnum 100
+print
+delete 1001
+delete 1002
+delete 6
+delete 7
+delete 8
+print
+insert 50 50
+insert 25 25
+insert 75 75
+insert 51 51
+insert 52 52
+insert 55 55
+insert 54 54
+insert 12 12
+insert 15 15
+insert 16 16
+delete 16
+insert 20 20
+insert 13 13
+insert 17 17
+insert 85 85
+insert 75 75
+insert 74 74
+insert 73 73
+insert 72 72
+insert 80 80
+insert 82 82
+insert 83 83
+getnum 50
+getnum 25
+getnum 72
+getnum 73
+delete 15
+getnum 100
+delete 25
+getnum 50
+delete 51
+getnum 50
+getnum 72
+getnum 200
+delete 80
+print
+delete 50
+getnum 52
+delete 52
+delete 54
+delete 55
+getnum 72
+delete 85
+delete 100
+getnum 150
