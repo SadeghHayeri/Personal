@@ -22,7 +22,7 @@ CROSSOVERPROBABILITY = 80 / 100
 MUTATIONPROBABILITY = 1 / 100
 SWAPMUTATUINTIMES = 1
 BESTINITSIZE = 5
-INITIALSIZE = 2000
+INITIALSIZE = 500
 
 
 # define fitness weights table
@@ -37,6 +37,7 @@ fitnessWeights["THE"] = +5
 fitnessWeights["ING"] = +5
 fitnessWeights["AND"] = +5
 fitnessWeights["EEE"] = -5
+
 
 newFit = dict()
 
