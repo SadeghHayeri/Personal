@@ -1,9 +1,0 @@
-insert 1 2
-insert 2 10
-insert 3 14
-insert 4 1
-insert 5 23
-insert 6 70000
-insert 7 12000
-getnum 2
-print
