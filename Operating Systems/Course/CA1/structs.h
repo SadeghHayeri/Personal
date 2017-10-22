@@ -6,6 +6,14 @@
 #define NOTSET "NOTSET"
 #define IP_LEN 15   // worst case: 255.255.255.255
 
+
+
+#define MAX_DATA_SIZE 100
+#define HEADER_ADD_FILE "ADD_FILE"
+#define HEADER_SEPERATOR "|"
+
+
+
 typedef struct node {
     int file_index;
     char ip[IP_LEN];

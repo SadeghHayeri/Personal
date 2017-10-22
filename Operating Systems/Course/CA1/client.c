@@ -12,11 +12,15 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 
+#include <fcntl.h>
+
+/* Not technically required, but needed on some UNIX distributions */
+#include <sys/types.h>
+#include <sys/stat.h>
+
 #include <arpa/inet.h>
 
-#define PORT "3490" // the port client will be connecting to
-
-#define MAXDATASIZE 100 // max number of bytes we can get at once
+#include "structs.h"
 
 // get sockaddr, IPv4 or IPv6:
 void *get_in_addr(struct sockaddr *sa)
@@ -29,7 +33,7 @@ void *get_in_addr(struct sockaddr *sa)
 }
 
 int create_socket_fd(char* ip, char* port) {
-    int sockfd;
+    int sock_fd;
     struct addrinfo hints, *servinfo, *p;
     int rv;
     char s[INET6_ADDRSTRLEN];
@@ -45,14 +49,14 @@ int create_socket_fd(char* ip, char* port) {
 
     // loop through all the results and connect to the first we can
     for(p = servinfo; p != NULL; p = p->ai_next) {
-        if ((sockfd = socket(p->ai_family, p->ai_socktype,
+        if ((sock_fd = socket(p->ai_family, p->ai_socktype,
                 p->ai_protocol)) == -1) {
             perror("client: socket");
             continue;
         }
 
-        if (connect(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
-            close(sockfd);
+        if (connect(sock_fd, p->ai_addr, p->ai_addrlen) == -1) {
+            close(sock_fd);
             perror("client: connect");
             continue;
         }
@@ -71,33 +75,65 @@ int create_socket_fd(char* ip, char* port) {
 
     freeaddrinfo(servinfo); // all done with this structure
 
-    return sockfd;
+    return sock_fd;
+}
+
+// ADD_FILE|<name>|<part_num>
+char* get_initial_command(char* name, char* part) {
+    char* header = (char*)malloc(MAX_DATA_SIZE * sizeof(char));
+    char* end_char = header;
+
+    strcpy(end_char, HEADER_ADD_FILE);
+    end_char += strlen(HEADER_ADD_FILE);
+
+    strcpy(end_char, HEADER_SEPERATOR);
+    end_char += strlen(HEADER_SEPERATOR);
+
+    strcpy(end_char, name);
+    end_char += strlen(name);
+
+    strcpy(end_char, HEADER_SEPERATOR);
+    end_char += strlen(HEADER_SEPERATOR);
+
+    strcpy(end_char, part);
+    end_char += strlen(part);
+
+    return header;
+}
+
+char* request(int sock_fd, char* msg) {
+    char* response = (char*)malloc(MAX_DATA_SIZE * sizeof(char));
+    send(sock_fd, msg, strlen(msg), 0);
+    recv(sock_fd, response, MAX_DATA_SIZE, 0);
+    return response;
 }
 
 int main(int argc, char *argv[])
 {
-    if (argc != 2) {
-        fprintf(stderr,"usage: client hostname\n");
+
+    if (argc != 6) {
+        fprintf(stderr,"usage: client hostname port file_path name part_num\n");
+        exit(1);
+    }
+    char* hostname = argv[1];
+    char* port = argv[2];
+    char* file_path = argv[3];
+    char* name = argv[4];
+    char* part_num = argv[5];
+
+    int file_fd = open(file_path, O_RDONLY);
+    if (file_fd == -1) {
+
+        perror("File Not Found!");
         exit(1);
     }
 
-    char buf[MAXDATASIZE];
-    int sockfd = create_socket_fd(argv[1], PORT);
+    int sock_fd = create_socket_fd(hostname, port);
 
-    send(sockfd, "salam", 6, 0);
-    recv(sockfd, buf, MAXDATASIZE-1, 0)
+    char* header = get_initial_command(name, part_num);
+    char* response = request(sock_fd, header);
+    write(0, response, strlen(response));
 
-    int numbytes;
-    if ((numbytes = ) == -1) {
-        perror("recv");
-        exit(1);
-    }
-
-    buf[numbytes] = '\0';
-
-    printf("client: received '%s'\n",buf);
-
-    close(sockfd);
-
+    close(sock_fd);
     return 0;
 }

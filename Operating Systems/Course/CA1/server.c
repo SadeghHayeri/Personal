@@ -15,7 +15,7 @@
 #include <sys/wait.h>
 #include <signal.h>
 
-#define PORT "3490"  // the port users will be connecting to
+#define PORT "4000"  // the port users will be connecting to
 
 #define BACKLOG 10     // how many pending connections queue will hold
 
@@ -40,7 +40,7 @@ void *get_in_addr(struct sockaddr *sa)
     return &(((struct sockaddr_in6*)sa)->sin6_addr);
 }
 
-int main(void)
+int main(int argc, char *argv[])
 {
     int sockfd, new_fd;  // listen on sock_fd, new connection on new_fd
     struct addrinfo hints, *servinfo, *p;
@@ -121,17 +121,12 @@ int main(void)
 
         if (!fork()) { // this is the child process
             close(sockfd); // child doesn't need the listener
-            // if ( == -1)
-                // perror("send");
 
             char buf[100];
-            memset(&buf, '\0', strlen(buf));
-            recv(new_fd, buf, 100, 0);
-
-            write(0, "get: ", 6);
+            recv(new_fd, buf, 100-1, 0);
             write(0, buf, strlen(buf));
-
-            send(new_fd, buf, strlen(buf), 0);
+            if (send(new_fd, buf, 100-1, 0) == -1)
+                perror("send");
             close(new_fd);
             exit(0);
         }
