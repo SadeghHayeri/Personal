@@ -13,7 +13,7 @@ server: server.c
 	gcc server.c -o server
 
 client: client.c
-	gcc client.c -o client
+	gcc client.c network.c -o client
 
 gdb:
 	gcc mainserver.c -o mainserver -g -Wall
