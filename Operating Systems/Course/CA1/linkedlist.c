@@ -1,7 +1,7 @@
 #include "linkedlist.h"
 #include <stdio.h>
 
-void add_node(Node** head_pointer, int file_index, char ip[IP_LEN], char* port) {
+void add_node(Node** head_pointer, int file_index, char* ip, char* port) {
 
 	Node* new_node = (Node*)malloc(sizeof(Node));
 
@@ -49,4 +49,4 @@ void print_list(Node* head) {
 	}
 	printf("\n");
 }
-// int delete_node(Node* head, char ip[IP_LEN])
+// int delete_node(Node* head, char* ip)
