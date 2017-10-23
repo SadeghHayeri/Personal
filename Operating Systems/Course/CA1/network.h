@@ -11,6 +11,20 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <errno.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netdb.h>
+#include <arpa/inet.h>
+#include <sys/wait.h>
+#include <signal.h>
+
 #include <fcntl.h>
 
 #include <sys/types.h>
@@ -20,7 +34,11 @@
 
 void *get_in_addr(struct sockaddr *sa);
 int create_socket_fd(char* ip, char* port);
+int create_listener_fd(char* port);
 char* request(int sock_fd, char* msg);
+
+void sigchld_handler(int s);
+
 
 
 #endif
