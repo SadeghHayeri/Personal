@@ -1,13 +1,13 @@
 #include "linkedlist.h"
 #include <stdio.h>
 
-void add_node(Node** head_pointer, int file_index, char ip[IP_LEN], int port) {
+void add_node(Node** head_pointer, int file_index, char ip[IP_LEN], char* port) {
 
 	Node* new_node = (Node*)malloc(sizeof(Node));
 
 	new_node->file_index = file_index;
 	strcpy(new_node->ip, ip);
-	new_node->port = port;
+	strcpy(new_node->port, port);
 
 	if ((*head_pointer) == NULL) {
 		(*head_pointer) = new_node;

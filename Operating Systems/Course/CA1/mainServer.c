@@ -5,29 +5,28 @@
 
 #include <unistd.h> // atoi
 
-char* handle_request(File* files, char* req) {
-    char** data = split(req, HEADER_SEPERATOR);
+char* handle_add_file(File* files, char* ip, char** data) {
+    char* name = data[1];
+    char* port = data[3];
+    int part_num = atoi(data[2]);
 
+    int status = add_file_piece(files, name, part_num, ip, port);
+    if (status == 1)
+        return "OK";
+    else
+        return "ERR";
+}
+
+char* handle_request(File* files, char* ip, char* req) {
+    write(0, req, strlen(req));
+    char** data = split(req, HEADER_SEPERATOR); //TODO: free
     char* command = data[0];
 
     int is_add_file = (strcmp(command, HEADER_ADD_FILE) == 0);
-    if (is_add_file) {
+    if (is_add_file)
+        return handle_add_file(files, ip, data);
 
-        char* name = data[1];
-        char* port = data[5];
-        int part_num = atoi(data[2]);
-
-        int status = add_file_piece(files, name, part_num, "172.0.0.1", "1000");
-        if (status == 1)
-            return "OK";
-        else
-            return "NO";
-
-    }
-
-
-
-    return "OK";
+    return "BAD COMMMAND";
 }
 
 int main(int argc, char *argv[])
@@ -64,7 +63,7 @@ int main(int argc, char *argv[])
             char req[MAX_DATA_SIZE];
 
             recv(new_fd, req, MAX_DATA_SIZE, 0);
-            char* res = handle_request(files, req);
+            char* res = handle_request(files, s, req);
             send(new_fd, res, strlen(res), 0);
 
             write(0, req, strlen(req));
