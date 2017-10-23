@@ -1,5 +1,5 @@
 #include "network.h"
-
+#include "utility.h"
 #include "structs.h"
 
 char* request(int sock_fd, char* msg) {
@@ -124,4 +124,91 @@ int create_listener_fd(char* port) {
     }
 
     return listener;
+}
+
+void listen_to_clients(int listener, char* listener_port, char* (*request_handler)(char* ip, char* req)) {
+    fd_set master;    // master file descriptor list
+    fd_set read_fds;  // temp file descriptor list for select()
+    int fdmax;        // maximum file descriptor number
+
+    socklen_t addrlen;
+    struct sockaddr_storage remoteaddr; // client address
+    int newfd;        // newly accept()ed socket descriptor
+    char remoteIP[INET6_ADDRSTRLEN];
+    char buf[256];    // buffer for client data
+    int nbytes;
+
+    // clear the master and temp sets
+    FD_ZERO(&master);
+    FD_ZERO(&read_fds);
+
+    // add the listener to the master set
+    FD_SET(listener, &master);
+
+    // keep track of the biggest file descriptor
+    fdmax = listener; // so far, it's this one
+
+    // Listening to clients
+    print("-> Listening on port: ");
+    print(listener_port);
+    print("\n");
+
+    // main loop
+    for(;;) {
+        read_fds = master; // copy it
+        if (select(fdmax+1, &read_fds, NULL, NULL, NULL) == -1) {
+            perror("select");
+            exit(4);
+        }
+
+        // run through the existing connections looking for data to read
+        for(int i = 0; i <= fdmax; i++) {
+            if (FD_ISSET(i, &read_fds)) { // we got one!!
+                if (i == listener) {
+                    // handle new connections
+                    addrlen = sizeof remoteaddr;
+                    newfd = accept(listener,
+                        (struct sockaddr *)&remoteaddr,
+                        &addrlen);
+
+                    if (newfd == -1) {
+                        perror("accept");
+                    } else {
+                        FD_SET(newfd, &master); // add to master set
+                        if (newfd > fdmax) {    // keep track of the max
+                            fdmax = newfd;
+                        }
+                        printf("selectserver: new connection from %s on "
+                            "socket %d\n",
+                            inet_ntop(remoteaddr.ss_family,
+                                get_in_addr((struct sockaddr*)&remoteaddr),
+                                remoteIP, INET6_ADDRSTRLEN),
+                            newfd);
+                    }
+                } else {
+                    // handle data from a client
+                    if ((nbytes = recv(i, buf, sizeof buf, 0)) <= 0) {
+                        // got error or connection closed by client
+                        if (nbytes == 0) {
+                            // connection closed
+                            printf("selectserver: socket %d hung up\n", i);
+                        } else {
+                            perror("recv");
+                        }
+                        close(i); // bye!
+                        FD_CLR(i, &master); // remove from master set
+                    } else {
+
+                        print(buf);
+                        char* ip = inet_ntop(remoteaddr.ss_family,
+                            get_in_addr((struct sockaddr*)&remoteaddr),
+                            remoteIP, INET6_ADDRSTRLEN);
+                        char* response = request_handler(ip, buf);
+                        send(i, response, strlen(response), 0);
+
+                    }
+                } // END handle data from client
+            } // END got new incoming connection
+        } // END looping through file descriptors
+    } // END for(;;)--and you thought it would never end!
 }
