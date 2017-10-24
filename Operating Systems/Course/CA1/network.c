@@ -200,7 +200,7 @@ void listen_to_clients(int listener, char* listener_port, char* (*request_handle
                     } else {
 
                         print(buf);
-                        char* ip = inet_ntop(remoteaddr.ss_family,
+                        char* ip = (char*)inet_ntop(remoteaddr.ss_family,
                             get_in_addr((struct sockaddr*)&remoteaddr),
                             remoteIP, INET6_ADDRSTRLEN);
                         char* response = request_handler(ip, buf);
