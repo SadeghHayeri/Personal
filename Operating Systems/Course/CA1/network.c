@@ -135,7 +135,8 @@ void listen_to_clients(int listener, char* listener_port, char* (*request_handle
     struct sockaddr_storage remoteaddr; // client address
     int newfd;        // newly accept()ed socket descriptor
     char remoteIP[INET6_ADDRSTRLEN];
-    char buf[256];    // buffer for client data
+    char buf[MAX_DATA_SIZE];    // buffer for client data
+    memset(buf, '\0', MAX_DATA_SIZE);
     int nbytes;
 
     // clear the master and temp sets
@@ -148,6 +149,7 @@ void listen_to_clients(int listener, char* listener_port, char* (*request_handle
     // keep track of the biggest file descriptor
     fdmax = listener; // so far, it's this one
 
+    // TODO: pak kon ya ye jaye dg
     // Listening to clients
     print("-> Listening on port: ");
     print(listener_port);
@@ -198,13 +200,18 @@ void listen_to_clients(int listener, char* listener_port, char* (*request_handle
                         close(i); // bye!
                         FD_CLR(i, &master); // remove from master set
                     } else {
-
-                        print(buf);
                         char* ip = (char*)inet_ntop(remoteaddr.ss_family,
                             get_in_addr((struct sockaddr*)&remoteaddr),
                             remoteIP, INET6_ADDRSTRLEN);
+
                         char* response = request_handler(ip, buf);
+
+                        print("\nREQ: ");
+                        write(0, buf, MAX_DATA_SIZE);
+                        print("\n");
+                        printf("RES: %s\n", response);
                         send(i, response, strlen(response), 0);
+                        memset(buf, '\0', MAX_DATA_SIZE);
 
                     }
                 } // END handle data from client
