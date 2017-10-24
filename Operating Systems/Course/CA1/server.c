@@ -8,8 +8,12 @@
 #include <time.h>
 #include <stdlib.h>
 
+#include <sys/stat.h>
+
+int FILE_FD;
+
 // ADD_FILE|<name>|<part_num>|<listener_port>
-char* get_initial_command(char* name, char* part_num, char* listener_port) {
+char* generate_initial_command(char* name, char* part_num, char* listener_port) {
     char* header = (char*)malloc(MAX_DATA_SIZE * sizeof(char));
     char* end_char = header;
 
@@ -40,7 +44,7 @@ char* get_initial_command(char* name, char* part_num, char* listener_port) {
 int initial_to_mainserver(char* hostname, char* port, char* file_path, char* name, char* part_num, char* listener_port) {
     int sock_fd = create_socket_fd(hostname, port);
 
-    char* header = get_initial_command(name, part_num, listener_port);
+    char* header = generate_initial_command(name, part_num, listener_port);
     char* response = request(sock_fd, header);
     close(sock_fd);
 
@@ -48,7 +52,51 @@ int initial_to_mainserver(char* hostname, char* port, char* file_path, char* nam
     return is_save;
 }
 
+char* handle_get_chunk_count(char* ip, char** data) {
+    struct stat buf;
+    fstat(FILE_FD, &buf);
+    int file_size = buf.st_size;
+
+    int chunk_count = (file_size / CHUNK_SIZE) + (file_size % CHUNK_SIZE != 0 ? 1 : 0);
+
+    char* response = (char*)malloc(MAX_DATA_SIZE * sizeof(char));
+    sprintf(response, "%d", chunk_count);
+    return response;
+}
+
+char* handle_get_chunk(char* ip, char** data) {
+    int part_num = atoi(data[1]);
+    char* chunk = (char*)malloc((CHUNK_SIZE + strlen(DATA_MARKER) + 1) * sizeof(char));
+    memset(chunk, '\0', (CHUNK_SIZE + strlen(DATA_MARKER) + 1));
+
+    char* end_char = chunk;
+    strcpy(end_char, DATA_MARKER);
+    end_char += strlen(DATA_MARKER);
+
+    strcpy(end_char, HEADER_SEPERATOR);
+    end_char += strlen(HEADER_SEPERATOR);
+
+    lseek(FILE_FD, part_num * CHUNK_SIZE, 0);
+    read(FILE_FD, end_char, CHUNK_SIZE);
+
+    return chunk;
+}
+
 char* request_handler(char* ip, char* req) {
+
+    char** data = split(req, HEADER_SEPERATOR); //TODO: free
+    char* command = data[0];
+
+    int is_get_chunk_count = (strcmp(command, HEADER_GET_CHUNK_COUNT) == 0);
+    if (is_get_chunk_count) {
+        return handle_get_chunk_count(ip, data);
+    }
+
+    int is_get_chunk = (strcmp(command, HEADER_GET_CHUNK) == 0);
+    if (is_get_chunk) {
+        return handle_get_chunk(ip, data);
+    }
+
     return "BAD COMMMAND";
 }
 
@@ -76,8 +124,8 @@ int main(int argc, char *argv[])
 
 
     // Pre-processes file
-    int file_fd = open(file_path, O_RDONLY);
-    if (file_fd == -1) {
+    FILE_FD = open(file_path, O_RDONLY);
+    if (FILE_FD == -1) {
         perror("File Not Found!");
         exit(1);
     }
@@ -87,14 +135,14 @@ int main(int argc, char *argv[])
     int listener = create_listener_fd(listener_port);
 
 
-    // Send file info to mainServer
-    int is_save = initial_to_mainserver(hostname, port, file_path, name, part_num, listener_port);
-    if (is_save) {
-        print("-> Initial to mainServer complete!\n");
-    } else {
-        perror("Err: initial_to_mainserver()");
-        exit(1);
-    }
+    // // Send file info to mainServer
+    // int is_save = initial_to_mainserver(hostname, port, file_path, name, part_num, listener_port);
+    // if (is_save) {
+    //     print("-> Initial to mainServer complete!\n");
+    // } else {
+    //     perror("Err: initial_to_mainserver()");
+    //     exit(1);
+    // }
 
     listen_to_clients(listener, listener_port, request_handler);
 
