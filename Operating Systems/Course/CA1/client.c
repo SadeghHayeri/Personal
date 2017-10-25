@@ -11,6 +11,7 @@
 // GET_CHUNK_COUNT
 char* generate_getchunkcount_command() {
     char* header = (char*)malloc(MAX_DATA_SIZE * sizeof(char));
+    memset(header, '\0', MAX_DATA_SIZE);
     char* end_char = header;
 
     strcpy(end_char, HEADER_GET_CHUNK_COUNT);
@@ -22,6 +23,7 @@ char* generate_getchunkcount_command() {
 // GET_CHUNK|<part_num>
 char* generate_getchunk_command(int part_num) {
     char* header = (char*)malloc(MAX_DATA_SIZE * sizeof(char));
+    memset(header, '\0', MAX_DATA_SIZE);
     char* end_char = header;
 
     strcpy(end_char, HEADER_GET_CHUNK);

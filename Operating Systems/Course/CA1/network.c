@@ -4,6 +4,7 @@
 
 char* request(int sock_fd, char* msg) {
     char* response = (char*)malloc(MAX_DATA_SIZE * sizeof(char));
+    memset(response, '\0', MAX_DATA_SIZE);
     send(sock_fd, msg, strlen(msg), 0);
     recv(sock_fd, response, MAX_DATA_SIZE, 0);
     return response;

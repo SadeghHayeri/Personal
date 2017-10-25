@@ -15,6 +15,7 @@ int FILE_FD;
 // ADD_FILE|<name>|<part_num>|<listener_port>
 char* generate_initial_command(char* name, char* part_num, char* listener_port) {
     char* header = (char*)malloc(MAX_DATA_SIZE * sizeof(char));
+    memset(header, '\0', MAX_DATA_SIZE);
     char* end_char = header;
 
     strcpy(end_char, HEADER_ADD_FILE);
@@ -60,6 +61,7 @@ char* handle_get_chunk_count(char* ip, char** data) {
     int chunk_count = (file_size / CHUNK_SIZE) + (file_size % CHUNK_SIZE != 0 ? 1 : 0);
 
     char* response = (char*)malloc(MAX_DATA_SIZE * sizeof(char));
+    memset(response, '\0', MAX_DATA_SIZE);
     sprintf(response, "%d", chunk_count);
     return response;
 }
