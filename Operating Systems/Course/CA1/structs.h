@@ -10,13 +10,15 @@
 #define RANDOM_PORT_OFFSET 1000
 
 #define MAX_DATA_SIZE 1000
+#define MAX_SPLIT_BOX 20
 #define CHUNK_SIZE 50
 #define OK_MESSAGE "OK"
 #define HEADER_ADD_FILE "ADD_FILE"
 #define HEADER_GET_CHUNK_COUNT "GET_CHUNK_COUNT"
 #define HEADER_GET_CHUNK "GET_CHUNK"
 #define DATA_MARKER "DATA"
-#define HEADER_SEPERATOR "::"
+#define HEADER_SEPERATOR "<*>"
+#define HEADER_SUB_SEPERATOR "<|>"
 
 
 #define BACKLOG 10     // how many pending connections queue will hold
