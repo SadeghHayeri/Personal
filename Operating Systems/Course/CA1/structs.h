@@ -25,6 +25,7 @@
 
 typedef struct node {
     int file_index;
+    int id;
     char ip[IP_LEN];
     char port[PORT_LEN];
 

@@ -1,11 +1,12 @@
 #include "linkedlist.h"
 #include <stdio.h>
 
-void add_node(Node** head_pointer, int file_index, char* ip, char* port) {
+void add_node(Node** head_pointer, int file_index, int id, char* ip, char* port) {
 
 	Node* new_node = (Node*)malloc(sizeof(Node));
 
 	new_node->file_index = file_index;
+	new_node->id = id;
 	strcpy(new_node->ip, ip);
 	strcpy(new_node->port, port);
 
@@ -23,6 +24,32 @@ void add_node(Node** head_pointer, int file_index, char* ip, char* port) {
 
 	}
 
+}
+
+int remove_node_with_id(Node** head, int id) {
+	
+
+	if(*head == NULL) {
+		return 1;
+	}
+
+	if((*head)->next == NULL) {
+		free(*head);
+		*head = NULL;
+		return 0;
+	}
+
+	Node* curr_node = *head;
+	while(curr_node->next != NULL) {
+		if(curr_node->next->id == id) {
+			Node* to_remove = curr_node->next;
+			curr_node->next = curr_node->next->next;
+			free(to_remove);
+			return 0;
+		}
+	}
+
+	return 1;
 }
 
 Node* get_node(Node* head, int file_index) {

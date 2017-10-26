@@ -10,15 +10,6 @@ char* request(int sock_fd, char* msg) {
     return response;
 }
 
-void sigchld_handler(int s) {
-    // waitpid() might overwrite errno, so we save and restore it:
-    int saved_errno = errno;
-
-    while(waitpid(-1, NULL, WNOHANG) > 0);
-
-    errno = saved_errno;
-}
-
 // get sockaddr, IPv4 or IPv6:
 void *get_in_addr(struct sockaddr *sa)
 {
@@ -27,6 +18,15 @@ void *get_in_addr(struct sockaddr *sa)
     }
 
     return &(((struct sockaddr_in6*)sa)->sin6_addr);
+}
+
+void *get_in_port(struct sockaddr *sa)
+{
+    if (sa->sa_family == AF_INET) {
+        return &(((struct sockaddr_in*)sa)->sin_port);
+    }
+
+    return &(((struct sockaddr_in6*)sa)->sin6_port);
 }
 
 int create_socket_fd(char* ip, char* port) {
@@ -127,7 +127,13 @@ int create_listener_fd(char* port) {
     return listener;
 }
 
-void listen_to_clients(int listener, char* listener_port, char* (*request_handler)(char* ip, char* req)) {
+void listen_to_clients(
+    int listener, 
+    char* listener_port,
+    char* (*request_handler)(int id, char* ip, char* req),
+    void (*disconnect_handler)(int id)
+) {
+
     fd_set master;    // master file descriptor list
     fd_set read_fds;  // temp file descriptor list for select()
     int fdmax;        // maximum file descriptor number
@@ -187,6 +193,7 @@ void listen_to_clients(int listener, char* listener_port, char* (*request_handle
                                 get_in_addr((struct sockaddr*)&remoteaddr),
                                 remoteIP, INET6_ADDRSTRLEN),
                             newfd);
+
                     }
                 } else {
                     // handle data from a client
@@ -198,14 +205,16 @@ void listen_to_clients(int listener, char* listener_port, char* (*request_handle
                         } else {
                             perror("recv");
                         }
+                        disconnect_handler(i);
                         close(i); // bye!
                         FD_CLR(i, &master); // remove from master set
                     } else {
+
                         char* ip = (char*)inet_ntop(remoteaddr.ss_family,
                             get_in_addr((struct sockaddr*)&remoteaddr),
                             remoteIP, INET6_ADDRSTRLEN);
 
-                        char* response = request_handler(ip, buf);
+                        char* response = request_handler(i, ip, buf);
 
                         print("\nREQ: ");
                         write(0, buf, MAX_DATA_SIZE);

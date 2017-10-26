@@ -47,7 +47,7 @@ int initial_to_mainserver(char* hostname, char* port, char* file_path, char* nam
 
     char* header = generate_initial_command(name, part_num, listener_port);
     char* response = request(sock_fd, header);
-    close(sock_fd);
+    // close(sock_fd);
 
     int is_save = (strcmp(response, OK_MESSAGE) == 0);
     return is_save;
@@ -84,7 +84,7 @@ char* handle_get_chunk(char* ip, char** data) {
     return chunk;
 }
 
-char* request_handler(char* ip, char* req) {
+char* request_handler(int id, char* ip, char* req) {
 
     char** data = split(req, HEADER_SEPERATOR); //TODO: free
     char* command = data[0];
@@ -100,6 +100,10 @@ char* request_handler(char* ip, char* req) {
     }
 
     return "BAD COMMMAND";
+}
+
+void disconnect_handler(int id) {
+
 }
 
 int main(int argc, char *argv[])
@@ -137,16 +141,16 @@ int main(int argc, char *argv[])
     int listener = create_listener_fd(listener_port);
 
 
-    // // Send file info to mainServer
-    // int is_save = initial_to_mainserver(hostname, port, file_path, name, part_num, listener_port);
-    // if (is_save) {
-    //     print("-> Initial to mainServer complete!\n");
-    // } else {
-    //     perror("Err: initial_to_mainserver()");
-    //     exit(1);
-    // }
+    // Send file info to mainServer
+    int is_save = initial_to_mainserver(hostname, port, file_path, name, part_num, listener_port);
+    if (is_save) {
+        print("-> Initial to mainServer complete!\n");
+    } else {
+        perror("Err: initial_to_mainserver()");
+        exit(1);
+    }
 
-    listen_to_clients(listener, listener_port, request_handler);
+    listen_to_clients(listener, listener_port, request_handler, disconnect_handler);
 
     return 0;
 }

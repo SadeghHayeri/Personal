@@ -10,12 +10,12 @@ File* init_files_array() {
     return files;
 }
 
-int _add_contributer(Node** contributers_head, int file_index, char ip[IP_LEN], char* port) {
+int _add_contributer(Node** contributers_head, int file_index, int id, char ip[IP_LEN], char* port) {
 
     int file_index_not_exist = (get_node(*contributers_head, file_index) == NULL);
     if(file_index_not_exist) {
 
-        add_node(contributers_head, file_index, ip, port);
+        add_node(contributers_head, file_index, id, ip, port);
         return 1;
 
     } else {
@@ -28,25 +28,34 @@ int _add_contributer(Node** contributers_head, int file_index, char ip[IP_LEN], 
 // -1   ERR: file stack is full
 // 0    ERR: file_index already exist
 // 1    DONE
-int add_file_piece(File files[], char file_name[MAX_FILE_NAME], int file_index, char ip[IP_LEN], char* port) {
+int add_file_piece(File files[], char file_name[MAX_FILE_NAME], int file_index, int id, char ip[IP_LEN], char* port) {
 
     for (size_t i = 0; i < MAX_FILE_HANDLER; i++) {
 
         // if file exist -> add
         int is_this_file = (strcmp(files[i].name, file_name) == 0);
         if(is_this_file)
-            return _add_contributer(&files[i].contributers_head, file_index, ip, port);
+            return _add_contributer(&files[i].contributers_head, file_index, id, ip, port);
 
         // if not -> create & add
         int is_empty_block = (strcmp(files[i].name, NOTSET) == 0);
         if(is_empty_block) {
             strcpy(files[i].name, file_name);
-            return _add_contributer(&files[i].contributers_head, file_index, ip, port);
+            return _add_contributer(&files[i].contributers_head, file_index, id, ip, port);
         }
 
     }
 
     return -1;
+}
+
+int remove_file_piece(File files[], int id) {
+    for (int i = 0; i < MAX_FILE_HANDLER; ++i) {
+        int success = remove_node_with_id(&files[i].contributers_head, id);
+        if(success == 0)
+            return 0;
+    }
+    return 1;
 }
 
 void print_files(File files[]) {
