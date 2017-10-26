@@ -41,6 +41,18 @@ Node* get_node(Node* head, int file_index) {
 
 }
 
+int get_nodes_count(Node* head) {
+	int count = 0;
+
+	Node* curr_node = head;
+	while (curr_node != NULL) {
+		count++;
+		curr_node = curr_node->next;
+	}
+
+	return count;
+}
+
 void print_list(Node* head) {
 	printf("-> ");
 	while (head != NULL) {
