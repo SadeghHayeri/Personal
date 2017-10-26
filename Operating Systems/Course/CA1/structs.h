@@ -24,7 +24,7 @@
 #define HEADER_ADD_FILE "ADD_FILE"
 #define HEADER_GET_CHUNK_COUNT "GET_CHUNK_COUNT"
 #define HEADER_GET_CHUNK "GET_CHUNK"
-#define HEADER_GET_COUNTRIBUTERS "GC"
+#define HEADER_GET_COUNTRIBUTERS "GET_COUNTRIBUTERS"
 #define DATA_MARKER "DATA"
 #define HEADER_SEPERATOR "<*>"
 #define HEADER_SUB_SEPERATOR "<|>"
@@ -32,13 +32,13 @@
 
 #define BACKLOG 10     // how many pending connections queue will hold
 
-typedef struct node {
+typedef struct Node {
+	int contributer_id;
     int file_index;
-    int id;
     char ip[IP_LEN];
     char port[PORT_LEN];
 
-    struct node *next;
+    struct Node *next;
 } Node;
 
 typedef struct file {
