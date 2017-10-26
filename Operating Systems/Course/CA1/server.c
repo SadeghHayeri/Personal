@@ -99,7 +99,7 @@ char* request_handler(char* ip, char* req) {
         return handle_get_chunk(ip, data);
     }
 
-    return "BAD COMMMAND";
+    return BAD_COMMAND;
 }
 
 int main(int argc, char *argv[])
@@ -137,14 +137,14 @@ int main(int argc, char *argv[])
     int listener = create_listener_fd(listener_port);
 
 
-    // // Send file info to mainServer
-    // int is_save = initial_to_mainserver(hostname, port, file_path, name, part_num, listener_port);
-    // if (is_save) {
-    //     print("-> Initial to mainServer complete!\n");
-    // } else {
-    //     perror("Err: initial_to_mainserver()");
-    //     exit(1);
-    // }
+    // Send file info to mainServer
+    int is_save = initial_to_mainserver(hostname, port, file_path, name, part_num, listener_port);
+    if (is_save) {
+        print("-> Initial to mainServer complete!\n");
+    } else {
+        perror("Err: initial_to_mainserver()");
+        exit(1);
+    }
 
     listen_to_clients(listener, listener_port, request_handler);
 
