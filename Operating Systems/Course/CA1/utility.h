@@ -3,5 +3,7 @@
 
 char** split(char* string, char* delim);
 void print(char* msg);
+int num_len(int number);
+
 
 #endif

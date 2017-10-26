@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include <math.h>
+
 #include "structs.h"
 
 char** split(char* string, char* delim) {
@@ -28,4 +30,8 @@ char** split(char* string, char* delim) {
 
 void print(char* msg) {
     write(0, msg, strlen(msg));
+}
+
+int num_len(int number) {
+    return floor(log10(abs(number))) + 1;
 }
