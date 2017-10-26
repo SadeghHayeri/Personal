@@ -6,13 +6,15 @@
 
 File* init_files_array();
 
-int _add_contributer(Node** contributers_head, int file_index, char ip[IP_LEN], char* port);
+int _add_contributer(Node** contributers_head, int file_index, int id, char ip[IP_LEN], char* port);
 
 // find file or create new and add a contributer to it
 // -1   ERR: file stack is full
 // 0    ERR: file_index already exist
 // 1    DONE
-int add_file_piece(File files[], char file_name[MAX_FILE_NAME], int file_index, char ip[IP_LEN], char* port);
+int add_file_piece(File files[], char file_name[MAX_FILE_NAME], int file_index, int id, char ip[IP_LEN], char* port);
+
+int remove_file_piece(File files[], int id);
 
 void print_files(File files[]);
 

@@ -47,7 +47,7 @@ int initial_to_mainserver(char* hostname, char* port, char* file_path, char* nam
 
     char* header = generate_initial_command(name, part_num, listener_port);
     char* response = request(sock_fd, header);
-    close(sock_fd);
+    // close(sock_fd);
 
     int is_save = (strcmp(response, OK_MESSAGE) == 0);
     return is_save;
@@ -84,7 +84,7 @@ char* handle_get_chunk(char* ip, char** data) {
     return chunk;
 }
 
-char* request_handler(char* ip, char* req) {
+char* request_handler(int id, char* ip, char* req) {
 
     char** data = split(req, HEADER_SEPERATOR); //TODO: free
     char* command = data[0];
@@ -100,6 +100,10 @@ char* request_handler(char* ip, char* req) {
     }
 
     return BAD_COMMAND;
+}
+
+void disconnect_handler(int id) {
+
 }
 
 int main(int argc, char *argv[])
@@ -146,7 +150,7 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-    listen_to_clients(listener, listener_port, request_handler);
+    listen_to_clients(listener, listener_port, request_handler, disconnect_handler);
 
     return 0;
 }

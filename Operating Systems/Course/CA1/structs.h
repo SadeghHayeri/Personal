@@ -32,6 +32,15 @@
 
 #define BACKLOG 10     // how many pending connections queue will hold
 
+typedef struct node {
+    int file_index;
+    int id;
+    char ip[IP_LEN];
+    char port[PORT_LEN];
+
+    struct node *next;
+} Node;
+
 typedef struct file {
     char name[MAX_FILE_NAME];
     Node* contributers_head;
