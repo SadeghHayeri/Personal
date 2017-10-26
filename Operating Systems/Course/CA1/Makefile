@@ -11,8 +11,8 @@ mainServer: mainserver.c mainServerCore linkedlist utility network
 server: server.c linkedlist utility network
 	gcc server.c network.c utility.o -o server
 
-client: client.c network utility
-	gcc client.c network.o utility.o -o client
+client: client.c network utility linkedlist
+	gcc client.c network.o utility.o linkedlist.o -o client
 
 mainServerCore: mainServerCore.c mainServerCore.h
 	gcc mainServerCore.c -c

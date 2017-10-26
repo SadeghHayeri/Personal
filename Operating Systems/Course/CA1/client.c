@@ -1,6 +1,7 @@
 #include "structs.h"
 #include "network.h"
 #include "utility.h"
+#include "linkedlist.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -37,6 +38,23 @@ char* generate_getchunk_command(int part_num) {
     return header;
 }
 
+char* generate_getcontributers_command(char* name) {
+    char* header = (char*)malloc(MAX_DATA_SIZE * sizeof(char));
+    memset(header, '\0', MAX_DATA_SIZE);
+    char* end_char = header;
+
+    strcpy(end_char, HEADER_GET_COUNTRIBUTERS);
+    end_char += strlen(HEADER_GET_COUNTRIBUTERS);
+
+    strcpy(end_char, HEADER_SEPERATOR);
+    end_char += strlen(HEADER_SEPERATOR);
+
+    strcpy(end_char, name);
+    end_char += strlen(name);
+
+    return header;
+}
+
 int get_chunk_count(int sock_fd) {
     char* get_info_command = generate_getchunkcount_command();
     char* chunk_count = request(sock_fd, get_info_command);
@@ -54,7 +72,7 @@ char* get_chunk(int sock_fd, int part_num) {
     return chunk;
 }
 
-int download_and_save(char* hostname, char* port, int file_fd) {
+int connect_download_append(char* hostname, char* port, int file_fd) {
     int sock_fd = create_socket_fd(hostname, port);
     int chunk_count = get_chunk_count(sock_fd);
 
@@ -70,6 +88,25 @@ int download_and_save(char* hostname, char* port, int file_fd) {
 
     close(sock_fd);
     return 0;
+}
+
+Node* get_contributers(int mainserver_sock_fd, char* name) {
+    char* get_contributers_command = generate_getcontributers_command(name);
+    char* response = request(mainserver_sock_fd, get_contributers_command);
+
+    char** data = split(response, HEADER_SEPERATOR); //TODO: free
+    int number_of_contributers = atoi(data[0]);
+
+    Node* contributers_head = NULL;
+    for (int i = 0; i < number_of_contributers; ++i) {
+        char** contributer_data = split(data[1+i], HEADER_SUB_SEPERATOR);
+        int file_index = atoi(contributer_data[0]);
+        char* ip = contributer_data[1];
+        char* port = contributer_data[2];
+
+        add_node(&contributers_head, file_index, ip, port);
+    }
+    return contributers_head;
 }
 
 int main(int argc, char *argv[])
@@ -91,8 +128,13 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-    download_and_save(hostname, port, file_fd);
+    int mainserver_sock_fd = create_socket_fd(hostname, port);
+    Node* contributers_head = get_contributers(mainserver_sock_fd, name);
+    close(mainserver_sock_fd);
+    print_list(contributers_head);
 
+    
+    // connect_download_append(hostname, port, file_fd);
     close(file_fd);
 
     return 0;

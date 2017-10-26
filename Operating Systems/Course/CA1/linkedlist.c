@@ -1,5 +1,7 @@
 #include "linkedlist.h"
+
 #include <stdio.h>
+#include "structs.h"
 
 void add_node(Node** head_pointer, int file_index, char* ip, char* port) {
 
