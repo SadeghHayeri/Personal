@@ -5,8 +5,10 @@
 
 File* init_files_array() {
     File* files = (File*)malloc(MAX_FILE_HANDLER * sizeof(File));
-    for (size_t i = 0; i < MAX_FILE_HANDLER; i++)
+    for (size_t i = 0; i < MAX_FILE_HANDLER; i++) {
+        memset(files[i].name, '\0', MAX_FILE_NAME);
         strcpy(files[i].name, NOTSET);
+    }
     return files;
 }
 
@@ -40,6 +42,7 @@ int add_file_piece(File files[], char file_name[MAX_FILE_NAME], int file_index, 
         // if not -> create & add
         int is_empty_block = (strcmp(files[i].name, NOTSET) == 0);
         if(is_empty_block) {
+            memset(files[i].name, '\0', MAX_FILE_NAME);
             strcpy(files[i].name, file_name);
             return _add_contributer(&files[i].contributers_head, file_index, ip, port);
         }
