@@ -31,6 +31,14 @@
 *.out
 *.app
 
+# files
 mainserver
 server
 client
+
+# files
+*.pdf
+*.txt
+
+# tests
+test.c
