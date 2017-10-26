@@ -1,9 +1,17 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
+#define STDIN 0
+#define STDOUT 1
+#define STDERR 2
+
 #define MAX_FILE_NAME 50
 #define MAX_FILE_HANDLER 10
-#define NOTSET "NOTSET"
+#define NOTSET "NOT_SET"
+#define NOT_FOUND "NOT_FOUND"
+#define OK_MESSAGE "OK"
+#define ERROR_MESSAGE "ERR"
+#define BAD_COMMAND "BAD_COMMAND"
 #define IP_LEN 22   // worst case: ::ffff:255.255.255.255
 #define PORT_LEN 15   // worst case: 60000
 #define MAX_RANDOM_PORT 60000
@@ -12,10 +20,11 @@
 #define MAX_DATA_SIZE 1000
 #define MAX_SPLIT_BOX 20
 #define CHUNK_SIZE 50
-#define OK_MESSAGE "OK"
+
 #define HEADER_ADD_FILE "ADD_FILE"
 #define HEADER_GET_CHUNK_COUNT "GET_CHUNK_COUNT"
 #define HEADER_GET_CHUNK "GET_CHUNK"
+#define HEADER_GET_COUNTRIBUTERS "GC"
 #define DATA_MARKER "DATA"
 #define HEADER_SEPERATOR "<*>"
 #define HEADER_SUB_SEPERATOR "<|>"
