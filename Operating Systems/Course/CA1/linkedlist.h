@@ -6,15 +6,6 @@
 #include <string.h>
 
 #include "structs.h"
-
-typedef struct Node {
-	int contributer_id;
-    int file_index;
-    char ip[IP_LEN];
-    char port[PORT_LEN];
-
-    struct Node *next;
-} Node;
  
 typedef void (*callback)(Node* file_index);
 
@@ -27,7 +18,7 @@ Node* remove_any(Node* head, Node* nd);
 void display(Node* n);
 Node* search_by_contributer_id(Node* head, int contributer_id);
 void dispose(Node *head);
-int count(Node *head);
+int get_nodes_count(Node *head);
 Node* insertion_sort(Node* head);
 Node* reverse(Node* head);
 

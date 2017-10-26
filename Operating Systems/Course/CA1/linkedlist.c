@@ -165,7 +165,7 @@ Node* search_by_contributer_id(Node* head, int contributer_id)
 /*
     return the number of elements in the list
 */
-int count(Node *head)
+int get_nodes_count(Node *head)
 {
     Node *cursor = head;
     int c = 0;
