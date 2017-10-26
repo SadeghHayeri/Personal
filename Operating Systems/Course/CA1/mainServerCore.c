@@ -13,23 +13,16 @@ File* init_files_array() {
 }
 
 int _add_contributer(Node** contributers_head, int file_index, int id, char ip[IP_LEN], char* port) {
+    *contributers_head = prepend(*contributers_head, file_index, id, ip, port);
+    *contributers_head = insertion_sort(*contributers_head);
 
-    int file_index_not_exist = (get_node(*contributers_head, file_index) == NULL);
-    if(file_index_not_exist) {
-
-        add_node(contributers_head, file_index, id, ip, port);
-        return 1;
-
-    } else {
-        return 0;
-    }
-
+    return 0; //TODO: handle exist!
 }
 
 // find file or create new and add a contributer to it
-// -1   ERR: file stack is full
-// 0    ERR: file_index already exist
-// 1    DONE
+// 2   ERR: file stack is full
+// 1    ERR: file_index already exist
+// 0    DONE
 int add_file_piece(File files[], char file_name[MAX_FILE_NAME], int file_index, int id, char ip[IP_LEN], char* port) {
 
     for (size_t i = 0; i < MAX_FILE_HANDLER; i++) {
@@ -54,9 +47,11 @@ int add_file_piece(File files[], char file_name[MAX_FILE_NAME], int file_index, 
 
 int remove_file_piece(File files[], int id) {
     for (int i = 0; i < MAX_FILE_HANDLER; ++i) {
-        int success = remove_node_with_id(&files[i].contributers_head, id);
-        if(success == 0)
+        Node* target_node = search_by_contributer_id(files[i].contributers_head, id);
+        if(target_node != NULL) {
+            files[i].contributers_head = remove_any(files[i].contributers_head, target_node);
             return 0;
+        }
     }
     return 1;
 }

@@ -13,7 +13,7 @@ char* handle_add_file(int id, char* ip, char** data) {
     int part_num = atoi(data[2]);
 
     int status = add_file_piece(FILES, name, part_num, id, ip, port);
-    if (status == 1)
+    if (status == 0)
         return OK_MESSAGE;
     else
         return ERROR_MESSAGE;
@@ -85,9 +85,9 @@ char* request_handler(int id, char* ip, char* req) {
 void disconnect_handler(int id) {
     int result = remove_file_piece(FILES, id);
     if(result != 0) {
-        perror("error in remove contributer!");
+        // perror("error in remove contributer!");
     } else {
-        printf("Successfully Remove: %d\n", id);
+        printf("File Removed: %d\n", id);
     }
 }
 
