@@ -1,7 +1,9 @@
 #ifndef UTILITY_H
 #define UTILITY_H
 
-char** split(char* string, char* delim);
+#include "structs.h"
+
+void split(char* str, char sp[MAX_DATA_SIZE][MAX_DATA_SIZE], char* delim);
 void print(char* msg);
 int num_len(int number);
 

@@ -53,7 +53,7 @@ int initial_to_mainserver(char* hostname, char* port, char* file_path, char* nam
     return is_save;
 }
 
-char* handle_get_chunk_count(char* ip, char** data) {
+char* handle_get_chunk_count(char* ip, char data[MAX_DATA_SIZE][MAX_DATA_SIZE]) {
     struct stat buf;
     fstat(FILE_FD, &buf);
     int file_size = buf.st_size;
@@ -66,7 +66,7 @@ char* handle_get_chunk_count(char* ip, char** data) {
     return response;
 }
 
-char* handle_get_chunk(char* ip, char** data) {
+char* handle_get_chunk(char* ip, char data[MAX_DATA_SIZE][MAX_DATA_SIZE]) {
     int part_num = atoi(data[1]);
     char* chunk = (char*)malloc((CHUNK_SIZE + strlen(DATA_MARKER) + 1) * sizeof(char));
     memset(chunk, '\0', (CHUNK_SIZE + strlen(DATA_MARKER) + 1));
@@ -85,8 +85,8 @@ char* handle_get_chunk(char* ip, char** data) {
 }
 
 char* request_handler(int id, char* ip, char* req) {
-
-    char** data = split(req, HEADER_SEPERATOR); //TODO: free
+    char data [MAX_DATA_SIZE][MAX_DATA_SIZE];
+    split(req, data, HEADER_SEPERATOR);
     char* command = data[0];
 
     int is_get_chunk_count = (strcmp(command, HEADER_GET_CHUNK_COUNT) == 0);

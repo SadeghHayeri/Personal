@@ -9,23 +9,22 @@
 
 #include "structs.h"
 
-char** split(char* string, char* delim) {
-    int size = strlen(string);
+void split(char* str, char sp[MAX_DATA_SIZE][MAX_DATA_SIZE], char* delim) {
+    memset(sp, 0, MAX_DATA_SIZE * MAX_DATA_SIZE);
+    int i = 0;
+    char* start = str;
+    char* end = strstr(start, delim);
 
-    char* string_tmp = (char*)malloc(size * sizeof(char));
-    memcpy(string_tmp, string, size);
 
-    char** split = (char**)malloc(MAX_SPLIT_BOX * sizeof(char*));
+    while(end != NULL) {
+        memcpy(sp[i], start, end - start);
 
-    for (int i = 0; i < size; i++) {
-        if (i == 0)
-            split[i] = strtok(string_tmp, delim);
-        else
-            split[i] = strtok(NULL, delim);
+        start = end+strlen(delim);
+
+        end = strstr(start, delim);
+        i++;
     }
-
-    free(string_tmp);
-    return split;
+    memcpy(sp[i], start, (str + strlen(str)) - start);
 }
 
 void print(char* msg) {

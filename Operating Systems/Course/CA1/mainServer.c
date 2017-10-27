@@ -7,7 +7,7 @@
 
 File* FILES;
 
-char* handle_add_file(int id, char* ip, char** data) {
+char* handle_add_file(int id, char* ip, char data[MAX_DATA_SIZE][MAX_DATA_SIZE]) {
     char* name = data[1];
     char* port = data[3];
     int part_num = atoi(data[2]);
@@ -19,7 +19,7 @@ char* handle_add_file(int id, char* ip, char** data) {
         return ERROR_MESSAGE;
 }
 
-char* handle_get_countributers(char* ip, char** data) {
+char* handle_get_countributers(char* ip, char data[MAX_DATA_SIZE][MAX_DATA_SIZE]) {
     char* name = data[1];
 
     for (size_t i = 0; i < MAX_FILE_HANDLER; i++) {
@@ -59,6 +59,7 @@ char* handle_get_countributers(char* ip, char** data) {
 
                 strcpy(end_char, port);
                 end_char += strlen(port);
+                curr_contributers = curr_contributers->next;
             }
 
             return response;
@@ -68,7 +69,8 @@ char* handle_get_countributers(char* ip, char** data) {
 }
 
 char* request_handler(int id, char* ip, char* req) {
-    char** data = split(req, HEADER_SEPERATOR); //TODO: free
+    char data [MAX_DATA_SIZE][MAX_DATA_SIZE];
+    split(req, data, HEADER_SEPERATOR);
     char* command = data[0];
 
     int is_add_file = (strcmp(command, HEADER_ADD_FILE) == 0);
@@ -84,9 +86,7 @@ char* request_handler(int id, char* ip, char* req) {
 
 void disconnect_handler(int id) {
     int result = remove_file_piece(FILES, id);
-    if(result != 0) {
-        // perror("error in remove contributer!");
-    } else {
+    if(result == 0) {
         printf("File Removed: %d\n", id);
     }
 }
