@@ -155,7 +155,7 @@ Node* search_by_contributer_id(Node* head, int contributer_id)
     Node *cursor = head;
     while(cursor!=NULL)
     {
-        if(cursor->file_index == contributer_id)
+        if(cursor->contributer_id == contributer_id)
             return cursor;
         cursor = cursor->next;
     }
