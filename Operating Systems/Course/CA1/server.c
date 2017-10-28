@@ -42,6 +42,12 @@ char* generate_initial_command(char* name, char* part_num, char* listener_port) 
     return header;
 }
 
+long get_file_size(int file_fd) {
+    struct stat buf;
+    fstat(FILE_FD, &buf);
+    return buf.st_size;
+}
+
 int initial_to_mainserver(char* hostname, char* port, char* file_path, char* name, char* part_num, char* listener_port) {
     int sock_fd = create_socket_fd(hostname, port);
 
@@ -54,9 +60,7 @@ int initial_to_mainserver(char* hostname, char* port, char* file_path, char* nam
 }
 
 char* handle_get_chunk_count(char* ip, char data[MAX_DATA_SIZE][MAX_DATA_SIZE]) {
-    struct stat buf;
-    fstat(FILE_FD, &buf);
-    int file_size = buf.st_size;
+    long file_size = get_file_size(FILE_FD);
 
     int chunk_count = (file_size / CHUNK_SIZE) + (file_size % CHUNK_SIZE != 0 ? 1 : 0);
 
@@ -66,10 +70,11 @@ char* handle_get_chunk_count(char* ip, char data[MAX_DATA_SIZE][MAX_DATA_SIZE]) 
     return response;
 }
 
+// DATA|<data-size>|<data>
 char* handle_get_chunk(char* ip, char data[MAX_DATA_SIZE][MAX_DATA_SIZE]) {
     int part_num = atoi(data[1]);
-    char* chunk = (char*)malloc((CHUNK_SIZE + strlen(DATA_MARKER) + 1) * sizeof(char));
-    memset(chunk, '\0', (CHUNK_SIZE + strlen(DATA_MARKER) + 1));
+    char* chunk = (char*)malloc(MAX_DATA_SIZE * sizeof(char));
+    memset(chunk, '\0', MAX_DATA_SIZE);
 
     char* end_char = chunk;
     strcpy(end_char, DATA_MARKER);
@@ -78,8 +83,29 @@ char* handle_get_chunk(char* ip, char data[MAX_DATA_SIZE][MAX_DATA_SIZE]) {
     strcpy(end_char, HEADER_SEPERATOR);
     end_char += strlen(HEADER_SEPERATOR);
 
+    long file_size = get_file_size(FILE_FD);
+    long need_to_send = (file_size - (part_num * CHUNK_SIZE));
+    int this_chunk_size = (need_to_send > CHUNK_SIZE) ? CHUNK_SIZE : need_to_send;
+
+    int max_num_length = num_len(CHUNK_SIZE);
+    int max_cur_length = num_len(this_chunk_size);
+
+    // add ZEROS in start of size
+    for (int i = 0; i < max_num_length - max_cur_length; ++i) {
+        strcpy(end_char, "0");
+        end_char++;
+    }
+
+    sprintf(end_char, "%d", this_chunk_size);
+    end_char += num_len(this_chunk_size);
+
+    strcpy(end_char, HEADER_SEPERATOR);
+    end_char += strlen(HEADER_SEPERATOR);
+
     lseek(FILE_FD, part_num * CHUNK_SIZE, 0);
-    read(FILE_FD, end_char, CHUNK_SIZE);
+    read(FILE_FD, end_char, this_chunk_size);
+
+    printf("%s\n", chunk);
 
     return chunk;
 }
@@ -103,7 +129,7 @@ char* request_handler(int id, char* ip, char* req) {
 }
 
 void disconnect_handler(int id) {
-
+    // do nothing!
 }
 
 int main(int argc, char *argv[])

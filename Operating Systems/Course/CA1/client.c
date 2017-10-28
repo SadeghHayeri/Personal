@@ -61,30 +61,29 @@ int get_chunk_count(int sock_fd) {
     return atoi(chunk_count);
 }
 
-char* get_chunk(int sock_fd, int part_num) {
+void get_chunk_and_save(int sock_fd, int part_num, int file_fd) {
     char* getchunk_command = generate_getchunk_command(part_num);
     char* data = request(sock_fd, getchunk_command);
     data += strlen(DATA_MARKER) + strlen(HEADER_SEPERATOR);
 
-    char* chunk = (char*)malloc(CHUNK_SIZE * sizeof(char));
-    memcpy(chunk, data, CHUNK_SIZE);
+    // get this_chunk_size
+    char this_chunk_size[20];
+    int max_num_length = num_len(CHUNK_SIZE);
+    memcpy(this_chunk_size, data, max_num_length);
+    int this_chunk_size_num = atoi(this_chunk_size);
+    data += max_num_length;
 
-    return chunk;
+    data += strlen(HEADER_SEPERATOR);
+
+    write(file_fd, data, this_chunk_size_num);
 }
 
 int connect_download_append(char* hostname, char* port, int file_fd) {
     int sock_fd = create_socket_fd(hostname, port);
     int chunk_count = get_chunk_count(sock_fd);
 
-    for (int i = 0; i < chunk_count; i++) {
-        char* chunk = get_chunk(sock_fd, i);
-
-        print("\nWRITE: ");
-        write(0, chunk, CHUNK_SIZE);
-        print("\n");
-
-        write(file_fd, chunk, CHUNK_SIZE);
-    }
+    for (int i = 0; i < chunk_count; i++)
+        get_chunk_and_save(sock_fd, i, file_fd);
 
     close(sock_fd);
     return 0;
