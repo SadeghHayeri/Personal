@@ -30,8 +30,8 @@ char* generate_getchunk_command(int part_num) {
     strcpy(end_char, HEADER_GET_CHUNK);
     end_char += strlen(HEADER_GET_CHUNK);
 
-    strcpy(end_char, HEADER_SEPERATOR);
-    end_char += strlen(HEADER_SEPERATOR);
+    strcpy(end_char, HEADER_SEPARATOR);
+    end_char += strlen(HEADER_SEPARATOR);
 
     sprintf(end_char, "%d", part_num);
 
@@ -46,8 +46,8 @@ char* generate_getcontributers_command(char* name) {
     strcpy(end_char, HEADER_GET_COUNTRIBUTERS);
     end_char += strlen(HEADER_GET_COUNTRIBUTERS);
 
-    strcpy(end_char, HEADER_SEPERATOR);
-    end_char += strlen(HEADER_SEPERATOR);
+    strcpy(end_char, HEADER_SEPARATOR);
+    end_char += strlen(HEADER_SEPARATOR);
 
     strcpy(end_char, name);
     end_char += strlen(name);
@@ -64,7 +64,7 @@ int get_chunk_count(int sock_fd) {
 void get_chunk_and_save(int sock_fd, int part_num, int file_fd) {
     char* getchunk_command = generate_getchunk_command(part_num);
     char* data = request(sock_fd, getchunk_command);
-    data += strlen(DATA_MARKER) + strlen(HEADER_SEPERATOR);
+    data += strlen(DATA_MARKER) + strlen(HEADER_SEPARATOR);
 
     // get this_chunk_size
     char this_chunk_size[20];
@@ -73,7 +73,7 @@ void get_chunk_and_save(int sock_fd, int part_num, int file_fd) {
     int this_chunk_size_num = atoi(this_chunk_size);
     data += max_num_length;
 
-    data += strlen(HEADER_SEPERATOR);
+    data += strlen(HEADER_SEPARATOR);
 
     write(file_fd, data, this_chunk_size_num);
 }
@@ -103,7 +103,7 @@ Node* get_contributers(int mainserver_sock_fd, char* name) {
     char* response = request(mainserver_sock_fd, get_contributers_command);
 
     char data [MAX_DATA_SIZE][MAX_DATA_SIZE];
-    split(response, data, HEADER_SEPERATOR);
+    split(response, data, HEADER_SEPARATOR);
     int number_of_contributers = atoi(data[0]);
 
     printf("%s\n", data[3]);
@@ -111,7 +111,7 @@ Node* get_contributers(int mainserver_sock_fd, char* name) {
     Node* contributers_head = NULL;
     for (int i = 0; i < number_of_contributers; ++i) {
         char contributer_data[MAX_DATA_SIZE][MAX_DATA_SIZE];
-        split(data[1+i], contributer_data, HEADER_SUB_SEPERATOR);
+        split(data[1+i], contributer_data, HEADER_SUB_SEPARATOR);
 
         int file_index = atoi(contributer_data[0]);
         char* ip = contributer_data[1];

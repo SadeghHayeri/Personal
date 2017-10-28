@@ -24,8 +24,8 @@
 
 /////////////////////// API ////////////////////////
 // Separators
-#define HEADER_SEPERATOR "<*>"
-#define HEADER_SUB_SEPERATOR "<|>"
+#define HEADER_SEPARATOR "<*>"
+#define HEADER_SUB_SEPARATOR "<|>"
 
 // Client Requests
 #define HEADER_GET_CHUNK_COUNT "GET_CHUNK_COUNT"

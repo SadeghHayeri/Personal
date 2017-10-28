@@ -38,8 +38,8 @@ char* handle_get_countributers(char* ip, char data[MAX_DATA_SIZE][MAX_DATA_SIZE]
 
             Node* curr_contributers = contributers_head;
             for (size_t i = 0; i < nodes_count; i++) {
-                strcpy(end_char, HEADER_SEPERATOR);
-                end_char += strlen(HEADER_SEPERATOR);
+                strcpy(end_char, HEADER_SEPARATOR);
+                end_char += strlen(HEADER_SEPARATOR);
 
                 int file_index = curr_contributers->file_index;
                 char* ip = curr_contributers->ip;
@@ -48,14 +48,14 @@ char* handle_get_countributers(char* ip, char data[MAX_DATA_SIZE][MAX_DATA_SIZE]
                 sprintf(end_char, "%d", file_index);
                 end_char += num_len(file_index);
 
-                strcpy(end_char, HEADER_SUB_SEPERATOR);
-                end_char += strlen(HEADER_SUB_SEPERATOR);
+                strcpy(end_char, HEADER_SUB_SEPARATOR);
+                end_char += strlen(HEADER_SUB_SEPARATOR);
 
                 strcpy(end_char, ip);
                 end_char += strlen(ip);
 
-                strcpy(end_char, HEADER_SUB_SEPERATOR);
-                end_char += strlen(HEADER_SUB_SEPERATOR);
+                strcpy(end_char, HEADER_SUB_SEPARATOR);
+                end_char += strlen(HEADER_SUB_SEPARATOR);
 
                 strcpy(end_char, port);
                 end_char += strlen(port);
@@ -70,7 +70,7 @@ char* handle_get_countributers(char* ip, char data[MAX_DATA_SIZE][MAX_DATA_SIZE]
 
 char* request_handler(int id, char* ip, char* req) {
     char data [MAX_DATA_SIZE][MAX_DATA_SIZE];
-    split(req, data, HEADER_SEPERATOR);
+    split(req, data, HEADER_SEPARATOR);
     char* command = data[0];
 
     int is_add_file = (strcmp(command, HEADER_ADD_FILE) == 0);

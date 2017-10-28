@@ -21,20 +21,20 @@ char* generate_initial_command(char* name, char* part_num, char* listener_port) 
     strcpy(end_char, HEADER_ADD_FILE);
     end_char += strlen(HEADER_ADD_FILE);
 
-    strcpy(end_char, HEADER_SEPERATOR);
-    end_char += strlen(HEADER_SEPERATOR);
+    strcpy(end_char, HEADER_SEPARATOR);
+    end_char += strlen(HEADER_SEPARATOR);
 
     strcpy(end_char, name);
     end_char += strlen(name);
 
-    strcpy(end_char, HEADER_SEPERATOR);
-    end_char += strlen(HEADER_SEPERATOR);
+    strcpy(end_char, HEADER_SEPARATOR);
+    end_char += strlen(HEADER_SEPARATOR);
 
     strcpy(end_char, part_num);
     end_char += strlen(part_num);
 
-    strcpy(end_char, HEADER_SEPERATOR);
-    end_char += strlen(HEADER_SEPERATOR);
+    strcpy(end_char, HEADER_SEPARATOR);
+    end_char += strlen(HEADER_SEPARATOR);
 
     strcpy(end_char, listener_port);
     end_char += strlen(listener_port);
@@ -80,8 +80,8 @@ char* handle_get_chunk(char* ip, char data[MAX_DATA_SIZE][MAX_DATA_SIZE]) {
     strcpy(end_char, DATA_MARKER);
     end_char += strlen(DATA_MARKER);
 
-    strcpy(end_char, HEADER_SEPERATOR);
-    end_char += strlen(HEADER_SEPERATOR);
+    strcpy(end_char, HEADER_SEPARATOR);
+    end_char += strlen(HEADER_SEPARATOR);
 
     long file_size = get_file_size(FILE_FD);
     long need_to_send = (file_size - (part_num * CHUNK_SIZE));
@@ -99,8 +99,8 @@ char* handle_get_chunk(char* ip, char data[MAX_DATA_SIZE][MAX_DATA_SIZE]) {
     sprintf(end_char, "%d", this_chunk_size);
     end_char += num_len(this_chunk_size);
 
-    strcpy(end_char, HEADER_SEPERATOR);
-    end_char += strlen(HEADER_SEPERATOR);
+    strcpy(end_char, HEADER_SEPARATOR);
+    end_char += strlen(HEADER_SEPARATOR);
 
     lseek(FILE_FD, part_num * CHUNK_SIZE, 0);
     read(FILE_FD, end_char, this_chunk_size);
@@ -112,7 +112,7 @@ char* handle_get_chunk(char* ip, char data[MAX_DATA_SIZE][MAX_DATA_SIZE]) {
 
 char* request_handler(int id, char* ip, char* req) {
     char data [MAX_DATA_SIZE][MAX_DATA_SIZE];
-    split(req, data, HEADER_SEPERATOR);
+    split(req, data, HEADER_SEPARATOR);
     char* command = data[0];
 
     int is_get_chunk_count = (strcmp(command, HEADER_GET_CHUNK_COUNT) == 0);
