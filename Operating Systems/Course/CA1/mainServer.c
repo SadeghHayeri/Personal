@@ -7,7 +7,7 @@
 
 File* FILES;
 
-char* handle_add_file(int id, char* ip, char data[MAX_DATA_SIZE][MAX_DATA_SIZE]) {
+char* handle_add_file(int id, char* ip, Split_data data) {
     char* name = data[1];
     char* port = data[3];
     int part_num = atoi(data[2]);
@@ -19,7 +19,7 @@ char* handle_add_file(int id, char* ip, char data[MAX_DATA_SIZE][MAX_DATA_SIZE])
         return ERROR_MESSAGE;
 }
 
-char* handle_get_countributers(char* ip, char data[MAX_DATA_SIZE][MAX_DATA_SIZE]) {
+char* handle_get_countributers(char* ip, Split_data data) {
     char* name = data[1];
 
     for (size_t i = 0; i < MAX_FILE_HANDLER; i++) {
@@ -69,7 +69,7 @@ char* handle_get_countributers(char* ip, char data[MAX_DATA_SIZE][MAX_DATA_SIZE]
 }
 
 char* request_handler(int id, char* ip, char* req) {
-    char data [MAX_DATA_SIZE][MAX_DATA_SIZE];
+    Split_data data;
     split(req, data, HEADER_SEPARATOR);
     char* command = data[0];
 

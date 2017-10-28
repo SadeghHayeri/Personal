@@ -59,7 +59,7 @@ int initial_to_mainserver(char* hostname, char* port, char* file_path, char* nam
     return is_save;
 }
 
-char* handle_get_chunk_count(char* ip, char data[MAX_DATA_SIZE][MAX_DATA_SIZE]) {
+char* handle_get_chunk_count(char* ip, Split_data data) {
     long file_size = get_file_size(FILE_FD);
 
     int chunk_count = (file_size / CHUNK_SIZE) + (file_size % CHUNK_SIZE != 0 ? 1 : 0);
@@ -71,7 +71,7 @@ char* handle_get_chunk_count(char* ip, char data[MAX_DATA_SIZE][MAX_DATA_SIZE]) 
 }
 
 // DATA|<data-size>|<data>
-char* handle_get_chunk(char* ip, char data[MAX_DATA_SIZE][MAX_DATA_SIZE]) {
+char* handle_get_chunk(char* ip, Split_data data) {
     int part_num = atoi(data[1]);
     char* chunk = (char*)malloc(MAX_DATA_SIZE * sizeof(char));
     memset(chunk, '\0', MAX_DATA_SIZE);
@@ -111,7 +111,7 @@ char* handle_get_chunk(char* ip, char data[MAX_DATA_SIZE][MAX_DATA_SIZE]) {
 }
 
 char* request_handler(int id, char* ip, char* req) {
-    char data [MAX_DATA_SIZE][MAX_DATA_SIZE];
+    Split_data data;
     split(req, data, HEADER_SEPARATOR);
     char* command = data[0];
 

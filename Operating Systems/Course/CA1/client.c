@@ -102,7 +102,7 @@ Node* get_contributers(int mainserver_sock_fd, char* name) {
     char* get_contributers_command = generate_getcontributers_command(name);
     char* response = request(mainserver_sock_fd, get_contributers_command);
 
-    char data [MAX_DATA_SIZE][MAX_DATA_SIZE];
+    Split_data data;
     split(response, data, HEADER_SEPARATOR);
     int number_of_contributers = atoi(data[0]);
 

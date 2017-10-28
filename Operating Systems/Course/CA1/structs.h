@@ -46,6 +46,8 @@
 #define NOT_FOUND "NOT_FOUND"
 ////////////////////////////////////////////////////
 
+typedef char Split_data[MAX_DATA_SIZE][MAX_DATA_SIZE];
+
 typedef struct Node {
 	int contributer_id;
     int file_index;
