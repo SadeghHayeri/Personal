@@ -13,11 +13,7 @@
 char* generate_getchunkcount_command() {
     char* header = (char*)malloc(MAX_DATA_SIZE * sizeof(char));
     memset(header, '\0', MAX_DATA_SIZE);
-    char* end_char = header;
-
-    strcpy(end_char, HEADER_GET_CHUNK_COUNT);
-    end_char += strlen(HEADER_GET_CHUNK_COUNT);
-
+    strcat(header, HEADER_GET_CHUNK_COUNT);
     return header;
 }
 
@@ -25,15 +21,13 @@ char* generate_getchunkcount_command() {
 char* generate_getchunk_command(int part_num) {
     char* header = (char*)malloc(MAX_DATA_SIZE * sizeof(char));
     memset(header, '\0', MAX_DATA_SIZE);
-    char* end_char = header;
+    
+    char part_num_string[MAX_DATA_SIZE];
+    num_to_string(part_num, part_num_string);
 
-    strcpy(end_char, HEADER_GET_CHUNK);
-    end_char += strlen(HEADER_GET_CHUNK);
-
-    strcpy(end_char, HEADER_SEPARATOR);
-    end_char += strlen(HEADER_SEPARATOR);
-
-    sprintf(end_char, "%d", part_num);
+    strcat(header, HEADER_GET_CHUNK);
+    strcat(header, HEADER_SEPARATOR);
+    strcat(header, part_num_string);
 
     return header;
 }
@@ -41,16 +35,10 @@ char* generate_getchunk_command(int part_num) {
 char* generate_getcontributers_command(char* name) {
     char* header = (char*)malloc(MAX_DATA_SIZE * sizeof(char));
     memset(header, '\0', MAX_DATA_SIZE);
-    char* end_char = header;
 
-    strcpy(end_char, HEADER_GET_COUNTRIBUTERS);
-    end_char += strlen(HEADER_GET_COUNTRIBUTERS);
-
-    strcpy(end_char, HEADER_SEPARATOR);
-    end_char += strlen(HEADER_SEPARATOR);
-
-    strcpy(end_char, name);
-    end_char += strlen(name);
+    strcat(header, HEADER_GET_COUNTRIBUTERS);
+    strcat(header, HEADER_SEPARATOR);
+    strcat(header, name);
 
     return header;
 }

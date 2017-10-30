@@ -28,37 +28,32 @@ char* handle_get_countributers(char* ip, Split_data data) {
 
             char* response = (char*)malloc(MAX_DATA_SIZE * sizeof(char));
             memset(response, '\0', MAX_DATA_SIZE);
-            char* end_char = response;
 
             Node* contributers_head = FILES[i].contributers_head;
 
             int nodes_count = get_nodes_count(contributers_head);
-            sprintf(end_char, "%d", nodes_count);
-            end_char += num_len(nodes_count);
+            char nodes_count_string[MAX_DATA_SIZE];
+            num_to_string(nodes_count, nodes_count_string);
+
+            strcat(response, nodes_count_string);
 
             Node* curr_contributers = contributers_head;
             for (size_t i = 0; i < nodes_count; i++) {
-                strcpy(end_char, HEADER_SEPARATOR);
-                end_char += strlen(HEADER_SEPARATOR);
+                strcat(response, HEADER_SEPARATOR);
 
                 int file_index = curr_contributers->file_index;
+                char file_index_string[MAX_DATA_SIZE];
+                num_to_string(file_index, file_index_string);
+
                 char* ip = curr_contributers->ip;
                 char* port = curr_contributers->port;
 
-                sprintf(end_char, "%d", file_index);
-                end_char += num_len(file_index);
+                strcat(response, file_index_string);
+                strcat(response, HEADER_SUB_SEPARATOR);
+                strcat(response, ip);
+                strcat(response, HEADER_SUB_SEPARATOR);
+                strcat(response, port);
 
-                strcpy(end_char, HEADER_SUB_SEPARATOR);
-                end_char += strlen(HEADER_SUB_SEPARATOR);
-
-                strcpy(end_char, ip);
-                end_char += strlen(ip);
-
-                strcpy(end_char, HEADER_SUB_SEPARATOR);
-                end_char += strlen(HEADER_SUB_SEPARATOR);
-
-                strcpy(end_char, port);
-                end_char += strlen(port);
                 curr_contributers = curr_contributers->next;
             }
 

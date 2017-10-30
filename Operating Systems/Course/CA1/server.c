@@ -8,44 +8,22 @@
 #include <time.h>
 #include <stdlib.h>
 
-#include <sys/stat.h>
-
 int FILE_FD;
 
 // ADD_FILE|<name>|<part_num>|<listener_port>
 char* generate_initial_command(char* name, char* part_num, char* listener_port) {
     char* header = (char*)malloc(MAX_DATA_SIZE * sizeof(char));
     memset(header, '\0', MAX_DATA_SIZE);
-    char* end_char = header;
 
-    strcpy(end_char, HEADER_ADD_FILE);
-    end_char += strlen(HEADER_ADD_FILE);
-
-    strcpy(end_char, HEADER_SEPARATOR);
-    end_char += strlen(HEADER_SEPARATOR);
-
-    strcpy(end_char, name);
-    end_char += strlen(name);
-
-    strcpy(end_char, HEADER_SEPARATOR);
-    end_char += strlen(HEADER_SEPARATOR);
-
-    strcpy(end_char, part_num);
-    end_char += strlen(part_num);
-
-    strcpy(end_char, HEADER_SEPARATOR);
-    end_char += strlen(HEADER_SEPARATOR);
-
-    strcpy(end_char, listener_port);
-    end_char += strlen(listener_port);
+    strcat(header, HEADER_ADD_FILE);
+    strcat(header, HEADER_SEPARATOR);
+    strcat(header, name);
+    strcat(header, HEADER_SEPARATOR);
+    strcat(header, part_num);
+    strcat(header, HEADER_SEPARATOR);
+    strcat(header, listener_port);
 
     return header;
-}
-
-long get_file_size(int file_fd) {
-    struct stat buf;
-    fstat(FILE_FD, &buf);
-    return buf.st_size;
 }
 
 int initial_to_mainserver(char* hostname, char* port, char* file_path, char* name, char* part_num, char* listener_port) {
