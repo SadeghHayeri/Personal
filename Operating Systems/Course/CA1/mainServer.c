@@ -7,27 +7,24 @@
 
 File* FILES;
 
-char* handle_add_file(int id, char* ip, Split_data data) {
+void handle_add_file(Max_size_data result, int id, char* ip, Split_data data) {
     char* name = data[1];
     char* port = data[3];
     int part_num = atoi(data[2]);
 
     int status = add_file_piece(FILES, name, part_num, id, ip, port);
     if (status == 0)
-        return OK_MESSAGE;
+        strcpy(result, OK_MESSAGE);
     else
-        return ERROR_MESSAGE;
+        strcpy(result, ERROR_MESSAGE);
 }
 
-char* handle_get_countributers(char* ip, Split_data data) {
+void handle_get_countributers(Max_size_data result, char* ip, Split_data data) {
     char* name = data[1];
 
     for (size_t i = 0; i < MAX_FILE_HANDLER; i++) {
         int is_this_file = (strcmp(name, FILES[i].name) == 0);
         if (is_this_file) {
-
-            char* response = (char*)malloc(MAX_DATA_SIZE * sizeof(char));
-            memset(response, '\0', MAX_DATA_SIZE);
 
             Node* contributers_head = FILES[i].contributers_head;
 
@@ -35,11 +32,11 @@ char* handle_get_countributers(char* ip, Split_data data) {
             char nodes_count_string[MAX_DATA_SIZE];
             num_to_string(nodes_count, nodes_count_string);
 
-            strcat(response, nodes_count_string);
+            strcat(result, nodes_count_string);
 
             Node* curr_contributers = contributers_head;
             for (size_t i = 0; i < nodes_count; i++) {
-                strcat(response, HEADER_SEPARATOR);
+                strcat(result, HEADER_SEPARATOR);
 
                 int file_index = curr_contributers->file_index;
                 char file_index_string[MAX_DATA_SIZE];
@@ -48,35 +45,37 @@ char* handle_get_countributers(char* ip, Split_data data) {
                 char* ip = curr_contributers->ip;
                 char* port = curr_contributers->port;
 
-                strcat(response, file_index_string);
-                strcat(response, HEADER_SUB_SEPARATOR);
-                strcat(response, ip);
-                strcat(response, HEADER_SUB_SEPARATOR);
-                strcat(response, port);
+                strcat(result, file_index_string);
+                strcat(result, HEADER_SUB_SEPARATOR);
+                strcat(result, ip);
+                strcat(result, HEADER_SUB_SEPARATOR);
+                strcat(result, port);
 
                 curr_contributers = curr_contributers->next;
             }
 
-            return response;
+            return;
         }
     }
-    return NOT_FOUND;
+    strcpy(result, NOT_FOUND);
 }
 
-char* request_handler(int id, char* ip, char* req) {
+void request_handler(Max_size_data result, int id, char* ip, char* req) {
+    memset(result, '\0', MAX_DATA_SIZE);
+
     Split_data data;
     split(req, data, HEADER_SEPARATOR);
     char* command = data[0];
 
     int is_add_file = (strcmp(command, HEADER_ADD_FILE) == 0);
     if (is_add_file)
-        return handle_add_file(id, ip, data);
+        return handle_add_file(result, id, ip, data);
 
     int is_get_countributers = (strcmp(command, HEADER_GET_COUNTRIBUTERS) == 0);
     if (is_get_countributers)
-        return handle_get_countributers(ip, data);
+        return handle_get_countributers(result, ip, data);
 
-    return BAD_COMMAND;
+    strcpy(result, BAD_COMMAND);
 }
 
 void disconnect_handler(int id) {

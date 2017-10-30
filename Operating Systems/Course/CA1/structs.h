@@ -47,6 +47,8 @@
 ////////////////////////////////////////////////////
 
 typedef char Split_data[MAX_DATA_SIZE][MAX_DATA_SIZE];
+typedef char Max_size_data[MAX_DATA_SIZE];
+
 
 typedef struct Node {
 	int contributer_id;

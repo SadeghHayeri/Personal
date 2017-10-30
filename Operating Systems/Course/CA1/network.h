@@ -32,6 +32,8 @@
 
 #include <arpa/inet.h>
 
+#include "structs.h"
+
 void *get_in_addr(struct sockaddr *sa);
 int create_socket_fd(char* ip, char* port);
 int create_listener_fd(char* port);
@@ -41,7 +43,7 @@ void sigchld_handler(int s);
 void listen_to_clients(
     int listener, 
     char* listener_port,
-    char* (*request_handler)(int id, char* ip, char* req),
+    void (*request_handler)(Max_size_data result, int id, char* ip, char* req),
     void (*disconnect_handler)(int id)
 );
 

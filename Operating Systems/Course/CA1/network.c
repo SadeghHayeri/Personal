@@ -130,7 +130,7 @@ int create_listener_fd(char* port) {
 void listen_to_clients(
     int listener, 
     char* listener_port,
-    char* (*request_handler)(int id, char* ip, char* req),
+    void (*request_handler)(Max_size_data result, int id, char* ip, char* req),
     void (*disconnect_handler)(int id)
 ) {
 
@@ -214,7 +214,9 @@ void listen_to_clients(
                             get_in_addr((struct sockaddr*)&remoteaddr),
                             remoteIP, INET6_ADDRSTRLEN);
 
-                        char* response = request_handler(i, ip, buf);
+                        // char* response = request_handler(i, ip, buf);
+                        char response[MAX_DATA_SIZE];
+                        request_handler(response, i, ip, buf);
 
                         print("\nREQ: ");
                         write(0, buf, MAX_DATA_SIZE);

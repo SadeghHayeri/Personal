@@ -10,51 +10,19 @@
 
 int FILE_FD;
 
-// ADD_FILE|<name>|<part_num>|<listener_port>
-char* generate_initial_command(char* name, char* part_num, char* listener_port) {
-    char* header = (char*)malloc(MAX_DATA_SIZE * sizeof(char));
-    memset(header, '\0', MAX_DATA_SIZE);
-
-    strcat(header, HEADER_ADD_FILE);
-    strcat(header, HEADER_SEPARATOR);
-    strcat(header, name);
-    strcat(header, HEADER_SEPARATOR);
-    strcat(header, part_num);
-    strcat(header, HEADER_SEPARATOR);
-    strcat(header, listener_port);
-
-    return header;
-}
-
-int initial_to_mainserver(char* hostname, char* port, char* file_path, char* name, char* part_num, char* listener_port) {
-    int sock_fd = create_socket_fd(hostname, port);
-
-    char* header = generate_initial_command(name, part_num, listener_port);
-    char* response = request(sock_fd, header);
-    // close(sock_fd);
-
-    int is_save = (strcmp(response, OK_MESSAGE) == 0);
-    return is_save;
-}
-
-char* handle_get_chunk_count(char* ip, Split_data data) {
+void handle_get_chunk_count(Max_size_data result, char* ip, Split_data data) {
     long file_size = get_file_size(FILE_FD);
-
     int chunk_count = (file_size / CHUNK_SIZE) + (file_size % CHUNK_SIZE != 0 ? 1 : 0);
-
-    char* response = (char*)malloc(MAX_DATA_SIZE * sizeof(char));
-    memset(response, '\0', MAX_DATA_SIZE);
-    sprintf(response, "%d", chunk_count);
-    return response;
+    char chunk_count_string[MAX_DATA_SIZE];
+    num_to_string(chunk_count, chunk_count_string);
+    strcpy(result, chunk_count_string);
 }
 
 // DATA|<data-size>|<data>
-char* handle_get_chunk(char* ip, Split_data data) {
+void handle_get_chunk(Max_size_data result, char* ip, Split_data data) {
     int part_num = atoi(data[1]);
-    char* chunk = (char*)malloc(MAX_DATA_SIZE * sizeof(char));
-    memset(chunk, '\0', MAX_DATA_SIZE);
+    char* end_char = result;
 
-    char* end_char = chunk;
     strcpy(end_char, DATA_MARKER);
     end_char += strlen(DATA_MARKER);
 
@@ -82,28 +50,43 @@ char* handle_get_chunk(char* ip, Split_data data) {
 
     lseek(FILE_FD, part_num * CHUNK_SIZE, 0);
     read(FILE_FD, end_char, this_chunk_size);
-
-    printf("%s\n", chunk);
-
-    return chunk;
 }
 
-char* request_handler(int id, char* ip, char* req) {
+void request_handler(Max_size_data response, int id, char* ip, char* req) {
+    memset(response, '\0', MAX_DATA_SIZE);
     Split_data data;
     split(req, data, HEADER_SEPARATOR);
     char* command = data[0];
 
     int is_get_chunk_count = (strcmp(command, HEADER_GET_CHUNK_COUNT) == 0);
-    if (is_get_chunk_count) {
-        return handle_get_chunk_count(ip, data);
-    }
+    if (is_get_chunk_count)
+        return handle_get_chunk_count(response, ip, data);
 
     int is_get_chunk = (strcmp(command, HEADER_GET_CHUNK) == 0);
-    if (is_get_chunk) {
-        return handle_get_chunk(ip, data);
-    }
+    if (is_get_chunk)
+        return handle_get_chunk(response, ip, data);
 
-    return BAD_COMMAND;
+    strcpy(response, BAD_COMMAND);
+}
+
+// ADD_FILE|<name>|<part_num>|<listener_port>
+void generate_initial_command(Max_size_data result, char* name, char* part_num, char* listener_port) {
+    strcat(result, HEADER_ADD_FILE);
+    strcat(result, HEADER_SEPARATOR);
+    strcat(result, name);
+    strcat(result, HEADER_SEPARATOR);
+    strcat(result, part_num);
+    strcat(result, HEADER_SEPARATOR);
+    strcat(result, listener_port);
+}
+
+int initial_to_mainserver(int main_server_fd, char* file_path, char* name, char* part_num, char* listener_port) {
+    char header[MAX_DATA_SIZE];
+    generate_initial_command(header, name, part_num, listener_port);
+    char* response = request(main_server_fd, header);
+
+    int is_save = (strcmp(response, OK_MESSAGE) == 0);
+    return is_save;
 }
 
 void disconnect_handler(int id) {
@@ -146,7 +129,8 @@ int main(int argc, char *argv[])
 
 
     // Send file info to mainServer
-    int is_save = initial_to_mainserver(hostname, port, file_path, name, part_num, listener_port);
+    int main_server_fd = create_socket_fd(hostname, port);
+    int is_save = initial_to_mainserver(main_server_fd, file_path, name, part_num, listener_port);
     if (is_save) {
         print("-> Initial to mainServer complete!\n");
     } else {
@@ -156,5 +140,6 @@ int main(int argc, char *argv[])
 
     listen_to_clients(listener, listener_port, request_handler, disconnect_handler);
 
+    close(main_server_fd);
     return 0;
 }
