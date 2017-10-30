@@ -10,47 +10,38 @@
 #include <stdlib.h>
 
 // GET_CHUNK_COUNT
-char* generate_getchunkcount_command() {
-    char* header = (char*)malloc(MAX_DATA_SIZE * sizeof(char));
-    memset(header, '\0', MAX_DATA_SIZE);
-    strcat(header, HEADER_GET_CHUNK_COUNT);
-    return header;
+void generate_getchunkcount_command(Max_size_data result) {
+    strcat(result, HEADER_GET_CHUNK_COUNT);
 }
 
 // GET_CHUNK|<part_num>
-char* generate_getchunk_command(int part_num) {
-    char* header = (char*)malloc(MAX_DATA_SIZE * sizeof(char));
-    memset(header, '\0', MAX_DATA_SIZE);
-    
+void generate_getchunk_command(Max_size_data result, int part_num) {
     char part_num_string[MAX_DATA_SIZE];
     num_to_string(part_num, part_num_string);
 
-    strcat(header, HEADER_GET_CHUNK);
-    strcat(header, HEADER_SEPARATOR);
-    strcat(header, part_num_string);
-
-    return header;
+    strcat(result, HEADER_GET_CHUNK);
+    strcat(result, HEADER_SEPARATOR);
+    strcat(result, part_num_string);
 }
 
-char* generate_getcontributers_command(char* name) {
-    char* header = (char*)malloc(MAX_DATA_SIZE * sizeof(char));
-    memset(header, '\0', MAX_DATA_SIZE);
-
-    strcat(header, HEADER_GET_COUNTRIBUTERS);
-    strcat(header, HEADER_SEPARATOR);
-    strcat(header, name);
-
-    return header;
+void generate_getcontributers_command(Max_size_data result, char* name) {
+    strcat(result, HEADER_GET_COUNTRIBUTERS);
+    strcat(result, HEADER_SEPARATOR);
+    strcat(result, name);
 }
 
 int get_chunk_count(int sock_fd) {
-    char* get_info_command = generate_getchunkcount_command();
-    char* chunk_count = request(sock_fd, get_info_command);
+    char getinfo_command[MAX_DATA_SIZE];
+    memset(getinfo_command, '\0', MAX_DATA_SIZE);
+    generate_getchunkcount_command(getinfo_command);
+    char* chunk_count = request(sock_fd, getinfo_command);
     return atoi(chunk_count);
 }
 
 void get_chunk_and_save(int sock_fd, int part_num, int file_fd) {
-    char* getchunk_command = generate_getchunk_command(part_num);
+    char getchunk_command[MAX_DATA_SIZE];
+    memset(getchunk_command, '\0', MAX_DATA_SIZE);
+    generate_getchunk_command(getchunk_command, part_num);
     char* data = request(sock_fd, getchunk_command);
     data += strlen(DATA_MARKER) + strlen(HEADER_SEPARATOR);
 
@@ -87,8 +78,10 @@ void connect_download_append_all(Node* contributers_head, int file_fd) {
 }
 
 Node* get_contributers(int mainserver_sock_fd, char* name) {
-    char* get_contributers_command = generate_getcontributers_command(name);
-    char* response = request(mainserver_sock_fd, get_contributers_command);
+    char getcontributers_command[MAX_DATA_SIZE];
+    memset(getcontributers_command, '\0', MAX_DATA_SIZE);
+    generate_getcontributers_command(getcontributers_command, name);
+    char* response = request(mainserver_sock_fd, getcontributers_command);
 
     Split_data data;
     split(response, data, HEADER_SEPARATOR);
@@ -113,8 +106,7 @@ Node* get_contributers(int mainserver_sock_fd, char* name) {
     return contributers_head;
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     // Initial
     if (argc != 5) {
         fprintf(stderr, "usage: ./client hostname port name output_path\n");
