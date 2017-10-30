@@ -68,3 +68,19 @@ void num_to_string(int n, char s[]) {
     s[i] = '\0';
     reverse(s);
 }
+
+void process(int x, int all) {
+    int p = ((float)x / all) * PROCESS_SIZE;
+
+    write(STDOUT, "\r", 2);
+    for (int i = 0; i < PROCESS_SIZE; ++i)
+        write(STDOUT, " ", 1);
+    write(STDOUT, "\r[", 2);
+    for (int i = 0; i < PROCESS_SIZE; ++i) {
+        if(i <= p+1)
+            write(STDOUT, "=", 1);
+        else
+            write(STDOUT, "-", 1);
+    }
+    write(STDOUT, "]", 1);
+}

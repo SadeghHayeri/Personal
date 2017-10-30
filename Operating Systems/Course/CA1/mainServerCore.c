@@ -1,7 +1,9 @@
 #include "mainServerCore.h"
-
+#include "logger.h"
 #include "linkedlist.h"
 #include "structs.h"
+
+#include <unistd.h>
 
 File* init_files_array() {
     File* files = (File*)malloc(MAX_FILE_HANDLER * sizeof(File));
@@ -62,7 +64,7 @@ void print_files(File files[]) {
         if(is_empty_block)
             break;
 
-        printf("%lu %s\n", i+1, files[i].name);
+        logger("%lu %s\n", i+1, files[i].name);
     }
 }
 
@@ -72,11 +74,11 @@ void print_file_details(File files[], char file_name[MAX_FILE_NAME]) {
         // if file exist -> show
         int is_this_file = (strcmp(files[i].name, file_name) == 0);
         if(is_this_file) {
-            printf("%s:\n", file_name);
+            logger("%s:\n", file_name);
 
             Node* curr_contributer = files[i].contributers_head;
             while (curr_contributer != NULL) {
-                printf("(%d) %s:%s\n", curr_contributer->file_index, curr_contributer->ip, curr_contributer->port);
+                logger("(%d) %s:%s\n", curr_contributer->file_index, curr_contributer->ip, curr_contributer->port);
                 curr_contributer = curr_contributer->next;
             }
 
@@ -86,7 +88,7 @@ void print_file_details(File files[], char file_name[MAX_FILE_NAME]) {
         // if not -> error
         int is_empty_block = (strcmp(files[i].name, NOTSET) == 0);
         if(is_empty_block) {
-            printf("Not Found!");
+            error("Not Found!");
             return;
         }
 

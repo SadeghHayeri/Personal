@@ -1,6 +1,7 @@
 #include "structs.h"
 #include "network.h"
 #include "utility.h"
+#include "logger.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -42,7 +43,10 @@ void handle_get_chunk(Max_size_data result, char* ip, Split_data data) {
         end_char++;
     }
 
-    sprintf(end_char, "%d", this_chunk_size);
+    char this_chunk_size_string[MAX_DATA_SIZE];
+    num_to_string(this_chunk_size, this_chunk_size_string);
+
+    sprintf(end_char, "%d", this_chunk_size); //TODO
     end_char += num_len(this_chunk_size);
 
     strcpy(end_char, HEADER_SEPARATOR);
@@ -98,7 +102,7 @@ int main(int argc, char *argv[])
 {
     // Initial
     if (!(argc == 6 || argc == 7)) {
-        fprintf(stderr,"usage: ./server hostname port file_path name part_num [listener_port]\n");
+        error("usage: ./server hostname port file_path name part_num [listener_port]\n");
         exit(1);
     }
     char* hostname = argv[1];
@@ -117,30 +121,32 @@ int main(int argc, char *argv[])
     }
 
 
-    // Pre-processes file
+    logger("open file!");
     FILE_FD = open(file_path, O_RDONLY);
     if (FILE_FD == -1) {
-        perror("File Not Found!");
+        error("File Not Found!");
         exit(1);
     }
 
 
-    // Open listener service port
+    logger("Open listener service port: %s", listener_port);
     int listener = create_listener_fd(listener_port);
 
 
-    // Send file info to mainServer
+    logger("Send file info to mainServer");
     int main_server_fd = create_socket_fd(hostname, port);
     int is_save = initial_to_mainserver(main_server_fd, file_path, name, part_num, listener_port);
     if (is_save) {
-        print("-> Initial to mainServer complete!\n");
+        logger("Initial to mainServer complete!\n");
     } else {
-        perror("Err: initial_to_mainserver()");
+        error("initial_to_mainserver");
         exit(1);
     }
 
+    logger("listen to clients:");
     listen_to_clients(listener, listener_port, request_handler, disconnect_handler);
 
+    logger("disconnect from main-server");
     close(main_server_fd);
     return 0;
 }

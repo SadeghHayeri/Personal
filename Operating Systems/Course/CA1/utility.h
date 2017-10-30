@@ -9,5 +9,6 @@ int num_len(int number);
 long get_file_size(int file_fd);
 void reverse_string(char s[]);
 void num_to_string(int n, char s[]);
+void process(int x, int all);
 
 #endif

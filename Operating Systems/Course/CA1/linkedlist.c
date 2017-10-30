@@ -5,10 +5,11 @@
 * source   : http://www.zentut.com/c-tutorial/c-linked-list/
 */
 #include "linkedlist.h"
-
+#include "logger.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 /*
     create a new Node
@@ -21,7 +22,7 @@ Node* create(int file_index, Node* next, int contributer_id, char* ip, char* por
     Node* new_Node = (Node*)malloc(sizeof(Node));
     if(new_Node == NULL)
     {
-        printf("Error creating a new Node.\n");
+        error("Error creating a new Node.\n");
         exit(0);
     }
     new_Node->file_index = file_index;
@@ -133,14 +134,6 @@ Node* remove_any(Node* head,Node* nd)
     }
     return head;
 
-}
-/*
-    display a Node
-*/
-void display(Node* n)
-{
-    if(n != NULL)
-        printf("%d:%s ", n->file_index, n->port);
 }
 
 /*

@@ -20,6 +20,8 @@
 #define MAX_DATA_SIZE 700
 #define CHUNK_SIZE 500
 #define BACKLOG 10     // how many pending connections queue will hold
+#define MAX_LOG_SIZE 1000
+#define PROCESS_SIZE 50
 
 
 /////////////////////// API ////////////////////////

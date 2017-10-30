@@ -1,6 +1,7 @@
 #include "network.h"
 #include "utility.h"
 #include "structs.h"
+#include "logger.h"
 
 void request(Max_size_data response, int sock_fd, char* msg) {
     memset(response, '\0', MAX_DATA_SIZE);
@@ -38,7 +39,7 @@ int create_socket_fd(char* ip, char* port) {
     hints.ai_socktype = SOCK_STREAM;
 
     if ((rv = getaddrinfo(ip, port, &hints, &servinfo)) != 0) {
-        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
+        error("getaddrinfo: %s\n", gai_strerror(rv));
         return 1;
     }
 
@@ -46,26 +47,25 @@ int create_socket_fd(char* ip, char* port) {
     for(p = servinfo; p != NULL; p = p->ai_next) {
         if ((sock_fd = socket(p->ai_family, p->ai_socktype,
                 p->ai_protocol)) == -1) {
-            perror("client: socket");
+            error("client: socket");
             continue;
         }
 
         if (connect(sock_fd, p->ai_addr, p->ai_addrlen) == -1) {
             close(sock_fd);
-            perror("client: connect");
+            error("client: connect");
             continue;
         }
         break;
     }
 
     if (p == NULL) {
-        fprintf(stderr, "client: failed to connect\n");
+        error("client: failed to connect");
         return 2;
     }
 
     inet_ntop(p->ai_family, get_in_addr((struct sockaddr *)p->ai_addr),
             s, sizeof s);
-    // printf("client: connecting to %s\n", s);
 
     freeaddrinfo(servinfo); // all done with this structure
 
@@ -87,7 +87,7 @@ int create_listener_fd(char* port) {
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_flags = AI_PASSIVE;
     if ((rv = getaddrinfo(NULL, port, &hints, &ai)) != 0) {
-        fprintf(stderr, "selectserver: %s\n", gai_strerror(rv));
+        error("selectserver: %s\n", gai_strerror(rv));
         exit(1);
     }
 
@@ -110,7 +110,7 @@ int create_listener_fd(char* port) {
 
     // if we got here, it means we didn't get bound
     if (p == NULL) {
-        fprintf(stderr, "selectserver: failed to bind\n");
+        error("selectserver: failed to bind");
         exit(2);
     }
 
@@ -118,7 +118,7 @@ int create_listener_fd(char* port) {
 
     // listen
     if (listen(listener, 10) == -1) {
-        perror("listen");
+        error("listen");
         exit(3);
     }
 
@@ -156,15 +156,13 @@ void listen_to_clients(
 
     // TODO: pak kon ya ye jaye dg
     // Listening to clients
-    print("-> Listening on port: ");
-    print(listener_port);
-    print("\n");
+    logger("Listening on port: %s", listener_port);
 
     // main loop
     for(;;) {
         read_fds = master; // copy it
         if (select(fdmax+1, &read_fds, NULL, NULL, NULL) == -1) {
-            perror("select");
+            error("select");
             exit(4);
         }
 
@@ -179,13 +177,13 @@ void listen_to_clients(
                         &addrlen);
 
                     if (newfd == -1) {
-                        perror("accept");
+                        error("accept");
                     } else {
                         FD_SET(newfd, &master); // add to master set
                         if (newfd > fdmax) {    // keep track of the max
                             fdmax = newfd;
                         }
-                        printf("selectserver: new connection from %s on "
+                        logger("selectserver: new connection from %s on "
                             "socket %d\n",
                             inet_ntop(remoteaddr.ss_family,
                                 get_in_addr((struct sockaddr*)&remoteaddr),
@@ -201,7 +199,7 @@ void listen_to_clients(
                             // connection closed
                             printf("selectserver: socket %d hung up\n", i);
                         } else {
-                            perror("recv");
+                            error("recv");
                         }
                         disconnect_handler(i);
                         close(i); // bye!
@@ -215,11 +213,8 @@ void listen_to_clients(
                         // char* response = request_handler(i, ip, buf);
                         char response[MAX_DATA_SIZE];
                         request_handler(response, i, ip, buf);
-
-                        print("\nREQ: ");
-                        write(0, buf, MAX_DATA_SIZE);
-                        print("\n");
-                        printf("RES: %s\n", response);
+                        logger("REQ: %s", buf);
+                        logger("RES: %s", response);
                         send(i, response, strlen(response), 0);
                         memset(buf, '\0', MAX_DATA_SIZE);
 

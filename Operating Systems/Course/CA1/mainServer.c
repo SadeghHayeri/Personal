@@ -2,8 +2,10 @@
 #include "utility.h"
 #include "network.h"
 #include "mainServerCore.h"
+#include "logger.h"
 
 #include <unistd.h> // atoi
+#include <stdio.h>
 
 File* FILES;
 
@@ -81,7 +83,7 @@ void request_handler(Max_size_data result, int id, char* ip, char* req) {
 void disconnect_handler(int id) {
     int result = remove_file_piece(FILES, id);
     if(result == 0) {
-        printf("File Removed: %d\n", id);
+        logger("File Removed: %d\n", id);
     }
 }
 
