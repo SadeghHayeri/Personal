@@ -34,7 +34,8 @@ int get_chunk_count(int sock_fd) {
     char getinfo_command[MAX_DATA_SIZE];
     memset(getinfo_command, '\0', MAX_DATA_SIZE);
     generate_getchunkcount_command(getinfo_command);
-    char* chunk_count = request(sock_fd, getinfo_command);
+    char chunk_count[MAX_DATA_SIZE];
+    request(chunk_count, sock_fd, getinfo_command);
     return atoi(chunk_count);
 }
 
@@ -42,19 +43,22 @@ void get_chunk_and_save(int sock_fd, int part_num, int file_fd) {
     char getchunk_command[MAX_DATA_SIZE];
     memset(getchunk_command, '\0', MAX_DATA_SIZE);
     generate_getchunk_command(getchunk_command, part_num);
-    char* data = request(sock_fd, getchunk_command);
-    data += strlen(DATA_MARKER) + strlen(HEADER_SEPARATOR);
+    char data[MAX_DATA_SIZE];
+    request(data, sock_fd, getchunk_command);
+
+    char* end_char = data;
+    end_char += strlen(DATA_MARKER) + strlen(HEADER_SEPARATOR);
 
     // get this_chunk_size
     char this_chunk_size[20];
     int max_num_length = num_len(CHUNK_SIZE);
-    memcpy(this_chunk_size, data, max_num_length);
+    memcpy(this_chunk_size, end_char, max_num_length);
     int this_chunk_size_num = atoi(this_chunk_size);
-    data += max_num_length;
+    end_char += max_num_length;
 
-    data += strlen(HEADER_SEPARATOR);
+    end_char += strlen(HEADER_SEPARATOR);
 
-    write(file_fd, data, this_chunk_size_num);
+    write(file_fd, end_char, this_chunk_size_num);
 }
 
 int connect_download_append(char* hostname, char* port, int file_fd) {
@@ -81,7 +85,8 @@ Node* get_contributers(int mainserver_sock_fd, char* name) {
     char getcontributers_command[MAX_DATA_SIZE];
     memset(getcontributers_command, '\0', MAX_DATA_SIZE);
     generate_getcontributers_command(getcontributers_command, name);
-    char* response = request(mainserver_sock_fd, getcontributers_command);
+    char response[MAX_DATA_SIZE];
+    request(response, mainserver_sock_fd, getcontributers_command);
 
     Split_data data;
     split(response, data, HEADER_SEPARATOR);

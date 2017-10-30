@@ -83,7 +83,8 @@ void generate_initial_command(Max_size_data result, char* name, char* part_num, 
 int initial_to_mainserver(int main_server_fd, char* file_path, char* name, char* part_num, char* listener_port) {
     char header[MAX_DATA_SIZE];
     generate_initial_command(header, name, part_num, listener_port);
-    char* response = request(main_server_fd, header);
+    char response[MAX_DATA_SIZE];
+    request(response, main_server_fd, header);
 
     int is_save = (strcmp(response, OK_MESSAGE) == 0);
     return is_save;

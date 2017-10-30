@@ -37,7 +37,7 @@
 void *get_in_addr(struct sockaddr *sa);
 int create_socket_fd(char* ip, char* port);
 int create_listener_fd(char* port);
-char* request(int sock_fd, char* msg);
+void request(Max_size_data response, int sock_fd, char* msg);
 
 void sigchld_handler(int s);
 void listen_to_clients(
