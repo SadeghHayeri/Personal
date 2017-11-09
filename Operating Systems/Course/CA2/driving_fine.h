@@ -1,9 +1,11 @@
 #ifndef __DRIVING_FINE_H__
 #define __DRIVING_FINE_H__
 
-class DrivingFine {
+#include "date.h"
+
+class Driving_fine {
 public:
-	DrivingFine(int _id, Date _date, long long _amount) : id(_id), date(_date), amount(_amount);
+	Driving_fine(int _id, Date _date, long long _amount) : id(_id), date(_date), amount(_amount) {}
 
 private:
 	int id;
