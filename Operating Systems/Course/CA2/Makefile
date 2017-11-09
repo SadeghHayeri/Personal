@@ -1,12 +1,19 @@
 all: server
 
-server: server.cpp
-	g++ server.cpp -o server
+server: server.cpp utility.o driving_fine.o date.o pipe.o
+	g++ server.cpp utility.o driving_fine.o date.o pipe.o -std=c++11
 
-gdb:
-	gcc mainserver.c mainServerCore.o utility.o linkedlist.o network.o -o mainserver -g -Wall
-	gcc server.c network.c utility.o -o server -g -Wall
-	gcc client.c -o client -g -Wall
+utility.o: utility.h utility.cpp
+	g++ utility.cpp -c -std=c++11
+
+driving_fine.o: driving_fine.h driving_fine.cpp date.o
+	g++ driving_fine.cpp -c -std=c++11
+
+date.o: date.h date.cpp
+	g++ date.cpp -c -std=c++11
+
+pipe.o: pipe.h pipe.cpp
+	g++ pipe.cpp -c -std=c++11
 
 clean:
 	rm *.o server
