@@ -24,8 +24,7 @@ namespace Utility {
 	    DIR* dirp = opendir(path.c_str());
 	    struct dirent * dp;
 	    while ((dp = readdir(dirp)) != NULL)
-	    	if(	(strcmp(dp->d_name, ".") != 0) &&
-	    		(strcmp(dp->d_name, "..") != 0))
+	    	if(	dp->d_name[0] != '.')
 	        	result.push_back(dp->d_name);
 	    closedir(dirp);
 	    return result;
