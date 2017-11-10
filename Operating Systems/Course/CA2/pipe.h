@@ -17,7 +17,6 @@ public:
 	Unamed_pipe& operator<<(const std::string& input);
 	Unamed_pipe& operator>>(std::string& output);	
 
-private:
 	int input_fd;	
 	int output_fd;
 };

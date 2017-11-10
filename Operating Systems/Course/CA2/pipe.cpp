@@ -7,6 +7,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <iostream>
 
 #include <string>
 
@@ -22,17 +23,20 @@ Unamed_pipe::Unamed_pipe() {
 }
 
 Unamed_pipe::~Unamed_pipe() {
-    close(this->input_fd);
-    close(this->output_fd);
+    // close(this->input_fd);
+    // close(this->output_fd);
 }
 
 Unamed_pipe& Unamed_pipe::operator<<(const string& input) {
+    // close(this->input_fd);
     write(this->output_fd, input.c_str(), input.size());
     return *this;
 }
 
 Unamed_pipe& Unamed_pipe::operator>>(string& output) {
+    // close(this->output_fd);
     char buf[MAX_BUF_SIZE];
+    memset(buf, '\0', MAX_BUF_SIZE);
     read(this->input_fd, buf, MAX_BUF_SIZE);
     output = string(buf);
     return *this;
@@ -56,6 +60,7 @@ Named_pipe& Named_pipe::operator<<(const string& input) {
 Named_pipe& Named_pipe::operator>>(string& output) {
     int fd = open(this->path.c_str(), O_RDONLY);
     char buf[MAX_BUF_SIZE];
+    memset(buf, '\0', MAX_BUF_SIZE);
     read(fd, buf, MAX_BUF_SIZE);
     output = string(buf);
     close(fd);
