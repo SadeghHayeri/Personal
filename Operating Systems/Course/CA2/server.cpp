@@ -82,5 +82,5 @@ int main() {
 	string res;
 	p >> res;
 	cout << "result: " << res << endl;
-
+	
 }
