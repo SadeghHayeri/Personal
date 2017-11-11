@@ -11,33 +11,48 @@
 
 #include <string>
 
-#include "structs.h"
-
 using namespace std;
 
-Unamed_pipe::Unamed_pipe() {
+Unnamed_pipe::Unnamed_pipe() {
 	int fd[2];
 	pipe(fd);
-	this->input_fd = fd[0];
-	this->output_fd = fd[1];
+	this->p1_fd = fd[0];
+	this->p2_fd = fd[1];
+    this->main_fd = -1;
 }
 
-Unamed_pipe::~Unamed_pipe() {
-    // close(this->input_fd);
-    // close(this->output_fd);
+Unnamed_pipe::Unnamed_pipe(const Unnamed_pipe &obj) {
+    int fd[2];
+    pipe(fd);
+    this->p1_fd = fd[0];
+    this->p2_fd = fd[1];
+    this->main_fd = -1;
 }
 
-Unamed_pipe& Unamed_pipe::operator<<(const string& input) {
-    // close(this->input_fd);
-    write(this->output_fd, input.c_str(), input.size());
+Unnamed_pipe::~Unnamed_pipe() {
+    close(p1_fd);
+    close(p2_fd);
+}
+
+Unnamed_pipe& Unnamed_pipe::operator<<(const string& input) {
+    
+    if(main_fd == -1) {
+        main_fd = p2_fd;
+    }
+    
+    write(p2_fd, input.c_str(), input.size());
     return *this;
 }
 
-Unamed_pipe& Unamed_pipe::operator>>(string& output) {
-    // close(this->output_fd);
+Unnamed_pipe& Unnamed_pipe::operator>>(string& output) {
+
+    if(main_fd == -1) {
+        main_fd = p1_fd;
+    }
+
     char buf[MAX_BUF_SIZE];
     memset(buf, '\0', MAX_BUF_SIZE);
-    read(this->input_fd, buf, MAX_BUF_SIZE);
+    read(p1_fd, buf, MAX_BUF_SIZE);
     output = string(buf);
     return *this;
 }

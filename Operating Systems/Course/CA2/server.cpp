@@ -12,7 +12,7 @@
 
 using namespace std;
 
-void search_on_file(string path, int id, Unamed_pipe& pipe) {
+void search_on_file(string path, int id, Unnamed_pipe& pipe) {
 
 	fstream file;
 	file.open(path);
@@ -35,15 +35,13 @@ void search_on_file(string path, int id, Unamed_pipe& pipe) {
 	file.close();
 }
 
-void find_all_in_directory(string path, int id, Unamed_pipe& pipe) {
+void find_all_in_directory(string path, int id, Unnamed_pipe& pipe) {
 	vector<string> files = Utility::get_files(path);
 	vector<string> directories = Utility::get_directories(path);
 
 	int num_of_pipe = files.size() + directories.size();
 	int pipe_index = 0;
-	vector<Unamed_pipe> pipes;
-	for(int i = 0; i < num_of_pipe; i++)
-		pipes.push_back(Unamed_pipe());
+	vector<Unnamed_pipe> pipes(num_of_pipe, Unnamed_pipe());
 
 	for(string directory : directories)
 		if(!fork()) {
@@ -63,7 +61,7 @@ void find_all_in_directory(string path, int id, Unamed_pipe& pipe) {
 		wait(NULL);
 
 	long long all_amount = 0;
-	for(Unamed_pipe& child_pipe : pipes) {
+	for(Unnamed_pipe& child_pipe : pipes) {
 		string amount_string;
 		child_pipe >> amount_string;
 
@@ -74,15 +72,15 @@ void find_all_in_directory(string path, int id, Unamed_pipe& pipe) {
 	pipe << to_string(all_amount);
 }
 
-
+#include <time.h>
 
 int main() {
 
-	Unamed_pipe p = Unamed_pipe();
+	Unnamed_pipe p = Unnamed_pipe();
 	find_all_in_directory("Data 2", 76767, p);
 
 	string res;
 	p >> res;
 	cout << "result: " << res << endl;
-	
+
 }
