@@ -3,22 +3,29 @@
 
 #include <string>
 
+#define MAX_BUF_SIZE 1000
+
+using namespace std;
+
 class Pipe {
 public:
 	virtual Pipe& operator<<(const std::string& input) = 0;
 	virtual Pipe& operator>>(std::string& output) = 0;	
 };
 
-class Unamed_pipe : Pipe {
+class Unnamed_pipe : Pipe {
 public:
-	Unamed_pipe();
-	~Unamed_pipe();
+	Unnamed_pipe();
+	Unnamed_pipe(const Unnamed_pipe &obj);
+	~Unnamed_pipe();
 
-	Unamed_pipe& operator<<(const std::string& input);
-	Unamed_pipe& operator>>(std::string& output);	
+	Unnamed_pipe& operator<<(const std::string& input);
+	Unnamed_pipe& operator>>(std::string& output);	
 
-	int input_fd;	
-	int output_fd;
+private:
+	int p1_fd;	
+	int p2_fd;
+	int main_fd;
 };
 
 class Named_pipe : Pipe {
