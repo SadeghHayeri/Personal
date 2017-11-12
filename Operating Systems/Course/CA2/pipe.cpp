@@ -35,11 +35,11 @@ Unnamed_pipe::~Unnamed_pipe() {
 }
 
 Unnamed_pipe& Unnamed_pipe::operator<<(const string& input) {
-    
+
     if(main_fd == -1) {
         main_fd = p2_fd;
     }
-    
+
     write(p2_fd, input.c_str(), input.size());
     return *this;
 }
@@ -54,6 +54,19 @@ Unnamed_pipe& Unnamed_pipe::operator>>(string& output) {
     memset(buf, '\0', MAX_BUF_SIZE);
     read(p1_fd, buf, MAX_BUF_SIZE);
     output = string(buf);
+    return *this;
+}
+
+
+Unnamed_pipe& Unnamed_pipe::operator<<(const int& input) {
+	operator<<(to_string(input));
+    return *this;
+}
+
+Unnamed_pipe& Unnamed_pipe::operator>>(int& output) {
+	string res;
+	operator>>(res);
+	output = stoi(res);
     return *this;
 }
 
@@ -79,5 +92,17 @@ Named_pipe& Named_pipe::operator>>(string& output) {
     read(fd, buf, MAX_BUF_SIZE);
     output = string(buf);
     close(fd);
+    return *this;
+}
+
+Named_pipe& Named_pipe::operator<<(const int& input) {
+	operator<<(to_string(input));
+    return *this;
+}
+
+Named_pipe& Named_pipe::operator>>(int& output) {
+	string res;
+	operator>>(res);
+	output = stoi(res);
     return *this;
 }
