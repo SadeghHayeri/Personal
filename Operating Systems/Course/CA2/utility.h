@@ -9,6 +9,9 @@ namespace Utility {
 	std::vector<std::string> get_files_and_directories(const std::string& path);
 	std::vector<std::string> get_directories(const std::string& path);
 	std::vector<std::string> get_files(const std::string& path);
+
+	bool send_fd(int sock_fd, int fd);
+	int recv_fd(int sock_fd);
 }
 
 #endif //__UTILITY_H__
