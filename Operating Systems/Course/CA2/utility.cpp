@@ -51,6 +51,16 @@ namespace Utility {
 		return result;
 	}
 
+	vector<string> split(string str, const string& delim) {
+		vector<string> res;
+		while (str.find(delim) != -1) {
+			res.push_back( str.substr(0, str.find(delim)) );
+			str = str.substr(str.find(delim) + delim.size());
+		}
+		res.push_back(str);
+		return res;
+	}
+
 	bool send_fd(int sock_fd, int fd) {
 		char buf[16];
 		ssize_t buflen = sizeof(buf);
