@@ -23,7 +23,14 @@
 
 using namespace std;
 
-void search_on_file(string path, int id, Unnamed_pipe& pipe) {
+void search_on_file(Unnamed_pipe& pipe) {
+
+	string data;
+	pipe >> data;
+	auto recived_data = Utility::split(data, SEPARATOR);
+	string path = recived_data[0];
+	int id = stoi(recived_data[1]);
+
 	fstream file;
 	file.open(path);
 
@@ -43,7 +50,14 @@ void search_on_file(string path, int id, Unnamed_pipe& pipe) {
 	file.close();
 }
 
-void find_all_in_directory(string path, int id, Unnamed_pipe& pipe) {
+void find_all_in_directory(Unnamed_pipe& pipe) {
+
+	string data;
+	pipe >> data;
+	auto recived_data = Utility::split(data, SEPARATOR);
+	string path = recived_data[0];
+	int id = stoi(recived_data[1]);
+
 	vector<string> files = Utility::get_files(path);
 	vector<string> directories = Utility::get_directories(path);
 
@@ -53,14 +67,16 @@ void find_all_in_directory(string path, int id, Unnamed_pipe& pipe) {
 
 	for(string directory : directories)
 		if(!fork()) {
-			find_all_in_directory(path + '/' + directory, id, pipes[pipe_index]);
+			pipes[pipe_index] << path + '/' + directory + SEPARATOR + to_string(id);
+			find_all_in_directory(pipes[pipe_index]);
 			exit(0);
 		} else
 			pipe_index++;
 
 	for(string file : files)
 		if(!fork()) {
-			search_on_file(path + "/" + file, id, pipes[pipe_index]);
+			pipes[pipe_index] << path + "/" + file + SEPARATOR + to_string(id);
+			search_on_file(pipes[pipe_index]);
 			exit(0);
 		} else
 			pipe_index++;
@@ -83,7 +99,8 @@ void find_all_in_directory(string path, int id, Unnamed_pipe& pipe) {
 void find_and_send(string path, int id, Named_pipe callback_pipe) {
 
 	Unnamed_pipe pipe = Unnamed_pipe();
-	find_all_in_directory(path, id, pipe);
+	pipe << path + SEPARATOR + to_string(id);
+	find_all_in_directory(pipe);
 
 	string result;
 	pipe >> result;
