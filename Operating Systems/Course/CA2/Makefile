@@ -1,6 +1,6 @@
 all: server client
 
-server: server.cpp utility.o pipe.o network.o
+server: server.cpp utility.o pipe.o network.o p1.h p2.h
 	g++ server.cpp utility.o pipe.o network.o -o server -std=c++11
 
 client: client.cpp network.o
