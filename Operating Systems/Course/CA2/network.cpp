@@ -1,7 +1,30 @@
 #include "network.h"
-#include "utility.h"
 #include "structs.h"
-#include "logger.h"
+
+#include <fstream>
+#include <unistd.h>
+
+#include <time.h>
+
+#include <unistd.h>
+#include <sys/socket.h>
+#include <stdlib.h>
+#include <iostream>
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <errno.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <sys/wait.h>
+#include <signal.h>
+
+#include <stdio.h>
+#include <utility>
 
 void request(Max_size_data response, int sock_fd, char* msg) {
     memset(response, '\0', MAX_DATA_SIZE);
@@ -28,6 +51,14 @@ void *get_in_port(struct sockaddr *sa)
     return &(((struct sockaddr_in6*)sa)->sin6_port);
 }
 
+int accept_client(int listener) {
+    socklen_t sin_size;
+    sin_size = 100;
+    struct sockaddr_storage their_addr;
+
+    return accept(listener, (struct sockaddr *)&their_addr, &sin_size);
+}
+
 int create_socket_fd(char* ip, char* port) {
     int sock_fd;
     struct addrinfo hints, *servinfo, *p;
@@ -39,7 +70,6 @@ int create_socket_fd(char* ip, char* port) {
     hints.ai_socktype = SOCK_STREAM;
 
     if ((rv = getaddrinfo(ip, port, &hints, &servinfo)) != 0) {
-        error("getaddrinfo: %s\n", gai_strerror(rv));
         return 1;
     }
 
@@ -47,20 +77,17 @@ int create_socket_fd(char* ip, char* port) {
     for(p = servinfo; p != NULL; p = p->ai_next) {
         if ((sock_fd = socket(p->ai_family, p->ai_socktype,
                 p->ai_protocol)) == -1) {
-            error("client: socket");
             continue;
         }
 
         if (connect(sock_fd, p->ai_addr, p->ai_addrlen) == -1) {
             close(sock_fd);
-            error("client: connect");
             continue;
         }
         break;
     }
 
     if (p == NULL) {
-        error("client: failed to connect");
         return 2;
     }
 
@@ -87,7 +114,6 @@ int create_listener_fd(char* port) {
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_flags = AI_PASSIVE;
     if ((rv = getaddrinfo(NULL, port, &hints, &ai)) != 0) {
-        error("selectserver: %s\n", gai_strerror(rv));
         exit(1);
     }
 
@@ -110,7 +136,6 @@ int create_listener_fd(char* port) {
 
     // if we got here, it means we didn't get bound
     if (p == NULL) {
-        error("selectserver: failed to bind");
         exit(2);
     }
 
@@ -118,7 +143,6 @@ int create_listener_fd(char* port) {
 
     // listen
     if (listen(listener, 10) == -1) {
-        error("listen");
         exit(3);
     }
 
@@ -156,13 +180,11 @@ void listen_to_clients(
 
     // TODO: pak kon ya ye jaye dg
     // Listening to clients
-    logger("Listening on port: %s", listener_port);
 
     // main loop
     for(;;) {
         read_fds = master; // copy it
         if (select(fdmax+1, &read_fds, NULL, NULL, NULL) == -1) {
-            error("select");
             exit(4);
         }
 
@@ -177,18 +199,11 @@ void listen_to_clients(
                         &addrlen);
 
                     if (newfd == -1) {
-                        error("accept");
                     } else {
                         FD_SET(newfd, &master); // add to master set
                         if (newfd > fdmax) {    // keep track of the max
                             fdmax = newfd;
                         }
-                        logger("selectserver: new connection from %s on "
-                            "socket %d\n",
-                            inet_ntop(remoteaddr.ss_family,
-                                get_in_addr((struct sockaddr*)&remoteaddr),
-                                remoteIP, INET6_ADDRSTRLEN),
-                            newfd);
 
                     }
                 } else {
@@ -199,7 +214,6 @@ void listen_to_clients(
                             // connection closed
                             printf("selectserver: socket %d hung up\n", i);
                         } else {
-                            error("recv");
                         }
                         disconnect_handler(i);
                         close(i); // bye!
@@ -213,8 +227,6 @@ void listen_to_clients(
                         // char* response = request_handler(i, ip, buf);
                         char response[MAX_DATA_SIZE];
                         request_handler(response, i, ip, buf);
-                        logger("REQ: %s", buf);
-                        logger("RES: %s", response);
                         send(i, response, strlen(response), 0);
                         memset(buf, '\0', MAX_DATA_SIZE);
 

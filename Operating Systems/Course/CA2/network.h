@@ -34,10 +34,14 @@
 
 #include "structs.h"
 
+#define MAX_DATA_SIZE 1000
+typedef char Max_size_data[MAX_DATA_SIZE];
+
 void *get_in_addr(struct sockaddr *sa);
 int create_socket_fd(char* ip, char* port);
 int create_listener_fd(char* port);
 void request(Max_size_data response, int sock_fd, char* msg);
+int accept_client(int listener, int port);
 
 void sigchld_handler(int s);
 void listen_to_clients(
