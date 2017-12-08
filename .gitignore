@@ -1,5 +1,6 @@
 # npm modules sources
 */node_modules
+.DS_Store
 
 # all editor made tmp files
 *~
