@@ -1,1 +1,1 @@
-typedef float (*Activation_function)(float input);
+typedef double (*Activation_function)(double input);

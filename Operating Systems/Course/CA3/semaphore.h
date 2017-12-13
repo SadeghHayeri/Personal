@@ -15,16 +15,13 @@ public:
 
     ~Semaphore() {
         sem_destroy(&sem);
-        cout << "distructor!" << endl;
     }
 
     void wait() {
-        // cout << "new waiter...\n";
         sem_wait(&sem);
     }
 
     void signal() {
-        // cout << "new signal!\n";
         sem_post(&sem);
     }
 
