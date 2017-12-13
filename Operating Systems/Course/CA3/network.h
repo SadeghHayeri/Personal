@@ -12,7 +12,13 @@ using namespace std;
 class Network {
 public:
     Network(vector<int> layers_node_num, vector<Activation_function> layers_af);
-    vector< vector<float> > run(vector< vector<float> > _input);
+    vector< vector<double> > parallel_compute(vector< vector<double> > _input);
+    vector< vector<double> > serial_compute(vector< vector<double> > _input);
+
+    Layer* operator[](int i) {
+        return layers[i-1];
+    }
+
 private:
 
     static void* input_core(void* arg);
@@ -30,11 +36,11 @@ private:
     int input_size;
     int output_size;
 
-    float* input;
-    float* output;
+    double* input;
+    double* output;
 
-    vector< vector<float> > tmp_input;
-    vector< vector<float> > tmp_output;
+    vector< vector<double> > tmp_input;
+    vector< vector<double> > tmp_output;
 };
 
 #endif //__NETWORK_H__

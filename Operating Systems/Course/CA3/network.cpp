@@ -13,8 +13,8 @@ Network::Network(vector<int> layers_node_num, vector<Activation_function> layers
     input_size = layers_node_num[0];
     output_size = layers_node_num[layers_node_num.size()-1];
 
-    input = new float[layers_node_num[0]];
-    output = new float[layers_node_num[layers_node_num.size()-1]];
+    input = new double[layers_node_num[0]];
+    output = new double[layers_node_num[layers_node_num.size()-1]];
 
     for (size_t i = 1; i < layers_node_num.size(); i++)
         layers.push_back( new Layer(i, layers_node_num[i], layers_node_num[i-1], layers_af[i], &initial_complete) );
@@ -37,7 +37,7 @@ Network::Network(vector<int> layers_node_num, vector<Activation_function> layers
 
 
     for (size_t i = 0; i < layers_node_num.size(); i++) {
-        float* middle_arr = new float[layers_node_num[i]];
+        double* middle_arr = new double[layers_node_num[i]];
         memset(middle_arr, 0, layers_node_num[i]);
 
         if(i == 0)
@@ -56,7 +56,7 @@ Network::Network(vector<int> layers_node_num, vector<Activation_function> layers
     initial_complete = true;
 }
 
-vector< vector<float> > Network::run(vector< vector<float> > _input) {
+vector< vector<double> > Network::parallel_compute(vector< vector<double> > _input) {
     tmp_input = _input;
 
     pthread_t input_thread, output_thread;
@@ -70,22 +70,13 @@ vector< vector<float> > Network::run(vector< vector<float> > _input) {
 }
 
 void* Network::input_core(void* arg) {
-    sleep(1);
     Network* that = (Network*) arg;
 
     for(auto data : that->tmp_input) {
         that->first_read_sem->wait();
-        cout << "# input: get mutex\n";
-        {
-            for (size_t i = 0; i < that->input_size; i++)
-                that->input[i] = data[i];
-        }
-        // that->first_read_sem->signal();
-        // cout << "# input: signal mutex\n";
-
-        cout << "# signal newdata\n";
+        for (size_t i = 0; i < that->input_size; i++)
+            that->input[i] = data[i];
         (that->first_newdata_sem).signal();
-
     }
 
     return NULL;
@@ -96,21 +87,37 @@ void* Network::output_core(void* arg) {
 
     for (size_t i = 0; i < that->tmp_input.size(); i++) {
         that->last_newdata_sem->wait();
-        cout << "= output: newdata recived\n";
-        // that->last_read_sem.wait();
-        // cout << "= output: get mutex\n";
         {
-            vector<float> tmp;
+            vector<double> tmp;
             for (size_t i = 0; i < that->output_size; i++)
                 tmp.push_back(that->output[i]);
             that->tmp_output.push_back(tmp);
         }
         that->last_read_sem.signal();
-        cout << "= output: signal mutex\n";
-
     }
 
-    cout << "OUTPUT COMPLETE!\n";
-
     return NULL;
+}
+
+vector< vector<double> > Network::serial_compute(vector< vector<double> > _input) {
+    vector< vector<double> > result;
+
+    for(auto data : _input) {
+
+        // set input
+        for(size_t i = 0; i < input_size; i++)
+            input[i] = data[i];
+
+        // compute
+        for(auto layer : layers)
+            layer->serial_compute();
+
+        // get output
+        vector<double> tmp;
+        for (size_t i = 0; i < output_size; i++)
+            tmp.push_back(output[i]);
+        result.push_back(tmp);
+
+    }
+    return result;
 }
