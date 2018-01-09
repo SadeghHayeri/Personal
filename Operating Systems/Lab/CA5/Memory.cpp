@@ -6,12 +6,14 @@
 #include <cassert>
 #include <random>
 #include "exception.h"
+#include <exception>
 
 
-Memory::Memory(unsigned num_of_frames, string backing_store_path) {
+Memory::Memory(unsigned num_of_frames, string backing_store_path, int replacement_policy) {
     this->num_of_frames = num_of_frames;
     this->table = vector<Frame>(num_of_frames, Frame());
     this->backing_store.open(backing_store_path, ios_base::in | ios::binary);
+    this->replacement_policy = replacement_policy;
 
     assert(this->backing_store.is_open());
 }
@@ -38,15 +40,22 @@ unsigned int Memory::swap_in(unsigned int index) {
 }
 
 unsigned Memory::select_victim() {
-#ifdef FIFO
-    return fifo_replace();
-#elif LRU
-    return lru_replace();
-#elif SECOND_CHANCE
-    return sc_replace();
-#elif RANDOM_REPLACEMENT
-    return ran_replace();
-#endif
+    switch(replacement_policy) {
+        case FIFO:
+            return fifo_replace();
+            break;
+        case LRU:
+            return lru_replace();
+            break;
+        case SECOND_CHANCE:
+            return sc_replace();
+            break;
+        case RANDOM_REPLACEMENT:
+            return ran_replace();
+            break;
+        default:
+            throw bad_exception();
+    }
 }
 
 unsigned Memory::swap_out() {

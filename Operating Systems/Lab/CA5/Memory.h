@@ -15,7 +15,7 @@ using namespace std;
 
 class Memory {
 public:
-    Memory(unsigned num_of_frames, string backing_store_path);
+    Memory(unsigned num_of_frames, string backing_store_path, int replacement_policy);
 
     string operator[](unsigned index);
 
@@ -50,6 +50,7 @@ private:
     // used for replacement policies
     unsigned clk = 0;
     unsigned last_index = 0;
+    int replacement_policy;
 };
 
 
