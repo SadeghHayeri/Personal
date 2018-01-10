@@ -1,11 +1,11 @@
 //
 // Created by Sadegh on 1/9/18.
 //
-
 #ifndef CA5_EXCEPTION_H
 #define CA5_EXCEPTION_H
 
 #include <stdexcept>
+#include <iostream>
 #include <string>
 
 using namespace std;

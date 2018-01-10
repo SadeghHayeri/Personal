@@ -16,13 +16,14 @@ public:
 
     void update(unsigned index, unsigned address);
     void invalid_index(unsigned index);
+    unsigned int get_TIME() const;
 
 private:
 
-    unsigned find_free_row();
+    unsigned find_free_entry();
 
-    struct Row {
-        Row() {
+    struct Entry {
+        Entry() {
             is_valid = false;
         }
 
@@ -33,7 +34,9 @@ private:
 
     unsigned tlb_size;
     unsigned last_index = 0;
-    vector<Row> table;
+    vector<Entry> table;
+
+    unsigned TIME = 0;
 };
 
 

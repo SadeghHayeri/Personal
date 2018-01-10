@@ -17,13 +17,16 @@ class Memory {
 public:
     Memory(unsigned num_of_frames, string backing_store_path, int replacement_policy);
 
-    string operator[](unsigned index);
+    unsigned operator[](unsigned index);
 
     unsigned int swap_in(unsigned index);
     unsigned swap_out();
 
+    unsigned int get_TIME() const;
+
 private:
-    void swap_data_in_to(unsigned frame_index, unsigned data_index);
+    void swap_in_data(unsigned frame_index, unsigned data_index);
+    void swap_out_data(unsigned frame_index);
     unsigned select_victim();
     unsigned fifo_replace();
     unsigned lru_replace();
@@ -37,6 +40,7 @@ private:
             this->reference_bit = 0;
         }
         bool is_valid;
+        unsigned real_index;
         char data[FRAME_SIZE];
 
         unsigned access_time;   // used for LRU replacement policies
@@ -44,13 +48,15 @@ private:
     };
 
     unsigned num_of_frames;
-    ifstream backing_store;
+    fstream backing_store;
     vector<Frame> table;
 
     // used for replacement policies
     unsigned clk = 0;
     unsigned last_index = 0;
     int replacement_policy;
+
+    unsigned TIME = 0;
 };
 
 

@@ -3,7 +3,8 @@
 //
 #ifndef CA5_CONFIG_H
 #define CA5_CONFIG_H
-#define DATA_SIZE 100
+
+#define DATA_SIZE 8
 #define FRAME_SIZE 256
 #define NUM_OF_FRAMES 256
 #define PAGE_TABLE_SIZE 256
@@ -15,5 +16,9 @@
 
 #define OFFSET_MASK 255
 #define PAGE_NUMBER_MASK 255 << 8
+
+#define TLB_DELAY .5 * 10
+#define MEM_DELAY 100 * 10
+#define DISK_DELAY 250000 * 10
 
 #endif //CA5_CONFIG_H

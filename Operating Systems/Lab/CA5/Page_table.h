@@ -18,15 +18,19 @@ public:
 
     void add_index(unsigned index, unsigned address);
     void invalid_index(unsigned index);
+
+    unsigned int get_TIME() const;
 private:
 
-    struct Row {
+    struct Entry {
         unsigned pys_address;
         bool is_valid;
     };
 
     unsigned page_size;
-    vector<Row> table;
+    vector<Entry> table;
+
+    unsigned TIME = 0;
 };
 
 #endif //CA5_PAGE_TABLE_H

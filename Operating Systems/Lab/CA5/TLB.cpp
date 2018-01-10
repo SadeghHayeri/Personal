@@ -5,21 +5,23 @@
 #include "TLB.h"
 #include "exception.h"
 #include <cassert>
+#include "config.h"
 
 TLB::TLB(unsigned tlb_size) {
     this->tlb_size = tlb_size;
-    this->table = vector<Row>(tlb_size, Row());
+    this->table = vector<Entry>(tlb_size, Entry());
 }
 
 unsigned TLB::operator[](unsigned index) {
-    for(Row &row : table)
-        if(row.is_valid && row.index == index)
-            return row.address;
+    TIME += TLB_DELAY;
+    for(Entry &entry : table)
+        if(entry.is_valid && entry.index == index)
+            return entry.address;
 
     throw Not_found_in_tlb("TLB");
 }
 
-unsigned TLB::find_free_row() {
+unsigned TLB::find_free_entry() {
     for (unsigned i = 0; i < tlb_size; ++i)
         if(!table[i].is_valid)
             return i;
@@ -28,14 +30,20 @@ unsigned TLB::find_free_row() {
 }
 
 void TLB::update(unsigned index, unsigned address) {
-    unsigned free_row = find_free_row();
-    table[free_row].is_valid = true;
-    table[free_row].index = index;
-    table[free_row].address = address;
+    TIME += TLB_DELAY;
+    unsigned free_entry = find_free_entry();
+    table[free_entry].is_valid = true;
+    table[free_entry].index = index;
+    table[free_entry].address = address;
 }
 
 void TLB::invalid_index(unsigned index) {
-    for(Row &row : table)
-        if(row.index == index)
-            row.is_valid = false;
+    TIME += TLB_DELAY;
+    for(Entry &entry : table)
+        if(entry.index == index)
+            entry.is_valid = false;
+}
+
+unsigned int TLB::get_TIME() const {
+    return TIME;
 }
