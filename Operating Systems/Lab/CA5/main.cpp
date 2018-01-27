@@ -10,7 +10,7 @@
 #include "TLB.h"
 
 using namespace std;
-//TODO: TIME ro biyar ghablesh.
+
 unsigned virt_to_phys(Page_table &pt, Memory &mem, TLB &tlb, unsigned index) {
     unsigned address;
     try {
@@ -46,10 +46,6 @@ unsigned virt_to_phys(Page_table &pt, Memory &mem, TLB &tlb, unsigned index) {
     return address;
 }
 
-string bin(unsigned i){
-    return !i?"0":i==1?"1":bin(i/2)+(i%2?'1':'0');
-}
-
 int main(int argc, char *argv[]) {
     srand(0);
 
@@ -62,13 +58,18 @@ int main(int argc, char *argv[]) {
     string output_path = string(argv[3]);
 
     Page_table pt(PAGE_TABLE_SIZE);
-    Memory mem(NUM_OF_FRAMES, back_store_path, SECOND_CHANCE);
+    Memory mem(NUM_OF_FRAMES, back_store_path, LRU);
     TLB tlb(TLB_SIZE);
 
     ifstream input(input_path, ios_base::in);
     assert(input.is_open());
     ofstream output(output_path, ios_base::out);
     assert(output.is_open());
+
+//    mem.swap_in(0);
+//    mem.swap_in(1);
+    cout << "----" << endl;
+
 
     unsigned logical_address;
     while(input >> logical_address) {
@@ -80,11 +81,20 @@ int main(int argc, char *argv[]) {
 
         unsigned data = mem[phys_address];
 
-        cout << logical_page << ":" << offset << " -> " << phys_page << ":" << offset  << " (" << data << ")" << endl;
+        cout << logical_page << ":" << offset << " -> " << phys_page << ":" << offset << " (" << phys_address << " -> "
+             << data << ")" << endl;
         output << data << endl;
     }
 
-    unsigned TIME = tlb.get_TIME() + pt.get_TIME() + mem.get_TIME();
+    unsigned add = virt_to_phys(pt, mem, tlb, 1000 / FRAME_SIZE);
+    cout << add << endl;
+    cout << mem[1000] << endl;
+
+//    add = virt_to_phys(pt, mem, tlb, 100 / FRAME_SIZE);
+//    cout << add << endl;
+//    cout << mem[100] << endl;
+
+    unsigned long long  TIME = tlb.get_TIME() + pt.get_TIME() + mem.get_TIME();
     cout << "TIME: " << TIME / 1000 << endl;
 
     return 0;

@@ -38,6 +38,9 @@ private:
             this->is_valid = false;
             this->access_time = 0;
             this->reference_bit = 0;
+            for (int i = 0; i < FRAME_SIZE; ++i) {
+                strcpy(&data[i], "X");
+            }
         }
         bool is_valid;
         unsigned real_index;
@@ -54,7 +57,7 @@ private:
     // used for replacement policies
     unsigned clk = 0;
     unsigned last_index = 0;
-    int replacement_policy;
+    int replacement_policy;                                                                                                             vector<char>d;
 
     unsigned TIME = 0;
 };

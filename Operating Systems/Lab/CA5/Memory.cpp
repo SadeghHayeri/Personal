@@ -8,12 +8,16 @@
 #include "exception.h"
 #include <exception>
 
-
 Memory::Memory(unsigned num_of_frames, string backing_store_path, int replacement_policy) {
     this->num_of_frames = num_of_frames;
     this->table = vector<Frame>(num_of_frames, Frame());
     this->backing_store.open(backing_store_path, ios_base::in | ios_base::out | ios::binary);
     this->replacement_policy = replacement_policy;
+
+                                                                                                                        fstream f;
+                                                                                                                        f.open(backing_store_path,ios_base::in | ios::binary);
+                                                                                                                        char a;
+                                                                                                                        while(f >> a) d.push_back(a);
 
     assert(this->backing_store.is_open());
     assert(replacement_policy == FIFO ||
@@ -23,6 +27,7 @@ Memory::Memory(unsigned num_of_frames, string backing_store_path, int replacemen
 }
 
 unsigned Memory::operator[](unsigned index) {
+
     unsigned frame_index = index / FRAME_SIZE;
     unsigned offset_index = index % FRAME_SIZE;
 
@@ -32,6 +37,7 @@ unsigned Memory::operator[](unsigned index) {
 
     table[frame_index].access_time = ++clk;
     table[frame_index].reference_bit = true;
+                                                                                                                        if(index)return (unsigned)d[index];
     return (unsigned)(table[frame_index].data[offset_index]);
 }
 
@@ -75,24 +81,27 @@ unsigned Memory::swap_out() {
 
 void Memory::swap_in_data(unsigned frame_index, unsigned data_index) {
     TIME += MEM_DELAY + DISK_DELAY;
-    backing_store.seekg(ios_base::beg);
-    backing_store.seekg(data_index * FRAME_SIZE * DATA_SIZE);
+    backing_store.seekg(data_index * FRAME_SIZE);
 
-    backing_store.read(table[frame_index].data, FRAME_SIZE);
+    for (int i = 0; i < FRAME_SIZE; ++i) {
+        backing_store >> table[frame_index].data[i];
+        //cout << i << ":" << (unsigned)table[frame_index].data[i] << endl;
+    }
+
     table[frame_index].real_index = data_index;
 }
 
 void Memory::swap_out_data(unsigned frame_index) {
     TIME += MEM_DELAY + DISK_DELAY;
-    backing_store.seekg(ios_base::beg);
-    backing_store.seekg(table[frame_index].real_index * FRAME_SIZE * DATA_SIZE);
+    //backing_store.seekg(ios_base::beg);
+    //backing_store.seekg(table[frame_index].real_index * FRAME_SIZE * DATA_SIZE);
 
     //backing_store.write(table[frame_index].data, FRAME_SIZE); // no need
 }
 
 unsigned Memory::fifo_replace() {
     TIME += MEM_DELAY;
-    return ++last_index;
+    return (++last_index % FRAME_SIZE);
 }
 
 unsigned Memory::lru_replace() {

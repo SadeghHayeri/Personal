@@ -1,0 +1,3 @@
+/Users/sadegh/Desktop/Personal/Operating Systems/Lab/CA5/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/sadegh/Desktop/Personal/Operating Systems/Lab/CA5/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/sadegh/Desktop/Personal/Operating Systems/Lab/CA5/cmake-build-debug/CMakeFiles/CA5.dir

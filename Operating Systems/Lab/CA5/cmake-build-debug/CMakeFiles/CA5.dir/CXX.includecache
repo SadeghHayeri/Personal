@@ -1,0 +1,92 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/sadegh/Desktop/Personal/Operating Systems/Lab/CA5/Memory.cpp
+Memory.h
+/Users/sadegh/Desktop/Personal/Operating Systems/Lab/CA5/Memory.h
+cassert
+-
+random
+-
+exception.h
+/Users/sadegh/Desktop/Personal/Operating Systems/Lab/CA5/exception.h
+exception
+-
+
+/Users/sadegh/Desktop/Personal/Operating Systems/Lab/CA5/Memory.h
+vector
+-
+fstream
+-
+string
+-
+config.h
+/Users/sadegh/Desktop/Personal/Operating Systems/Lab/CA5/config.h
+
+/Users/sadegh/Desktop/Personal/Operating Systems/Lab/CA5/Page_table.cpp
+Page_table.h
+/Users/sadegh/Desktop/Personal/Operating Systems/Lab/CA5/Page_table.h
+cassert
+-
+exception.h
+/Users/sadegh/Desktop/Personal/Operating Systems/Lab/CA5/exception.h
+config.h
+/Users/sadegh/Desktop/Personal/Operating Systems/Lab/CA5/config.h
+
+/Users/sadegh/Desktop/Personal/Operating Systems/Lab/CA5/Page_table.h
+vector
+-
+utility
+-
+fstream
+-
+
+/Users/sadegh/Desktop/Personal/Operating Systems/Lab/CA5/TLB.cpp
+TLB.h
+/Users/sadegh/Desktop/Personal/Operating Systems/Lab/CA5/TLB.h
+exception.h
+/Users/sadegh/Desktop/Personal/Operating Systems/Lab/CA5/exception.h
+cassert
+-
+config.h
+/Users/sadegh/Desktop/Personal/Operating Systems/Lab/CA5/config.h
+
+/Users/sadegh/Desktop/Personal/Operating Systems/Lab/CA5/TLB.h
+vector
+-
+
+/Users/sadegh/Desktop/Personal/Operating Systems/Lab/CA5/config.h
+
+/Users/sadegh/Desktop/Personal/Operating Systems/Lab/CA5/exception.h
+stdexcept
+-
+iostream
+-
+string
+-
+
+/Users/sadegh/Desktop/Personal/Operating Systems/Lab/CA5/main.cpp
+iostream
+-
+cassert
+-
+fstream
+-
+random
+-
+config.h
+/Users/sadegh/Desktop/Personal/Operating Systems/Lab/CA5/config.h
+exception.h
+/Users/sadegh/Desktop/Personal/Operating Systems/Lab/CA5/exception.h
+Page_table.h
+/Users/sadegh/Desktop/Personal/Operating Systems/Lab/CA5/Page_table.h
+Memory.h
+/Users/sadegh/Desktop/Personal/Operating Systems/Lab/CA5/Memory.h
+TLB.h
+/Users/sadegh/Desktop/Personal/Operating Systems/Lab/CA5/TLB.h
+

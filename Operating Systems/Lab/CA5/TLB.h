@@ -36,7 +36,7 @@ private:
     unsigned last_index = 0;
     vector<Entry> table;
 
-    unsigned TIME = 0;
+    unsigned long long TIME = 0;
 };
 
 

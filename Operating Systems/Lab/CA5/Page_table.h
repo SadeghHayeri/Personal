@@ -30,7 +30,7 @@ private:
     unsigned page_size;
     vector<Entry> table;
 
-    unsigned TIME = 0;
+    unsigned long long TIME = 0;
 };
 
 #endif //CA5_PAGE_TABLE_H
