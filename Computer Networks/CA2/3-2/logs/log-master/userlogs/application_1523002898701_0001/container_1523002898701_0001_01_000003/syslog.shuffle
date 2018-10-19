@@ -1,0 +1,19 @@
+2018-04-06 08:23:23,027 INFO [main] org.apache.hadoop.mapreduce.task.reduce.MergeManagerImpl: MergerManager: memoryLimit=130652568, maxSingleShuffleLimit=32663142, mergeThreshold=86230696, ioSortFactor=10, memToMemMergeOutputsThreshold=10
+2018-04-06 08:23:23,029 INFO [EventFetcher for fetching Map Completion Events] org.apache.hadoop.mapreduce.task.reduce.EventFetcher: attempt_1523002898701_0001_r_000000_0 Thread started: EventFetcher for fetching Map Completion Events
+2018-04-06 08:23:23,039 INFO [EventFetcher for fetching Map Completion Events] org.apache.hadoop.mapreduce.task.reduce.EventFetcher: attempt_1523002898701_0001_r_000000_0: Got 1 new map-outputs
+2018-04-06 08:23:23,039 INFO [fetcher#1] org.apache.hadoop.mapreduce.task.reduce.ShuffleSchedulerImpl: Assigning 9762515c9ebf:13562 with 1 to fetcher#1
+2018-04-06 08:23:23,039 INFO [fetcher#1] org.apache.hadoop.mapreduce.task.reduce.ShuffleSchedulerImpl: assigned 1 of 1 to 9762515c9ebf:13562 to fetcher#1
+2018-04-06 08:23:23,270 INFO [fetcher#1] org.apache.hadoop.mapreduce.task.reduce.Fetcher: for url=13562/mapOutput?job=job_1523002898701_0001&reduce=0&map=attempt_1523002898701_0001_m_000000_0 sent hash and received reply
+2018-04-06 08:23:23,275 INFO [fetcher#1] org.apache.hadoop.mapreduce.task.reduce.Fetcher: fetcher#1 about to shuffle output of map attempt_1523002898701_0001_m_000000_0 decomp: 1519 len: 1523 to MEMORY
+2018-04-06 08:23:23,291 INFO [fetcher#1] org.apache.hadoop.mapreduce.task.reduce.InMemoryMapOutput: Read 1519 bytes from map-output for attempt_1523002898701_0001_m_000000_0
+2018-04-06 08:23:23,293 INFO [fetcher#1] org.apache.hadoop.mapreduce.task.reduce.MergeManagerImpl: closeInMemoryFile -> map-output of size: 1519, inMemoryMapOutputs.size() -> 1, commitMemory -> 0, usedMemory ->1519
+2018-04-06 08:23:23,295 INFO [fetcher#1] org.apache.hadoop.mapreduce.task.reduce.ShuffleSchedulerImpl: 9762515c9ebf:13562 freed by fetcher#1 in 256ms
+2018-04-06 08:23:23,295 INFO [EventFetcher for fetching Map Completion Events] org.apache.hadoop.mapreduce.task.reduce.EventFetcher: EventFetcher is interrupted.. Returning
+2018-04-06 08:23:23,302 INFO [main] org.apache.hadoop.mapreduce.task.reduce.MergeManagerImpl: finalMerge called with 1 in-memory map-outputs and 0 on-disk map-outputs
+2018-04-06 08:23:23,311 INFO [main] org.apache.hadoop.mapred.Merger: Merging 1 sorted segments
+2018-04-06 08:23:23,311 INFO [main] org.apache.hadoop.mapred.Merger: Down to the last merge-pass, with 1 segments left of total size: 1507 bytes
+2018-04-06 08:23:23,319 INFO [main] org.apache.hadoop.mapreduce.task.reduce.MergeManagerImpl: Merged 1 segments, 1519 bytes to disk to satisfy reduce memory limit
+2018-04-06 08:23:23,319 INFO [main] org.apache.hadoop.mapreduce.task.reduce.MergeManagerImpl: Merging 1 files, 1523 bytes from disk
+2018-04-06 08:23:23,320 INFO [main] org.apache.hadoop.mapreduce.task.reduce.MergeManagerImpl: Merging 0 segments, 0 bytes from memory into reduce
+2018-04-06 08:23:23,320 INFO [main] org.apache.hadoop.mapred.Merger: Merging 1 sorted segments
+2018-04-06 08:23:23,322 INFO [main] org.apache.hadoop.mapred.Merger: Down to the last merge-pass, with 1 segments left of total size: 1507 bytes

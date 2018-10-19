@@ -1,0 +1,106 @@
+root@D22:/home# hdfs dfs -cat /user/sina/result/output2
+most repeated 1: khosrow -> 728
+most repeated 2: shirin -> 468
+most repeated 1: persian -> 520
+most repeated 2: farhad -> 260
+most repeated 1: khosrow -> 728
+most repeated 2: shirin -> 468
+most repeated 1: persian -> 520
+most repeated 2: farhad -> 260
+
+root@D22:/home# hdfs dfs -cat /user/sina/result/output3
+most repeated 1: khosrow -> 728
+most repeated 2: tale -> 182
+most repeated 1: shirin -> 468
+most repeated 2: farhad -> 260
+most repeated 1: persian -> 520
+most repeated 2: story -> 416
+most repeated 1: khosrow -> 728
+most repeated 2: tale -> 182
+most repeated 1: shirin -> 468
+most repeated 2: farhad -> 260
+most repeated 1: persian -> 520
+most repeated 2: story -> 416
+
+
+root@D22:/home# hdfs dfs -cat /user/sina/result/output4
+most repeated 1: khosrow -> 728
+most repeated 2: shirin -> 468
+most repeated 1: farhad -> 260
+most repeated 2: alexander -> 130
+most repeated 1: in -> 156
+most repeated 2: legend -> 156
+most repeated 1: persian -> 520
+most repeated 2: iranian -> 208
+most repeated 1: khosrow -> 728
+most repeated 2: shirin -> 468
+most repeated 1: farhad -> 260
+most repeated 2: alexander -> 130
+most repeated 1: in -> 156
+most repeated 2: legend -> 156
+most repeated 1: persian -> 520
+most repeated 2: iranian -> 208
+
+root@D22:/home# hdfs dfs -cat /user/sina/result/output5
+most repeated 1: persian -> 520
+most repeated 2: alexander -> 130
+most repeated 1: shirin -> 468
+most repeated 2: nizami -> 182
+most repeated 1: farhad -> 260
+most repeated 2: the -> 234
+most repeated 1: khosrow -> 728
+most repeated 2: story -> 416
+most repeated 1: love -> 182
+most repeated 2: finally -> 78
+most repeated 1: persian -> 520
+most repeated 2: alexander -> 130
+most repeated 1: shirin -> 468
+most repeated 2: nizami -> 182
+most repeated 1: farhad -> 260
+most repeated 2: the -> 234
+most repeated 1: love -> 182
+most repeated 2: finally -> 78
+most repeated 1: khosrow -> 728
+most repeated 2: story -> 416
+
+root@D22:/home# hdfs dfs -cat /user/sina/result/output10
+most repeated 1: armenian -> 78
+most repeated 2: church -> 78
+most repeated 1: nizami -> 182
+most repeated 2: falls -> 104
+most repeated 1: the -> 234
+most repeated 2: armenia -> 182
+most repeated 1: iranian -> 208
+most repeated 2: tale -> 182
+most repeated 1: finally -> 78
+most repeated 2: poem -> 78
+most repeated 1: persian -> 520
+most repeated 2: alexander -> 130
+most repeated 1: shirin -> 468
+most repeated 2: in -> 156
+most repeated 1: farhad -> 260
+most repeated 2: iran -> 104
+most repeated 1: khosrow -> 728
+most repeated 2: story -> 416
+most repeated 1: love -> 182
+most repeated 2: inspiration -> 78
+most repeated 1: armenian -> 78
+most repeated 2: church -> 78
+most repeated 1: nizami -> 182
+most repeated 2: falls -> 104
+most repeated 1: the -> 234
+most repeated 2: armenia -> 182
+most repeated 1: iranian -> 208
+most repeated 2: tale -> 182
+most repeated 1: finally -> 78
+most repeated 2: poem -> 78
+most repeated 1: shirin -> 468
+most repeated 2: in -> 156
+most repeated 1: farhad -> 260
+most repeated 2: iran -> 104
+most repeated 1: khosrow -> 728
+most repeated 2: story -> 416
+most repeated 1: love -> 182
+most repeated 2: inspiration -> 78
+most repeated 1: persian -> 520
+most repeated 2: alexander -> 130

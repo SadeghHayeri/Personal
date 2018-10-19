@@ -136,6 +136,6 @@ int main() {
 
     for (size_t i = 0; i < p_output.size(); i++) {
         cout << setprecision(15);
-        cout << s_output[i][0] << " - " << p_output[i][0] << endl;
+        cout << s_output[i][0] << " - " << s_output[i][0] << endl;
     }
 }

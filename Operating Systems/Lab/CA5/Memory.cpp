@@ -14,11 +14,6 @@ Memory::Memory(unsigned num_of_frames, string backing_store_path, int replacemen
     this->backing_store.open(backing_store_path, ios_base::in | ios_base::out | ios::binary);
     this->replacement_policy = replacement_policy;
 
-                                                                                                                        fstream f;
-                                                                                                                        f.open(backing_store_path,ios_base::in | ios::binary);
-                                                                                                                        char a;
-                                                                                                                        while(f >> a) d.push_back(a);
-
     assert(this->backing_store.is_open());
     assert(replacement_policy == FIFO ||
             replacement_policy == LRU ||
@@ -37,7 +32,7 @@ unsigned Memory::operator[](unsigned index) {
 
     table[frame_index].access_time = ++clk;
     table[frame_index].reference_bit = true;
-                                                                                                                        if(index)return (unsigned)d[index];
+
     return (unsigned)(table[frame_index].data[offset_index]);
 }
 

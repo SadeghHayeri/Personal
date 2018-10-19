@@ -1,0 +1,16 @@
+2018-04-09 15:22:05,699 INFO [main] org.apache.hadoop.metrics2.impl.MetricsConfig: loaded properties from hadoop-metrics2.properties
+2018-04-09 15:22:05,778 INFO [main] org.apache.hadoop.metrics2.impl.MetricsSystemImpl: Scheduled snapshot period at 10 second(s).
+2018-04-09 15:22:05,778 INFO [main] org.apache.hadoop.metrics2.impl.MetricsSystemImpl: ReduceTask metrics system started
+2018-04-09 15:22:05,786 INFO [main] org.apache.hadoop.mapred.YarnChild: Executing with tokens:
+2018-04-09 15:22:05,786 INFO [main] org.apache.hadoop.mapred.YarnChild: Kind: mapreduce.job, Service: job_1523287230324_0004, Ident: (org.apache.hadoop.mapreduce.security.token.JobTokenIdentifier@3c9754d8)
+2018-04-09 15:22:05,911 INFO [main] org.apache.hadoop.mapred.YarnChild: Sleeping for 0ms before retrying again. Got null now.
+2018-04-09 15:22:06,294 INFO [main] org.apache.hadoop.mapred.YarnChild: mapreduce.cluster.local.dir for child: /app/hadoop/tmp/nm-local-dir/usercache/root/appcache/application_1523287230324_0004
+2018-04-09 15:22:06,611 INFO [main] org.apache.hadoop.conf.Configuration.deprecation: session.id is deprecated. Instead, use dfs.metrics.session-id
+2018-04-09 15:22:07,353 INFO [main] org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter: File Output Committer Algorithm version is 1
+2018-04-09 15:22:07,378 INFO [main] org.apache.hadoop.mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+2018-04-09 15:22:07,406 INFO [main] org.apache.hadoop.mapred.ReduceTask: Using ShuffleConsumerPlugin: org.apache.hadoop.mapreduce.task.reduce.Shuffle@75f95314
+2018-04-09 15:22:08,104 INFO [main] org.apache.hadoop.conf.Configuration.deprecation: mapred.skip.on is deprecated. Instead, use mapreduce.job.skiprecords
+2018-04-09 15:22:08,551 INFO [main] org.apache.hadoop.mapred.Task: Task:attempt_1523287230324_0004_r_000001_0 is done. And is in the process of committing
+2018-04-09 15:22:08,572 INFO [main] org.apache.hadoop.mapred.Task: Task attempt_1523287230324_0004_r_000001_0 is allowed to commit now
+2018-04-09 15:22:08,584 INFO [main] org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter: Saved output of task 'attempt_1523287230324_0004_r_000001_0' to hdfs://localhost:54310/user/sina/data/out5.data/_temporary/1/task_1523287230324_0004_r_000001
+2018-04-09 15:22:08,602 INFO [main] org.apache.hadoop.mapred.Task: Task 'attempt_1523287230324_0004_r_000001_0' done.

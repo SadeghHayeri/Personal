@@ -57,7 +57,7 @@ private:
     // used for replacement policies
     unsigned clk = 0;
     unsigned last_index = 0;
-    int replacement_policy;                                                                                                             vector<char>d;
+    int replacement_policy;
 
     unsigned TIME = 0;
 };
